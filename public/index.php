@@ -14,6 +14,12 @@
     <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
     <script src="javascript/index.js"></script>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
 </head>
 
 
@@ -22,17 +28,10 @@
 
 
 <body>
-    <header>
-        <nav>
-            <h1> StreamHub </h1>
-            <form action="/search" method="get" class="search-form">
-                <label for="site-search">Search</label>
-                <input type="search" id="site-search" name="q" placeholder="Search…" required />
-                <button type="submit">🔍</button>
-            </form>
-            <button><a>login</a></button>
-        </nav>
-    </header>
+
+    <?php include "partials/header.php" ?>
+
+
     <main>
         <!-- left -->
         <div class="left_side">

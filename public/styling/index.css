@@ -114,11 +114,19 @@
     font-family: 'Poppins', sans-serif;
 }
 
+a{
+    text-decoration: none;
+}
+
 body,
 header,
 main,
 footer {
     background-color: #666;
+}
+
+a:hover{
+    color: #777;
 }
 
 nav {

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const container = document.querySelector(".right_side");
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 20; i++) {
         for (let j = 0; j < 3; j++) {
             //create divs for every img + title
             const videoDiv = document.createElement('div')
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             //create img (placeholder) videos
             const videoImg = document.createElement("img")
-            videoImg.src = "https://picsum.photos/350/200?random=" + (i*3+j);
+            videoImg.src = "https://picsum.photos/350/200?random=" + (i * 3 + j);
             videoImg.classList = "videoClass";
             videoImg.style.borderRadius = "5px";
             videoDiv.appendChild(videoImg)
@@ -31,8 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             //make title
             const videoTitle = document.createElement("h2")
-            videoTitle.innerText = "title a"
+            videoTitle.innerText = "title a";
             videoDiv.appendChild(videoTitle)
+
+            const videoChannel = document.createElement("p")
+            videoChannel.innerText = "channel name";
+            videoChannel.style.margin = 0;
+            videoDiv.appendChild(videoChannel)
         }
     }
 

@@ -92,7 +92,6 @@ if (isset($_POST['submit'])) {
 <section class="section">
     <div class="container content">
         <h2 class="title">Log in</h2>
-        <a href="pages/register.php">register</a>
 
         <?php if ($login) { ?>
             <p>Je bent al ingelogd!</p>

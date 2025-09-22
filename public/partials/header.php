@@ -1,6 +1,6 @@
 <head>
     <!-- index.php styling -->
-    <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="../styling/header.css">
 </head>
 
 <header>

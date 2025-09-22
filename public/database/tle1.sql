@@ -32,6 +32,9 @@ CREATE TABLE `comments` (
   `user_id` bigint UNSIGNED NOT NULL,
   `comment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `date` date NOT NULL
+  ,`parent_id` bigint UNSIGNED DEFAULT NULL
+  ,`created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+  ,`updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -46,6 +49,10 @@ CREATE TABLE `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `is_admin` tinyint(1) DEFAULT NULL
+  ,`profile_picture` varchar(255) DEFAULT NULL
+  ,`bio` text DEFAULT NULL
+  ,`created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+  ,`updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -61,7 +68,10 @@ CREATE TABLE `videos` (
   `thumbnail` blob NOT NULL,
   `comment_id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `views` bigint UNSIGNED DEFAULT 0,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -74,6 +84,8 @@ CREATE TABLE `videos` (
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+ALTER TABLE `comments`
+  ADD KEY `parent_id` (`parent_id`);
 
 --
 -- Indexen voor tabel `users`
@@ -87,7 +99,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `videos`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD KEY `user_id` (`user_id`),
   ADD KEY `comment_id` (`comment_id`);
 
 --
@@ -100,13 +112,9 @@ ALTER TABLE `videos`
 ALTER TABLE `comments`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT voor een tabel `users`
---
+
 ALTER TABLE `users`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT voor een tabel `videos`
 --
 ALTER TABLE `videos`
@@ -117,6 +125,36 @@ ALTER TABLE `videos`
 --
 
 --
+
+-- Nieuwe tabel: likes
+CREATE TABLE `likes` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `video_id` bigint UNSIGNED DEFAULT NULL,
+  `comment_id` bigint UNSIGNED DEFAULT NULL,
+  `is_like` tinyint(1) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `video_id` (`video_id`),
+  KEY `comment_id` (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Nieuwe tabel: tags
+CREATE TABLE `tags` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Nieuwe tabel: video_tags
+CREATE TABLE `video_tags` (
+  `video_id` bigint UNSIGNED NOT NULL,
+  `tag_id` bigint UNSIGNED NOT NULL,
+  PRIMARY KEY (`video_id`, `tag_id`),
+  KEY `tag_id` (`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Beperkingen voor tabel `comments`
 --
 ALTER TABLE `comments`

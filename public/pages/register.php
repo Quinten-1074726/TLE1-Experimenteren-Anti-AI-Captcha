@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="../styling/crud.css">
 </head>
 <body>
-<?php include('../partials/header.php') ?>
+<?php include '../partials/header.php' ?>
 <section>
     <form action="" method="post">
         <div class="column" style="width: 500px">

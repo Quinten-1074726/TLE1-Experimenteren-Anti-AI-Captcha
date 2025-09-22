@@ -39,6 +39,7 @@
                 <a>Home</a>
                 <a href="pages/trending.php">Trending</a>
                 <a>Subcriptions</a>
+                <a href="/pages/upload.php" class="btn">Video uploaden</a>
             </div>
             <div>
                 <!-- channels here -->

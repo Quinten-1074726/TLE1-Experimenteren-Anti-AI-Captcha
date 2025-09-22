@@ -1,13 +1,35 @@
-<?php?>
-<link rel="stylesheet" href="/assets/css/uploadpage.css">
+<?php
+    /** @var mysqli $db */
+    require_once "../database/connection.php";
+    $errors = [];
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    }   
+?>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaden</title>
+    <link rel="stylesheet" href="/styling/upload.css">
+</head>
+<body>
+<?php include '../partials/header.php' ?>
 <section class="upload-wrap">
-  <div class="title-bar">Video uploaden</div>
+    <div class="title-bar">Video uploaden</div>
+    <form id="uploadForm" class="upload-card">
 
     <div class="grid">
       <!-- LINKERKOLOM -->
       <div class="col col-left">
-        <label class="field">
+        <label class="field">   
           <span class="label strong">Titel:</span>
           <input type="text" name="title" placeholder="" required>
         </label>
@@ -56,9 +78,9 @@
     </div>
 
     <div class="actions">
-      <button type="submit" class="btn-primary">Uploaden</button>
+      <button type ="submit" class="btn-primary">Uploaden</button>
     </div>
-  </form>
+    </form>
 </section>
 
 <script src="/assets/js/uploadpage.js" defer></script>

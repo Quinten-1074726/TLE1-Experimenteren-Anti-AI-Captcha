@@ -1,0 +1,28 @@
+:root {
+    --colors-background-light: #FFF;
+    --colors-background-dark: #414141;
+    --colors-main: #276BD2;
+    --colors-content-light: #EAE9E9;
+    --colors-content-dark: #2F2F2F;
+    --colors-text-light: #000;
+    --colors-text-dark: #EAE9E9;
+    --colors-text-hover: #276BD2;
+
+    --font-header: 3rem;
+    --font-header2: 2rem;
+    --font-header3: 1.5rem;
+    --font-header4: 1rem;
+    --font-paragraph: 0.75rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
+html {
+    background-color: var(--colors-background-dark);
+    color: var(--colors-text-dark);
+}

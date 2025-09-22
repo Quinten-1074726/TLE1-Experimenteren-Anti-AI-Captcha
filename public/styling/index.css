@@ -1,0 +1,45 @@
+nav {
+    max-width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 5vh;
+}
+
+nav h1 {
+    justify-self: start;
+}
+
+nav .search-form {
+    justify-self: center;
+}
+
+nav a {
+    justify-self: end;
+}
+
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+.left_side {
+    flex: 1;
+    padding: 0 2vw;
+}
+
+.right_side {
+    flex: 4;
+}
+
+.left_side div {
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1vh 0;
+
+}

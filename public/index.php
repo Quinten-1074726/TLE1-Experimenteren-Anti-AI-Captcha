@@ -31,7 +31,6 @@
 
     <?php include "partials/header.php" ?>
 
-
     <main>
         <!-- left -->
         <div class="left_side">
@@ -50,7 +49,7 @@
         </div>
         <!-- right -->
         <div class="right_side">
-
+        <!-- script -->
         </div>
 
     </main>

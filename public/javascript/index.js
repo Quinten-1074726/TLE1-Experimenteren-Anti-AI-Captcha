@@ -10,11 +10,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const container = document.querySelector(".right_side");
 
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            //create divs for every img + title
+            const videoDiv = document.createElement('div')
+            videoDiv.style.display = "flex";
+            videoDiv.style.flexDirection = "column";
+            videoDiv.style.margin = "2vh 0.5vw";
+            container.appendChild(videoDiv)
+
+
+
+            //create img (placeholder) videos
             const videoImg = document.createElement("img")
-            videoImg.src = "https://picsum.photos/300/200?random=" + (i*3+j);
-            container.appendChild(videoImg)
+            videoImg.src = "https://picsum.photos/350/200?random=" + (i*3+j);
+            videoImg.classList = "videoClass";
+            videoImg.style.borderRadius = "5px";
+            videoDiv.appendChild(videoImg)
+
+
+            //make title
+            const videoTitle = document.createElement("h2")
+            videoTitle.innerText = "title a"
+            videoDiv.appendChild(videoTitle)
         }
     }
 

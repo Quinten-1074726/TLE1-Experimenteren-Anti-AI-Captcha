@@ -6,7 +6,7 @@
 <header>
     <nav>
         <h1> StreamHub </h1>
-        <form action="/search" method="get" class="search-form">
+        <form action="/search" method="post" class="search-form">
             <label for="site-search" hidden>Search</label>
             <input id="searchVideo" type="search" id="site-search" name="q" placeholder="Search…" required />
             <button id="searchSubmit" type="submit">🔍</button>

@@ -1,0 +1,52 @@
+nav {
+    max-width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 2vh;
+}
+
+nav h1 {
+    justify-self: start;
+}
+
+nav .search-form {
+    justify-self: center;
+}
+
+nav a {
+    justify-self: end;
+}
+
+#login_button {
+    background-color: #333;
+    color: white;
+    border: 2px solid #555;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Hover effect */
+#login_button:hover {
+    background-color: #555;
+    border-color: #777;
+    color: lightblue;
+}
+
+#searchVideo {
+    background-color: #333;
+    padding: 1vh 8vw;
+    border-radius: 12px;
+    text-align: center;
+}
+
+#searchSubmit {
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+}

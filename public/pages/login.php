@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
                     'email' => $user ['email'],
                 ];
                 //.. = map uit gaan
-                header("Location: public/index.php");
+                header("Location: ../index.php");
                 exit;
             } else {
                 echo 'Unknown user';

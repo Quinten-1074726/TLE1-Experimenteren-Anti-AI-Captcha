@@ -13,6 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/index.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +36,13 @@
         <!-- left -->
         <div class="left_side">
             <div>
-                <a>AI Filter</a>
+                <div>
+                    <label class="switch">
+                        <a>AI Filter</a>
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
                 <a>Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
@@ -49,7 +56,7 @@
         </div>
         <!-- right -->
         <div class="right_side">
-        <!-- script -->
+            <!-- script -->
         </div>
 
     </main>

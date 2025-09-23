@@ -20,6 +20,10 @@ nav a {
     justify-self: end;
 }
 
+form {
+    display: flex;
+}
+
 #login_button {
     background-color: #333;
     color: white;

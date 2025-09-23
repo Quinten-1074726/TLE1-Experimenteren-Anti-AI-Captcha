@@ -23,7 +23,7 @@
 </head>
 
 
-
+<a href="channel.php">channel</a>
 
 
 

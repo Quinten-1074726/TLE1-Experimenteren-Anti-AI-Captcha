@@ -15,8 +15,6 @@ if ($result) {
     die("Query failed: " . mysqli_error($db));
 }
 
-print_r($videos);
-
 ?>
 
 <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
@@ -58,7 +56,7 @@ print_r($videos);
         <div class="left_side">
             <div>
                 <div>
-                    <label>
+                    <label id="ai_filter_label">
                         AI Filter
                         <span class="switch">
                             <input type="checkbox">

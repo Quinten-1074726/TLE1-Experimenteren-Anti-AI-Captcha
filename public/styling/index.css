@@ -92,3 +92,8 @@ input:checked + .slider:before {
 body, main, footer {
     background-color: #666;
 }
+
+#ai_filter_label{
+  display: flex;
+  align-items: center;
+}

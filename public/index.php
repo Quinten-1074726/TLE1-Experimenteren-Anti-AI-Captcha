@@ -1,6 +1,30 @@
+
 <?php
+require_once 'database/connection.php';
+
+$sql = "SELECT * FROM videos ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$videos = []; // <-- array waar alles in gefetcht word
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $videos[] = $row; 
+    }
+} else {
+    die("Query failed: " . mysqli_error($db));
+}
+
+print_r($videos);
 
 ?>
+
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos); 
+</script>
 
 
 <!doctype html>
@@ -22,9 +46,6 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
         rel="stylesheet">
 </head>
-
-
-<a href="channel.php">channel</a>
 
 
 

@@ -65,7 +65,7 @@ h2{
   bottom: 0;
   background-color: #ccc;
   transition: .3s;
-  border-radius: 18px;        /* same as height for full pill shape */
+  border-radius: 18px;        
 }
 
 .slider:before {
@@ -73,7 +73,7 @@ h2{
   position: absolute;
   height: 14px;               /* knob size: a little smaller than track height */
   width: 14px;
-  left: 2px;                  /* small padding */
+  left: 2px;                 
   bottom: 2px;
   background-color: white;
   transition: .3s;
@@ -86,7 +86,9 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  /* move the knob across the track:
-     track width (30) – knob width (14) – 2px left padding */
   transform: translateX(12px);
+}
+
+body, main, footer {
+    background-color: #666;
 }

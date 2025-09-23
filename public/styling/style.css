@@ -130,3 +130,8 @@
     padding: 0;
     border: 0;
 }
+
+html {
+    background-color: var(--colors-background-dark);
+    color: var(--colors-text-dark);
+}

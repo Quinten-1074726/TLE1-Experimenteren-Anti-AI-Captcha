@@ -50,11 +50,11 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 <head>
     <title>registreren</title>
-    <?php include "../partials/defaultsettings.php" ?>
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/crud.css">
 </head>
 <body>
-<?php include '../partials/header.php' ?>
+<?php include 'header.php' ?>
 <section>
     <form action="" method="post">
         <div class="column" style="width: 65vw; margin: 10vh auto">
@@ -100,6 +100,6 @@ if (isset($_POST['submit'])) {
         </div>
     </form>
 </section>
-<?php include('../partials/footer.php') ?>
+<?php include('footer.php') ?>
 </body>
 </html>

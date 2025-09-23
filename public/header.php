@@ -11,6 +11,6 @@
             <input id="searchVideo" type="search" id="site-search" name="q" placeholder="Search…" required />
             <button id="searchSubmit" type="submit">🔍</button>
         </form>
-        <a href="#" id="login_button">login</a>
+        <a href="login.php" id="login_button">login</a>
     </nav>
 </header>

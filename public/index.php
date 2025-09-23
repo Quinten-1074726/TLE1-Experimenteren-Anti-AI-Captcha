@@ -37,13 +37,16 @@
         <div class="left_side">
             <div>
                 <div>
-                    <label class="switch">
-                        <a>AI Filter</a>
-                        <input type="checkbox">
-                        <span class="slider round"></span>
+                    <label>
+                        AI Filter
+                        <span class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </span>
                     </label>
                 </div>
-                <a>Home</a>
+
+                <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
             </div>

@@ -96,4 +96,5 @@ body, main, footer {
 #ai_filter_label{
   display: flex;
   align-items: center;
+  gap: 1vw;
 }

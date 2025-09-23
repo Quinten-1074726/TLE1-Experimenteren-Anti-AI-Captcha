@@ -8,10 +8,6 @@
     }   
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,7 +66,7 @@
           <input type="file" id="videoInput" name="video" accept="video/mp4,video/webm" hidden required>
           <div class="dz-inner">
             <p>Sleep of klik</p>
-            <small>MP4/WebM • max 200MB</small>
+            <small>MP4/WebM - max 200MB</small>
           </div>
           <div id="videoInfo" class="file-info" hidden></div>
         </label>

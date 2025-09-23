@@ -5,6 +5,6 @@
     <title>Line Captcha</title>
 </head>
 <body>
-    <script src="../javascript/line2.js"></script>
+    <script src="javascript/line2.js"></script>
 </body>
 </html>

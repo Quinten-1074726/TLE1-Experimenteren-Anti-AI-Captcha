@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 <head>
     <title>registreren</title>
     <?php include "../partials/defaultsettings.php" ?>
-    <link rel="stylesheet" href="../styling/crud.css">
+    <link rel="stylesheet" href="styling/crud.css">
 </head>
 <body>
 <?php include '../partials/header.php' ?>

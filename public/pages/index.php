@@ -28,7 +28,7 @@
             <div>
                 <a>AI Filter</a>
                 <a>Home</a>
-                <a href="trending.php">Trending</a>
+                <a href="../trending.php">Trending</a>
                 <a>Subcriptions</a>
             </div>
             <div>

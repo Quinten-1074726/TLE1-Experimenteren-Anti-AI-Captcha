@@ -2,7 +2,6 @@
 
 ?>
 
-
 <!doctype html>
 <html lang="en">
 
@@ -12,11 +11,6 @@
     <link rel="stylesheet" href="../styling/index.css">
     <script src="../javascript/index.js"></script>
 </head>
-
-
-
-
-
 
 <body>
 

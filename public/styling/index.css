@@ -2,13 +2,6 @@ a{
     text-decoration: none;
 }
 
-body,
-header,
-main,
-footer {
-    background-color: #666;
-}
-
 a:hover{
     color: #777;
 }
@@ -23,7 +16,7 @@ main {
     padding: 0 2vw;
     background-color: #333;
     border-radius: 14px;
-    margin: 0 0.5vw;
+    margin: 8px 5px;
 
 }
 
@@ -31,8 +24,7 @@ main {
     flex: 6;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    padding-left: 6vw;
-    padding-top: 5vh;
+    padding: 15px;
 }
 
 .left_side div {

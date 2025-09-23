@@ -57,9 +57,10 @@ if (isset($_POST['submit'])) {
 <?php include '../partials/header.php' ?>
 <section>
     <form action="" method="post">
-        <div class="column" style="width: 500px">
-            <p class="title">Registreer</p>
-            <div class="form-column"> <!-- Gebruikersnaam -->
+        <div class="column" style="width: 65vw; margin: 10vh auto">
+            <p class="title" style="font-size: var(--font-header); font-weight: bold">Registreer</p>
+            <p class="title" style="font-size: var(--font-paragraph)">Maak een account aan</p>
+            <div class="form-column" style="margin: 10px auto 5px auto"> <!-- Gebruikersnaam -->
                 <div>
                     <label class="label" for="userName">Gebruikersnaam</label>
                 </div>
@@ -71,7 +72,7 @@ if (isset($_POST['submit'])) {
                     <?= $errors['userName'] ?? '' ?>
                 </p>
             </div>
-            <div class="form-column"> <!-- Email -->
+            <div class="form-column" style="margin: 5px auto"> <!-- Email -->
                 <div>
                     <label class="label" for="email">E-mailadres</label>
                 </div>
@@ -83,7 +84,7 @@ if (isset($_POST['submit'])) {
                     <?= $errors['email'] ?? '' ?>
                 </p>
             </div>
-            <div class="form-column"> <!-- Wachtwoord -->
+            <div class="form-column" style="margin: 5px auto 10px auto"> <!-- Wachtwoord -->
                 <div>
                     <label class="label" for="password">Wachtwoord</label>
                 </div>

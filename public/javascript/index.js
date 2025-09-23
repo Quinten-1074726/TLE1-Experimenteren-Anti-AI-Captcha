@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(videoDiv)
 
         const videoImg = document.createElement("img")
-        videoImg.src = video.thumbnail || "https://picsum.photos/350/200?random=" + (Math.random() * 1000);
+        videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
+        videoImg.style.width = "350px";
+        videoImg.style.height = "200px";
         videoImg.classList = "videoClass";
         videoImg.style.borderRadius = "5px";
         videoDiv.appendChild(videoImg)

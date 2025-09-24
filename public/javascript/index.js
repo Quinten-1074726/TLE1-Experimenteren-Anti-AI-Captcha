@@ -11,13 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
         videoDiv.style.margin = "2vh 0.5vw";
         container.appendChild(videoDiv)
 
+
+        const videoImgContainer = document.createElement("a")
+        videoImgContainer.href = "./video.php?id=" + video.id;
+        videoDiv.appendChild(videoImgContainer)
+
         const videoImg = document.createElement("img")
         videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
         videoImg.style.width = "350px";
         videoImg.style.height = "200px";
         videoImg.classList = "videoClass";
         videoImg.style.borderRadius = "5px";
-        videoDiv.appendChild(videoImg)
+        videoImgContainer.appendChild(videoImg)
 
         const videoTitle = document.createElement("h2")
         videoTitle.innerText = video.video_title;

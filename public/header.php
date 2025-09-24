@@ -1,5 +1,8 @@
 <head>
     <!-- index.php styling -->
+    <!-- deze shit werkt niet bro ik heb ze allemaal toegevoegd -->
+    <link rel="stylesheet" href="styling/style.css">
+    <link rel="stylesheet" href="styling/index.css">
     <link rel="stylesheet" href="styling/header.css">
 </head>
 
@@ -16,7 +19,7 @@
             session_start();
         }
         if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
-            echo '<a href="pages/account.php" id="login_button">Account</a>';
+            echo '<a href="account.php" id="login_button">Account</a>';
         } else {
             echo '<a href="login.php" id="login_button">Login</a>';
         }

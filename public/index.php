@@ -82,10 +82,6 @@ if ($result) {
         </div>
 
     </main>
-    <footer>
-
-    </footer>
-
 </body>
 
 </html>

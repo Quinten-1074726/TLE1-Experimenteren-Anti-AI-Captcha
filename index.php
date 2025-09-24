@@ -49,7 +49,7 @@ if ($result) {
 
 <body>
 
-    <?php include "header.php" ?>
+    <?php include "partials/header.php" ?>
 
     <main>
         <!-- left -->

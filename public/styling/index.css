@@ -1,51 +1,54 @@
-a{
-    text-decoration: none;
+a {
+  text-decoration: none;
 }
 
-a:hover{
-    color: #777;
+a:hover {
+  color: #777;
 }
 
 main {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 5vh;
 }
 
 .left_side {
-    flex: 1;
-    padding: 0 2vw;
-    background-color: #333;
-    border-radius: 14px;
-    margin: 8px 5px;
+  flex: 1;
+  padding: 0 2vw;
+  background-color: #333;
+  border-radius: 14px;
+  margin: 8px 5px;
 
 }
 
 .right_side {
-    flex: 6;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding-left: 6vw;
-    padding-right: 1vw;
-    padding-top: 5vh;
+  flex: 6;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-left: 6vw;
+  padding-right: 1vw;
+  padding-top: 5vh;
 }
 
 .left_side div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2vh 0;
-    line-height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2vh 0;
+  line-height: 30px;
 }
 
-h2{
-    margin: 0.5vh 0;
+h2 {
+  margin: 0.5vh 0;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 30px;     /* total width of the switch */
-  height: 18px;    /* total height of the switch */
+  width: 30px;
+  /* total width of the switch */
+  height: 18px;
+  /* total height of the switch */
 }
 
 /* hide default checkbox */
@@ -65,15 +68,16 @@ h2{
   bottom: 0;
   background-color: #ccc;
   transition: .3s;
-  border-radius: 18px;        
+  border-radius: 18px;
 }
 
 .slider:before {
   content: "";
   position: absolute;
-  height: 14px;               /* knob size: a little smaller than track height */
+  height: 14px;
+  /* knob size: a little smaller than track height */
   width: 14px;
-  left: 2px;                 
+  left: 2px;
   bottom: 2px;
   background-color: white;
   transition: .3s;
@@ -81,33 +85,32 @@ h2{
 }
 
 /* checked state */
-input:checked + .slider {
+input:checked+.slider {
   background-color: #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(12px);
 }
 
-#ai_filter_label{
+#ai_filter_label {
   display: flex;
   align-items: center;
   gap: 1vw;
 }
 
-.flex_right_side
-{
+.flex_right_side {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.flex_right_side button{
+.flex_right_side button {
   background-color: rgb(92, 92, 255);
   padding: 2vh 2vw;
   border-radius: 4px;
 }
 
-.flex_right_side button:hover{
+.flex_right_side button:hover {
   background-color: rgb(188, 188, 255);
 }

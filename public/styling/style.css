@@ -1,6 +1,7 @@
 :root {
     --colors-background-light: #FFF;
     --colors-background-dark: #414141;
+    --colors-background-gray: #9F9F9F;
     --colors-main: #276BD2;
     --colors-content-light: #EAE9E9;
     --colors-content-dark: #2F2F2F;
@@ -129,4 +130,9 @@
     margin: 0;
     padding: 0;
     border: 0;
+}
+
+html {
+    background-color: var(--colors-background-dark);
+    color: var(--colors-text-dark);
 }

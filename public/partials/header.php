@@ -1,6 +1,6 @@
 <head>
     <!-- index.php styling -->
-    <link rel="stylesheet" href="../styling/header.css">
+    <link rel="stylesheet" href="styling/header.css">
 </head>
 
 <header>
@@ -11,6 +11,15 @@
             <input id="searchVideo" type="search" id="site-search" name="q" placeholder="Search…" required />
             <button id="searchSubmit" type="submit">🔍</button>
         </form>
-        <a href="#" id="login_button">login</a>
+        <?php
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
+            echo '<a href="pages/account.php" id="login_button">Account</a>';
+        } else {
+            echo '<a href="login.php" id="login_button">Login</a>';
+        }
+        ?>
     </nav>
 </header>

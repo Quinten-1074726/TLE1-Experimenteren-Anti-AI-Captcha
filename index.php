@@ -1,6 +1,28 @@
+
 <?php
+require_once 'database/connection.php';
+
+$sql = "SELECT * FROM videos ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$videos = []; // <-- array waar alles in gefetcht word
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $videos[] = $row; 
+    }
+} else {
+    die("Query failed: " . mysqli_error($db));
+}
 
 ?>
+
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos); 
+</script>
 
 
 <!doctype html>
@@ -12,7 +34,8 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="/styling/index.css">
+    <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/index.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,9 +57,18 @@
         <!-- left -->
         <div class="left_side">
             <div>
-                <a>AI Filter</a>
-                <a>Home</a>
-                <a href="pages/trending.php">Trending</a>
+                <div>
+                    <label id="ai_filter_label">
+                        AI Filter
+                        <span class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <a href="index.php">Home</a>
+                <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
                 <a href="/pages/upload.php" class="btn">Video uploaden</a>
             </div>
@@ -49,7 +81,7 @@
         </div>
         <!-- right -->
         <div class="right_side">
-        <!-- script -->
+            <!-- script -->
         </div>
 
     </main>

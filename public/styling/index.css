@@ -94,3 +94,20 @@ input:checked + .slider:before {
   align-items: center;
   gap: 1vw;
 }
+
+.flex_right_side
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex_right_side button{
+  background-color: rgb(92, 92, 255);
+  padding: 2vh 2vw;
+  border-radius: 4px;
+}
+
+.flex_right_side button:hover{
+  background-color: rgb(188, 188, 255);
+}

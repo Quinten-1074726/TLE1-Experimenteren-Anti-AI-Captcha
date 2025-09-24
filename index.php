@@ -1,6 +1,28 @@
+
 <?php
+require_once 'database/connection.php';
+
+$sql = "SELECT * FROM videos ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$videos = []; // <-- array waar alles in gefetcht word
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $videos[] = $row; 
+    }
+} else {
+    die("Query failed: " . mysqli_error($db));
+}
 
 ?>
+
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos); 
+</script>
 
 
 <!doctype html>
@@ -24,9 +46,6 @@
 </head>
 
 
-<a href="channel.php">channel</a>
-
-
 
 <body>
 
@@ -37,7 +56,7 @@
         <div class="left_side">
             <div>
                 <div>
-                    <label>
+                    <label id="ai_filter_label">
                         AI Filter
                         <span class="switch">
                             <input type="checkbox">

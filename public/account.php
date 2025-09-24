@@ -4,14 +4,8 @@
 //pfp
 //details voor edit pagina acc
 
-$host = '127.0.0.1';
-$username = 'root';
-$password = '';
-$database = 'tle1-2';
+require_once "./database/connection.php";
 
-$db = mysqli_connect($host, $username, $password, $database)
-or die('Error: ' . mysqli_connect_error());
-//
 $id = $_GET['id'];
 
 $query = "SELECT * FROM users WHERE id= $id";

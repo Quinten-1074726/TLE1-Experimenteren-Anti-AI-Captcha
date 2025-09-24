@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <form id="uploadForm"
         class="upload-card"
-        action="/api/upload.php"
+        action="public/api/upload.php"
         method="post"
         enctype="multipart/form-data">
     <div class="upload-grid">

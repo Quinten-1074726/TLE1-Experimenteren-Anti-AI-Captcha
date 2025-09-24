@@ -53,10 +53,12 @@
   gap: 22px;
 }
 @media (min-width: 980px){
-  .upload-grid{ grid-template-columns: 1.45fr .95fr; }
+  .upload-grid{
+    grid-template-columns: minmax(0, 1fr) 420px;
+    column-gap: 28px;
+    align-items: start;
+  }
 }
-.upload-col{ padding: 6px; }
-.upload-col-right{ display:flex; flex-direction:column; gap:2px; }
 
 /* velden */
 .upload-field{ margin-bottom: 16px; }
@@ -134,14 +136,22 @@
   background: var(--primary);
   transition: background .3s ease;
 }
+
 .upload-video-drop{
-  min-height: 450px;
+  min-height: 520px;       
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 20px 5px;
-  max-width: 380px;
+  padding: 20px 12px;
+  width: 100%;             
+  max-width: none;         
 }
+
+.upload-grid { align-items: stretch; }      
+.upload-video-drop { height: 100%; }
+.upload-col-right { padding-left: 6px; }
+.upload-card .upload-grid { padding: 24px; }
+
 .upload-dropzone.dragover{
   border-color: var(--primary);
   background: rgba(47,109,246,.08);

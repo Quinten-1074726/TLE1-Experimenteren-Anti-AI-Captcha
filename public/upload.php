@@ -1,6 +1,6 @@
 <?php
 /** @var mysqli $db */
-require_once "../database/connection.php";
+require_once "./database/connection.php";
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uploaden</title>
 
-    <?php include "../partials/defaultsettings.php"; ?>
+    <?php include "defaultsettings.php"; ?>
 
     <link rel="stylesheet" href="/styling/upload.css?v=2">
 </head>
 <body class= "upload-page">
-<?php include "../partials/header.php"; ?>
+<?php include "header.php"; ?>
 
 <section class="upload-wrap">
   <div class="upload-title">Video uploaden</div>

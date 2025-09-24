@@ -51,7 +51,7 @@ if ($result) {
 
 <body>
 
-    <?php include "partials/header.php" ?>
+    <?php include "header.php" ?>
 
     <main>
         <!-- left -->
@@ -70,7 +70,7 @@ if ($result) {
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
-                <a href="/pages/upload.php" class="btn">Video uploaden</a>
+                <a href="upload.php" class="btn">Video uploaden</a>
             </div>
             <div>
                 <!-- channels here -->

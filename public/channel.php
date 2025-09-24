@@ -15,7 +15,7 @@
 </head>
 <body id="body">
 
-    <?php include "partials/header.php" ?>
+    <?php include "header.php" ?>
 <div class="divContainer">
 
     <div class="left_side">

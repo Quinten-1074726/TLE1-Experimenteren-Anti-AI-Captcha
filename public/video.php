@@ -9,7 +9,7 @@ $videoID = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!isset($videoID)) {
     header("Location: ./index.php");
     exit;
-} 
+}
 
 $sql = "SELECT * FROM videos WHERE id = $videoID";
 $result = mysqli_query($db, $sql);
@@ -19,9 +19,7 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
-
-echo $video['file_path']
-
+    echo $video['file_path']
 ?>
 
 
@@ -37,7 +35,9 @@ echo $video['file_path']
 <body>
     <?php include "header.php" ?>
     <main>
-        
+        <video width="640" height="360" controls>
+            <source src="<?= $video['file_path']?>" type="video/mp4">
+        </video>
     </main>
 </body>
 

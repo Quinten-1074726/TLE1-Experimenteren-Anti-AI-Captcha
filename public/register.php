@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST['submit'])) {
     /** @var mysqli $db */
-    require_once "../database/connection.php";
+    require_once "./database/connection.php";
     $errors = [];
     if (isset($_POST['submit'])) {
         $userName = $_POST['userName'];

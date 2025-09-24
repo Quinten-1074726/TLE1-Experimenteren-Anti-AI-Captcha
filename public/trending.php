@@ -29,7 +29,7 @@
 
 <body>
 
-    <?php include "../partials/header.php" ?>
+    <?php include "header.php" ?>
 
     <main>
         <!-- left -->

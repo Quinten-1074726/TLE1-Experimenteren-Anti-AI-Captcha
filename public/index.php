@@ -1,4 +1,16 @@
 <?php
+$host = '127.0.0.1';
+$username = 'root';
+$password = '';
+$database = 'tle1';
+
+$db = mysqli_connect($host, $username, $password, $database)
+        or die('Error: ' . mysqli_connect_error());
+
+$query = "SELECT * FROM users";
+
+$result = mysqli_query($db, $query)
+        or die('Error ' . mysqli_error($db) . ' with query ' . $query);
 
 ?>
 
@@ -29,7 +41,7 @@
 
 <body>
 
-    <?php include "partials/header.php" ?>
+    <?php include "header.php" ?>
 
     <main>
         <!-- left -->
@@ -40,7 +52,17 @@
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
             </div>
-            <div>
+            <a href="trending.php">Trending</a>
+            <a>Subcriptions</a>
+                            <a href="login.php">login</a>
+                            <a href="register.php">register/a>
+
+
+                                    <?php $user = mysqli_fetch_assoc($result);
+                                    ?>
+                                    <a href="account.php?id=<?= $user['id'] ?>">Account</a>
+
+                <div>
                 <!-- channels here -->
                 <a>channel 1</a>
                 <a>channel 123</a>

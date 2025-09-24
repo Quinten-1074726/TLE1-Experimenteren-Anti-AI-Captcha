@@ -55,7 +55,7 @@ if ($result) {
         rel="stylesheet">
 </head>
 
-
+*
 <a href="channel.php">channel</a>
 
 

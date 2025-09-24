@@ -89,10 +89,6 @@ input:checked + .slider:before {
   transform: translateX(12px);
 }
 
-body, main, footer {
-    background-color: #666;
-}
-
 #ai_filter_label{
   display: flex;
   align-items: center;

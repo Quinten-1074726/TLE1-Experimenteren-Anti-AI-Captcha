@@ -1,18 +1,27 @@
 <?php
-$host = '127.0.0.1';
-$username = 'root';
-$password = '';
-$database = 'tle1';
+require_once 'database/connection.php';
 
-$db = mysqli_connect($host, $username, $password, $database)
-        or die('Error: ' . mysqli_connect_error());
+$sql = "SELECT * FROM videos ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
 
-$query = "SELECT * FROM users";
+$videos = []; // <-- array waar alles in gefetcht word
 
-$result = mysqli_query($db, $query)
-        or die('Error ' . mysqli_error($db) . ' with query ' . $query);
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $videos[] = $row;
+    }
+} else {
+    die("Query failed: " . mysqli_error($db));
+}
 
 ?>
+
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos);
+</script>
 
 
 <!doctype html>
@@ -25,6 +34,7 @@ $result = mysqli_query($db, $query)
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/index.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,8 +57,17 @@ $result = mysqli_query($db, $query)
         <!-- left -->
         <div class="left_side">
             <div>
-                <a>AI Filter</a>
-                <a>Home</a>
+                <div>
+                    <label id="ai_filter_label">
+                        AI Filter
+                        <span class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
             </div>

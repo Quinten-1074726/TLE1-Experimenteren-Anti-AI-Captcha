@@ -24,7 +24,7 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
-
+//iets
 ?>
 
 <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->

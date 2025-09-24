@@ -329,7 +329,7 @@ function analyzeDrawing() {
                 resultBox.textContent = "Captcha complete! Redirecting...";
                 resultBox.style.color = "#0077ff";
                 setTimeout(() => {
-                    const redirect = params.get('redirect') || '../pages/index.php';
+                    const redirect = params.get('redirect') || 'index.php';
                     window.location.href = redirect;
                 }, 1200);
             }, 1000);

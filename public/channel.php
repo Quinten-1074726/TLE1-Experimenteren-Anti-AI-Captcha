@@ -44,16 +44,19 @@
 <section id="right">
     <div class="rightDiv">
         <div class="banner">
-            <img src="images/">
+            <img class="imageBanner" src="images/banner.png">
         </div>
         <div class="profile">
-            <div class="profilePicture">
-<img src="/">
-            </div>
-            <div class="channelDetails">
-                <div class="channelName">
-                    <p>Channel name</p>
+            <div style="display: flex; flex-direction: row">
+                <div class="profilePicture">
+                    <img style="scale: 1.3" src="images/profile.png">
                 </div>
+                <div class="channelDetails">
+                    <div class="channelName">
+                        <h2>Channel name</h2>
+                    </div>
+                </div>
+            </div>
                 <div class="amounts">
                     <p>
                         subscribercount

@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const videosPerPage = 9; // 9 videos per keer
     let currentIndex = 0;
 
+
     function displayVideos() {
         const nextVideos = videos.slice(currentIndex, currentIndex + videosPerPage);
 
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const videoImgContainer = document.createElement("a")
             videoImgContainer.href = "./video.php?id=" + video.id;
+            console.log(video.file_path)
             videoDiv.appendChild(videoImgContainer)
 
             const videoImg = document.createElement("img")

@@ -46,8 +46,6 @@ if ($result) {
 </head>
 
 
-<a href="channel.php">channel</a>
-
 
 <body>
 
@@ -70,6 +68,7 @@ if ($result) {
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
+                <a href="channel.php">My channel</a>
                 <a href="upload.php" class="btn">Video uploaden</a>
             </div>
             <div>
@@ -85,6 +84,10 @@ if ($result) {
         </div>
 
     </main>
+    <footer>
+
+    </footer>
+
 </body>
 
 </html>

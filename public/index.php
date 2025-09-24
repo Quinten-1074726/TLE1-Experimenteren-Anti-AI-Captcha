@@ -1,4 +1,3 @@
-
 <?php
 require_once 'database/connection.php';
 
@@ -9,7 +8,7 @@ $videos = []; // <-- array waar alles in gefetcht word
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
-        $videos[] = $row; 
+        $videos[] = $row;
     }
 } else {
     die("Query failed: " . mysqli_error($db));
@@ -79,8 +78,10 @@ if ($result) {
             </div>
         </div>
         <!-- right -->
-        <div class="right_side">
-            <!-- script -->
+        <div class="flex_right_side">
+            <div class="right_side">
+                <!-- script -->
+            </div>
         </div>
 
     </main>

@@ -14,7 +14,7 @@ or die('Error: ' . mysqli_connect_error());
 //
 $id = $_GET['id'];
 
-$query = "SELECT * FROM users WHERE id= $id";
+$query = "SELECT * FROM users WHERE id = $id";
 
 $result = mysqli_query($db, $query);
 $users = mysqli_fetch_assoc($result);

@@ -1,15 +1,5 @@
 <?php
-global $query;
-$host = "127.0.0.1";
-$database = "tle1-2";
-$user = "root";
-$password = "";
-
-$db = mysqli_connect($host, $user, $password, $database)
-or die("Error: " . mysqli_connect_error());
-
-// required when working with sessions
-session_start();
+    require_once "./database/connection.php";
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
@@ -41,7 +31,7 @@ if (isset($_POST['submit'])) {
         $query = "SELECT * FROM users WHERE email= '$email'";
         $result = mysqli_query($db, $query);
         $rows = mysqli_num_rows($result);
-print_r($result);
+
         //ALS er 1 login is toegevoegd
         if ($rows === 1) {
             $user = mysqli_fetch_assoc($result);

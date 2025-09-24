@@ -19,24 +19,25 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
-    echo $video['file_path']
+
+echo $video['file_path'];
+
 ?>
-
-
 
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styling/video.css">
     <title>Document</title>
 </head>
 
 <body>
     <?php include "header.php" ?>
-    <main>
-        <video width="640" height="360" controls>
-            <source src="<?= $video['file_path']?>" type="video/mp4">
+    <main id="">
+        <video id="video" width="940" height="560" controls>
+            <source src="<?= htmlspecialchars($video['file_path']) ?>" type="video/mp4">
         </video>
     </main>
 </body>

@@ -1,3 +1,7 @@
+.upload-col-left input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+}
 :root{
   --bg:#101214;
   --surface:#0d56c3;
@@ -32,6 +36,8 @@
 
 /* hoofdpaneel */
 .upload-card{
+  display: flex;
+  flex-direction: column;
   background: var(--primary);
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -54,10 +60,29 @@
 }
 @media (min-width: 980px){
   .upload-grid{
-    grid-template-columns: minmax(0, 1fr) 420px;
-    column-gap: 28px;
+    grid-template-columns: 2.2fr 1fr;
+    column-gap: 40px;
     align-items: start;
   }
+}
+
+/* Nieuwe layout: linker- en rechtervak, upload-knop onderaan */
+.upload-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-right: 12px;
+}
+.upload-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 12px;
+}
+.upload-actions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
 }
 
 /* velden */
@@ -88,7 +113,13 @@
 }
 .upload-wrap textarea{
   min-height: 190px;
-  resize: vertical;
+  resize: none;
+}
+
+/* Beschrijving veld in linker kolom even breed als andere velden */
+.upload-col-left textarea {
+  width: 100%;
+  box-sizing: border-box;
 }
 .upload-wrap input:focus,
 .upload-wrap textarea:focus,
@@ -134,7 +165,7 @@
 }
 .upload-dropzone:hover{
   background: var(--primary);
-  transition: background .3s ease;
+  transition: background .1s ease;
 }
 
 .upload-video-drop{
@@ -142,15 +173,20 @@
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 20px 12px;
-  width: 100%;             
+  padding: 20px 12px;            
   max-width: none;         
 }
 
-.upload-grid { align-items: stretch; }      
-.upload-video-drop { height: 100%; }
+.upload-col-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-grid { align-items: stretch; }
 .upload-col-right { padding-left: 6px; }
 .upload-card .upload-grid { padding: 24px; }
+
+/* Zorg dat linker kolom en velden altijd even breed en mooi gecentreerd zijn */
 
 .upload-dropzone.dragover{
   border-color: var(--primary);
@@ -171,15 +207,17 @@
   margin-top: 10px;
 }
 
-.upload-actions{ margin-top: 16px; display:flex; justify-content:flex-end; }
+.upload-actions{ margin-top: 16px; display:flex;}
 .upload-btn-primary{
   background: var(--primary);
   color:#fff;
   border:none;
   padding: 10px 18px;
   border-radius: 12px;
-  font-weight: 800;
+  font-size: var(--font-header3);
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.05s;
 }
 .upload-btn-primary:hover{ background: var(--primary-900); }
 

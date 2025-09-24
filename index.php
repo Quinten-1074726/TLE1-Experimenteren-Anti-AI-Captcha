@@ -1,3 +1,4 @@
+
 <?php
 require_once 'database/connection.php';
 
@@ -20,7 +21,7 @@ if ($result) {
 <script>
     // json flags om speciale characters niet code te laten breken
     const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
-    console.log(videos);
+    console.log(videos); 
 </script>
 
 
@@ -48,7 +49,6 @@ if ($result) {
 <a href="channel.php">channel</a>
 
 
-
 <body>
 
     <?php include "header.php" ?>
@@ -70,18 +70,10 @@ if ($result) {
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
+                <a href="channel.php">My channel</a>
+                <a href="upload.php" class="btn">Video uploaden</a>
             </div>
-            <a href="trending.php">Trending</a>
-            <a>Subcriptions</a>
-                            <a href="login.php">login</a>
-                            <a href="register.php">register/a>
-
-
-                                    <?php $user = mysqli_fetch_assoc($result);
-                                    ?>
-                                    <a href="account.php?id=<?= $user['id'] ?>">Account</a>
-
-                <div>
+            <div>
                 <!-- channels here -->
                 <a>channel 1</a>
                 <a>channel 123</a>
@@ -89,15 +81,13 @@ if ($result) {
             </div>
         </div>
         <!-- right -->
-        <div class="right_side">
-        <!-- script -->
+        <div class="flex_right_side">
+            <div class="right_side">
+                <!-- script -->
+            </div>
         </div>
 
     </main>
-    <footer>
-
-    </footer>
-
 </body>
 
 </html>

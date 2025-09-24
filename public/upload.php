@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include "defaultsettings.php"; ?>
 
-    <link rel="stylesheet" href="/styling/upload.css?v=2">
+    <link rel="stylesheet" href="styling/upload.css?v=2">
 </head>
 <body class= "upload-page">
 <?php include "header.php"; ?>
@@ -25,24 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <form id="uploadForm"
         class="upload-card"
-        action="/api/upload.php"
+        action="public/api/upload.php"
         method="post"
         enctype="multipart/form-data">
-
     <div class="upload-grid">
       <!-- LINKERKOLOM -->
       <div class="upload-col upload-col-left">
-
-        <label class="upload-field">
+        <div class="upload-field">
           <span class="upload-label upload-strong">Titel:</span>
           <input type="text" name="title" required>
-        </label>
-
-        <label class="upload-field">
+        </div>
+        <div class="upload-field">
           <span class="upload-label upload-strong">Beschrijving:</span>
           <textarea name="description" rows="7" required></textarea>
-        </label>
-
+        </div>
         <div class="upload-field">
           <span class="upload-label upload-strong">Thumbnail:</span>
           <div class="upload-thumb-row">
@@ -58,21 +54,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="upload-thumb-slot"></div>
           </div>
         </div>
-
-        <label class="upload-field upload-compact">
+        <div class="upload-field">
           <span class="upload-label">Zichtbaarheid</span>
           <select name="visibility">
             <option value="public">Openbaar</option>
             <option value="unlisted">Verborgen</option>
             <option value="private">Privé</option>
           </select>
-        </label>
+        </div>
       </div>
-
       <!-- RECHTERKOLOM -->
       <div class="upload-col upload-col-right">
         <span class="upload-label upload-strong">Upload hier je video</span>
-
         <label class="upload-video-drop upload-dropzone" id="videoDrop" tabindex="0">
           <input type="file" id="videoInput" name="video" accept="video/mp4,video/webm" hidden required>
           <div class="upload-dz-inner">
@@ -83,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </label>
       </div>
     </div>
-
     <div class="upload-actions">
       <button type="submit" class="upload-btn-primary">Uploaden</button>
     </div>

@@ -34,5 +34,8 @@ mysqli_close($db);
 <h1>Account</h1>
 <h2><?= $users['username'] ?></h2>
 <h2><?= $users['email'] ?></h2>
+<a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
+
+<a href="index.php?id=<?= $users['id'] ?>">&laquo; Go back to homepage</a>
 </body>
 </html>

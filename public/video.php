@@ -19,6 +19,9 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
+
+echo $video['file_path'];
+
 ?>
 
 <html lang="en">
@@ -32,9 +35,9 @@ if ($result) {
 
 <body>
     <?php include "header.php" ?>
-    <main id="videoPageMain">
+    <main id="">
         <video id="video" width="940" height="560" controls>
-            <source src="uploads/user-videos/<?= htmlspecialchars($video['file_path']) ?>" type="video/mp4">
+            <source src="<?= htmlspecialchars($video['file_path']) ?>" type="video/mp4">
         </video>
     </main>
 </body>

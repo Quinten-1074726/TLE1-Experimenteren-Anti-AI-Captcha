@@ -2,6 +2,7 @@
   --bg:#101214;
   --surface:#0d56c3;
   --surface-2:#181818;
+  --border:#2b2f36;           /* was missing */
   --muted:#a0a8b3;
   --text:#eef2f6;
   --primary:#2F2F2F;
@@ -9,6 +10,7 @@
   --shadow: 0 14px 32px rgba(0,0,0,.35);
 }
 
+/* container */
 .upload-wrap{
   max-width: 1300px;
   margin: 18px auto 28px;
@@ -16,7 +18,8 @@
   color: var(--text);
 }
 
-.title-bar{
+/* blauwe balk */
+.upload-title{
   background: var(--primary);
   color: #fff;
   font-weight: 800;
@@ -27,7 +30,7 @@
   margin: 14px 0 18px;
 }
 
-
+/* hoofdpaneel */
 .upload-card{
   background: var(--primary);
   border: 1px solid var(--border);
@@ -36,40 +39,43 @@
   box-shadow: var(--shadow);
 }
 
-.upload-card .grid{
+/* binnenpaneel */
+.upload-card .upload-grid{
   background: var(--surface-2);
   border: 1px solid #12161b;
   border-radius: 16px;
   padding: 20px;
 }
 
-.grid{
+.upload-grid{
   display: grid;
   grid-template-columns: 1fr;
   gap: 22px;
 }
 @media (min-width: 980px){
-  .grid{ grid-template-columns: 1.45fr .95fr; }
+  .upload-grid{ grid-template-columns: 1.45fr .95fr; }
 }
-.col{ padding: 6px; }
-.col-right{ display:flex; flex-direction:column; gap:2px; }
+.upload-col{ padding: 6px; }
+.upload-col-right{ display:flex; flex-direction:column; gap:2px; }
 
-
-.field{ margin-bottom: 16px; }
-.label{
+/* velden */
+.upload-field{ margin-bottom: 16px; }
+.upload-label{
   display:block;
   color:#cfd6df;
   font-size: 13px;
   margin: 4px 0 8px;
 }
-.label.strong{
+.upload-strong{
   color:#fff;
   font-weight: 800;
-  font-size: 20px;         
+  font-size: 20px;
 }
 
-
-input[type="text"], textarea, select{
+/* inputs */
+.upload-wrap input[type="text"],
+.upload-wrap textarea,
+.upload-wrap select{
   width: 100%;
   background: #414141;
   color: var(--text);
@@ -78,33 +84,36 @@ input[type="text"], textarea, select{
   padding: 12px 14px;
   outline: none;
 }
-textarea{
-  min-height: 190px; 
+.upload-wrap textarea{
+  min-height: 190px;
   resize: vertical;
 }
-input:focus, textarea:focus, select:focus{
+.upload-wrap input:focus,
+.upload-wrap textarea:focus,
+.upload-wrap select:focus{
   border-color: var(--primary);
 }
 
-.thumb-row{
+/* thumbnails */
+.upload-thumb-row{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-.thumb-slot{
+.upload-thumb-slot{
   height: 96px;
-  background: #626262;      
+  background: #626262;
   border: 1px solid var(--border);
   border-radius: 12px;
 }
-.thumb-slot.is-drop{
+.upload-thumb-slot.is-drop{
   background: #414141;
   display: grid;
   place-items: center;
   position: relative;
   cursor: pointer;
 }
-.thumb-slot.is-drop span{
+.upload-thumb-slot.is-drop span{
   color: var(--muted);
   font-size: 12px;
 }
@@ -115,32 +124,33 @@ input:focus, textarea:focus, select:focus{
   border-radius: 12px;
 }
 
-.dropzone{
+/* video drop */
+.upload-dropzone{
   border: 2px dashed #626262;
   border-radius: 16px;
   background: #414141;
 }
-
-.dropzone:hover{
+.upload-dropzone:hover{
   background: var(--primary);
-  transition: background 0.3s ease;
+  transition: background .3s ease;
 }
-.video-drop{
-  min-height: 450px;     
-  display: grid; place-items: center;
+.upload-video-drop{
+  min-height: 450px;
+  display: grid;
+  place-items: center;
   text-align: center;
-  padding: 20px;
-  padding-left: 5px;
+  padding: 20px 5px;
   max-width: 380px;
 }
-.dropzone.dragover{
+.upload-dropzone.dragover{
   border-color: var(--primary);
   background: rgba(47,109,246,.08);
 }
-.dz-inner p{ margin: 0; font-weight: 800; font-size: 20px; }
-.dz-inner small{ color: var(--muted); }
+.upload-dz-inner p{ margin: 0; font-weight: 800; font-size: 20px; }
+.upload-dz-inner small{ color: var(--muted); }
 
-.file-info{
+/* info + actions */
+.upload-file-info{
   width: 100%;
   font-size: 13px;
   color: var(--muted);
@@ -151,8 +161,8 @@ input:focus, textarea:focus, select:focus{
   margin-top: 10px;
 }
 
-.actions{ margin-top: 16px; display:flex; justify-content:flex-end; }
-.btn-primary{
+.upload-actions{ margin-top: 16px; display:flex; justify-content:flex-end; }
+.upload-btn-primary{
   background: var(--primary);
   color:#fff;
   border:none;
@@ -161,7 +171,11 @@ input:focus, textarea:focus, select:focus{
   font-weight: 800;
   cursor: pointer;
 }
-.btn-primary:hover{ background: var(--primary-900); }
+.upload-btn-primary:hover{ background: var(--primary-900); }
 
+.upload-input-error{ border-color:#ef4444 !important; }
 
-.input-error{ border-color:#ef4444 !important; }
+body.upload-page {
+  background: var(--colors-background-dark);
+  color: var(--colors-text-dark);
+}

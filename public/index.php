@@ -1201,6 +1201,7 @@ if ($result) {
                 <a>Subcriptions</a>
                 <a href="channel.php">My channel</a>
                 <a href="upload.php" class="btn">Video uploaden</a>
+                <a href="history.php" class="btn">history</a>
 
                 <?php if (isset($_SESSION['loggedInUser'])): ?>
                     <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>

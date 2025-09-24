@@ -1,4 +1,22 @@
 <?php
+global $query;
+$host = "127.0.0.1";
+$database = "tle1-2";
+$user = "root";
+$password = "";
+
+$db = mysqli_connect($host, $user, $password, $database)
+or die("Error: " . mysqli_connect_error());
+
+// required when working with sessions
+session_start();
+
+// Redirect if already logged in
+if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
+    $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
+    header("Location: $redirectUrl");
+    exit;
+}
 ?>
 
 <!doctype html>

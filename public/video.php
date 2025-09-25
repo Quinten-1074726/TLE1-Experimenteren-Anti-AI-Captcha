@@ -1,5 +1,6 @@
 <?php
 
+
 require_once 'database/connection.php';
 
 $videoID = $_GET['id'];
@@ -19,6 +20,9 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
+
+echo $video['file_path'];
+
 ?>
 
 <html lang="en">
@@ -32,6 +36,7 @@ if ($result) {
 <body>
     <?php include "header.php" ?>
     <main id="">
+        <div id="flexDezeShitNaarBeneden">
         <video id="video" width="940" height="560" controls>
             <?php
             // Bepaal het juiste pad naar de video
@@ -43,6 +48,8 @@ if ($result) {
             ?>
             <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
         </video>
+        <h2> <?= htmlspecialchars($video['video_title']) ?></h2>
+        </div>
     </main>
 </body>
 

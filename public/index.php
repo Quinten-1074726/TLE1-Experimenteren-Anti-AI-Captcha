@@ -2,6 +2,17 @@
 <?php
 require_once 'database/connection.php';
 
+/** @var mysqli $db */
+
+$sql = "SELECT * FROM videos ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$query = "SELECT * FROM users";
+
+$userResult = mysqli_query($db, $query)
+    or die('Error ' . mysqli_error($db) . ' with query ' . $query);
+
+
 $sql = "SELECT * FROM videos ORDER BY id DESC";
 $result = mysqli_query($db, $sql);
 
@@ -14,6 +25,13 @@ if ($result) {
     die("Query failed: " . mysqli_error($db));
 }
 ?>
+
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos);
+</script>
 
 
 <!doctype html>
@@ -44,7 +62,6 @@ if ($result) {
 </head>
 
 
-
 <body>
 
     <?php include "header.php" ?>
@@ -67,7 +84,17 @@ if ($result) {
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
                 <a href="channel.php">My channel</a>
-                <a href="upload.php" class="btn">Video uploaden</a>
+
+                <?php if (isset($_SESSION['loggedInUser'])): ?>
+                    <a href="upload.php" class="btn">Video uploaden</a>
+                    <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
+                    <a href="logout.php">Logout</a>
+                <?php else: ?>
+                    <a href="login.php">Login</a>
+                    <a href="register.php">Register</a>
+                <?php endif; ?>
+
+
             </div>
             <div>
                 <!-- channels here -->

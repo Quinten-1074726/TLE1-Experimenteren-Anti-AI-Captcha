@@ -3,6 +3,11 @@
 require_once "./database/connection.php";
 $errors = [];
 
+
+//eerst captcha checken en dan form opsturen
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>

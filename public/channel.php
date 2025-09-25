@@ -37,7 +37,8 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="styling/channel.css">
-    <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="styling/index.css" >
+    <link rel="stylesheet" href="styling/style.css" >
     <script src="javascript/channel.js" defer></script>
     <title>Channel page</title>
 </head>

@@ -19,17 +19,13 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
-
-echo $video['file_path'];
-
 ?>
 
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styling/video.css">
+    <?php include "defaultsettings.php" ?>
+    <link rel="stylesheet" href="styling/upload.css">
     <title>Document</title>
 </head>
 
@@ -37,7 +33,15 @@ echo $video['file_path'];
     <?php include "header.php" ?>
     <main id="">
         <video id="video" width="940" height="560" controls>
-            <source src="<?= htmlspecialchars($video['file_path']) ?>" type="video/mp4">
+            <?php
+            // Bepaal het juiste pad naar de video
+            $filePath = $video['file_path'];
+            // Als het pad niet begint met 'uploads/', voeg dan de map toe
+            if (strpos($filePath, 'uploads/') !== 0 && strpos($filePath, 'http') !== 0) {
+                $filePath = 'uploads/user-videos/' . $filePath;
+            }
+            ?>
+            <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
         </video>
     </main>
 </body>

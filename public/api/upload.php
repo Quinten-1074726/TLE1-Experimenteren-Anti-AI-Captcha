@@ -1,21 +1,43 @@
 <?php
 // api/upload.php
-require_once __DIR__ . '/../public/database/connection.php';
+require_once __DIR__ . '/../database/connection.php';
 
 // Zorg dat de uploads map bestaat
-define('VIDEO_UPLOAD_DIR', __DIR__ . '/../public/uploads/user-videos/');
-define('THUMB_UPLOAD_DIR', __DIR__ . '/../public/uploads/user-thumbnails/');
+define('VIDEO_UPLOAD_DIR', __DIR__ . '/../uploads/user-videos/');
+define('THUMB_UPLOAD_DIR', __DIR__ . '/../uploads/user-thumbnails/');
 if (!is_dir(VIDEO_UPLOAD_DIR)) mkdir(VIDEO_UPLOAD_DIR, 0777, true);
 if (!is_dir(THUMB_UPLOAD_DIR)) mkdir(THUMB_UPLOAD_DIR, 0777, true);
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $visibility = $_POST['visibility'] ?? 'public';
-    $user_id = 1; // Pas aan: haal uit sessie als je login hebt
-    $channel_name = 'test'; // Pas aan indien nodig
+    // Haal user_id uit sessie
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+    } elseif (isset($_SESSION['loggedInUser']['id'])) {
+        $user_id = $_SESSION['loggedInUser']['id'];
+    } else {
+        $errors[] = 'Je moet ingelogd zijn om te uploaden.';
+        $errors[] = '<pre>SESSION: ' . print_r($_SESSION, true) . '</pre>';
+        $user_id = null;
+    }
+    // Haal channel_name uit de database op basis van user_id
+    if ($user_id !== null) {
+        $stmtUser = $db->prepare('SELECT username FROM users WHERE id = ?');
+        $stmtUser->bind_param('i', $user_id);
+        $stmtUser->execute();
+        $stmtUser->bind_result($channel_name);
+        if (!$stmtUser->fetch()) {
+            $channel_name = 'onbekend';
+        }
+        $stmtUser->close();
+    } else {
+        $channel_name = 'onbekend';
+    }
     $date = date('Y-m-d');
 
     // --- VIDEO ---
@@ -46,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (empty($errors)) {
+    if (empty($errors) && $user_id !== null) {
         // Video opslaan
         $videoExt = pathinfo($video['name'], PATHINFO_EXTENSION);
         $videoFileName = uniqid('video_', true) . '.' . $videoExt;
@@ -59,14 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $thumbPath = THUMB_UPLOAD_DIR . $thumbFileName;
         move_uploaded_file($thumb['tmp_name'], $thumbPath);
 
-        // Thumbnail als blob inlezen
-        $thumbBlob = file_get_contents($thumbPath);
-
-        // In database zetten
+        // In database zetten: sla alleen de bestandsnaam op
         $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssisss', $title, $description, $thumbBlob, $user_id, $date, $videoFileName, $channel_name);
+        $stmt->bind_param('sssisss', $title, $description, $thumbFileName, $user_id, $date, $videoFileName, $channel_name);
         if ($stmt->execute()) {
-            header('Location: /upload.php?success=1');
+            header('Location: ../index.php');
             exit;
         } else {
             $errors[] = 'Databasefout: ' . $db->error;

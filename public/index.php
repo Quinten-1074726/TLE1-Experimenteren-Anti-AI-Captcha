@@ -1,11 +1,11 @@
+
 <?php
 require_once 'database/connection.php';
 
 $sql = "SELECT * FROM videos ORDER BY id DESC";
 $result = mysqli_query($db, $sql);
 
-$videos = []; // <-- array waar alles in gefetcht word
-
+$videos = [];
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $videos[] = $row;
@@ -13,19 +13,12 @@ if ($result) {
 } else {
     die("Query failed: " . mysqli_error($db));
 }
-
 ?>
-
-<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
-<script>
-    // json flags om speciale characters niet code te laten breken
-    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
-    console.log(videos); 
-</script>
 
 
 <!doctype html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -35,12 +28,18 @@ if ($result) {
     <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
     <link rel="stylesheet" href="styling/style.css">
+    <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+    <script>
+        // json flags om speciale characters niet code te laten breken
+        const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+        console.log(videos);
+    </script>
     <script src="javascript/index.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
         rel="stylesheet">
 </head>
 
@@ -78,10 +77,9 @@ if ($result) {
             </div>
         </div>
         <!-- right -->
+
         <div class="flex_right_side">
-            <div class="right_side">
-                <!-- script -->
-            </div>
+            <div class="right_side"></div>
         </div>
 
     </main>

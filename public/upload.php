@@ -1,5 +1,6 @@
 <?php
 /** @var mysqli $db */
+session_start();
 require_once "./database/connection.php";
 $errors = [];
 
@@ -53,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span>Klik of sleep</span>
               <img id="thumbPreview" alt="" hidden>
             </label>
-            <!-- Dummy slots voor de look -->
-            <div class="upload-thumb-slot"></div>
-            <div class="upload-thumb-slot"></div>
-            <div class="upload-thumb-slot"></div>
+            <!-- Dummy slots voor video previews -->
+            <div class="upload-thumb-slot"><img id="videoPreview1" class="video-preview-thumb" alt="Preview 1" style="width:100%;height:auto;display:none;"></div>
+            <div class="upload-thumb-slot"><img id="videoPreview2" class="video-preview-thumb" alt="Preview 2" style="width:100%;height:auto;display:none;"></div>
+            <div class="upload-thumb-slot"><img id="videoPreview3" class="video-preview-thumb" alt="Preview 3" style="width:100%;height:auto;display:none;"></div>
           </div>
         </div>
         <div class="upload-field">
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="file" id="videoInput" name="video" accept="video/mp4,video/webm" hidden required>
           <div class="upload-dz-inner">
             <p>Sleep of klik</p>
-            <small>MP4/WebM - max 200MB</small>
+            <small>MP4/WebM - max 8MB</small>
           </div>
           <div id="videoInfo" class="upload-file-info" hidden></div>
         </label>
@@ -87,6 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </form>
 </section>
 
-<script src="/assets/js/uploadpage.js" defer></script>
+</section>
+
+<script src="javascript/upload.js" defer></script>
 </body>
 </html>

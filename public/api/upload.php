@@ -1,5 +1,6 @@
 <?php
 // api/upload.php
+session_start();
 require_once __DIR__ . '/../database/connection.php';
 
 // Zorg dat de uploads map bestaat
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_SESSION['loggedInUser']['id'];
     } else {
         $errors[] = 'Je moet ingelogd zijn om te uploaden.';
-        $errors[] = '<pre>SESSION: ' . print_r($_SESSION, true) . '</pre>';
+    // SESSION debug output verwijderd voor gebruikers
         $user_id = null;
     }
     // Haal channel_name uit de database op basis van user_id
@@ -49,8 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!in_array($video['type'], $allowedTypes)) {
             $errors[] = 'Alleen MP4 of WebM toegestaan.';
         }
-        if ($video['size'] > 200 * 1024 * 1024) {
-            $errors[] = 'Video is te groot (max 200MB).';
+        if ($video['size'] > 8 * 1024 * 1024) {
+            $errors[] = 'Video is te groot (max 8MB).';
         }
     }
 

@@ -2,12 +2,31 @@
     <nav>
     <h1><a href="index.php">StreamHub</a></h1>
 
-    <form method="get" class="search-form" id="global-search-form"> 
-        <label for="site-search" hidden>Search</label>
-        <input id="site-search" type="search" name="s"
-                placeholder="Search…" value="<?= htmlspecialchars($_GET['s'] ?? '') ?>">
-        <button id="searchSubmit" type="submit">🔍</button>
+    <form method="get" class="search-form" id="global-search-form" role="search">
+        <label for="site-search" class="sr-only">Zoeken</label>
+
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+
+            <input
+            id="site-search"
+            type="search"
+            name="s"
+            placeholder="Zoek naar video's of kanalen…"
+            value="<?= htmlspecialchars($_GET['s'] ?? '') ?>"
+            autocomplete="off"
+            />
+
+            <button type="button" class="clear-btn" id="clearSearch" aria-label="Zoekveld leegmaken">
+            <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <button id="searchSubmit" type="submit" class="submit-btn" aria-label="Zoeken">
+            <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
     </form>
+
 
     <?php
         if (session_status() === PHP_SESSION_NONE) session_start();

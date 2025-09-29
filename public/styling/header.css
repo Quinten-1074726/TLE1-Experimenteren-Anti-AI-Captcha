@@ -1,82 +1,119 @@
-nav .search-form { justify-self: center; display: flex; align-items: center; gap: .5rem; }
 
-#site-search {
-  background-color: #333;
-  color: #fff;              
-  padding: 1vh 8vw;
-  border-radius: 12px;
-  text-align: center;
-  border: 1px solid #555;
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  border: 0;
 }
 
-#site-search::placeholder { color: #bbb; }
+header { box-shadow: 0 1px 5px 0 black; }
 
-#searchSubmit {
-  border: none;
-  background: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-header {
-    box-shadow: 0 1px 5px 0 black;
-}
-
-a {
-    text-decoration: none;
-}
+a { text-decoration: none; }
 
 nav {
-    max-width: 95%;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    align-items: center;
-    gap: 10px;
-    padding: 2vh 0;
+  max-width: 95%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 3fr auto;  
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;                       
 }
 
-nav h1 {
-    justify-self: start;
-}
+nav h1 { justify-self: start; }
+nav a  { justify-self: end; }
 
 nav .search-form {
-    justify-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 760px;                      
 }
 
-nav a {
-    justify-self: end;
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: #2b2b2b;
+  border: 1px solid #3b3b3b;
+  border-radius: 9999px;                
+  padding: .5rem .7rem;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
-form {
-    display: flex;
+.search-bar:focus-within {
+  border-color: #5d86ff;
+  box-shadow: 0 0 0 3px rgba(93,134,255,.25);
+  background: #2e2e2e;
 }
+
+.search-icon {
+  color: #9aa0a6;
+  font-size: .95rem;
+  margin-left: .1rem;
+}
+
+#site-search {
+  flex: 1 1 auto;
+  background: transparent;
+  color: #fff;
+  border: 0;
+  outline: none;
+  padding: .2rem .2rem;
+  font-size: .95rem;
+  min-width: 0;                          
+}
+#site-search::placeholder { color: #b7bcc2; }
+
+/* Buttons rechts */
+.search-bar .submit-btn,
+.search-bar .clear-btn {
+  appearance: none;
+  border: 0;
+  background: #3a3a3a;
+  color: #e6e6e6;
+  width: 34px; height: 34px;            
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .2s ease, transform .06s ease;
+}
+.search-bar .clear-btn  { background: #343434; color: #cfcfcf; }
+.search-bar .submit-btn { background: #4a63ff; }
+.search-bar .submit-btn:hover { background: #4259ec; }
+.search-bar .clear-btn:hover  { background: #3c3c3c; }
+
+.search-bar .submit-btn:active,
+.search-bar .clear-btn:active { transform: scale(.98); }
+
+.search-bar .clear-btn { opacity: 0; pointer-events: none; }
+.search-bar.has-value .clear-btn { opacity: 1; pointer-events: auto; }
 
 #login_button {
-    background-color: #333;
-    color: white;
-    border: 2px solid #555;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: ease-in-out 0.05s;
-    text-decoration: none;
-    display: inline-block;
+  background-color: #333;
+  color: white;
+  border: 2px solid #555;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+#login_button:hover { color: var(--colors-text-hover, #276BD2); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav { grid-template-columns: 1fr; gap: 10px; padding: 8px 0; }
+  nav h1 { justify-self: center; }
+  nav .search-form { justify-self: stretch; max-width: none; }
 }
 
-/* Hover effect */
-#login_button:hover {
-    color: var(--colors-text-hover);
+@media (max-width: 480px) {
+  .search-bar { padding: .45rem .55rem; }
+  #site-search { font-size: .9rem; }
+  .search-bar .submit-btn, .search-bar .clear-btn { width: 32px; height: 32px; }
 }
 
-#searchVideo {
-    background-color: #333;
-    padding: 1vh 8vw;
-    border-radius: 12px;
-    text-align: center;
-}
-
-#searchSubmit {
-    border: none;
-    background: none;
-    font-size: 1.2rem;
-}
+#searchVideo { display: none; }
+#searchSubmit { border: none; background: none; font-size: 1.2rem; }

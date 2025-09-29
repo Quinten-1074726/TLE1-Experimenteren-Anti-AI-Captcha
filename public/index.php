@@ -82,6 +82,7 @@ if ($result) {
 
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
+                <a href="history.php">history</a>
                 <a>Subcriptions</a>
                 <a href="channel.php">My channel</a>
 

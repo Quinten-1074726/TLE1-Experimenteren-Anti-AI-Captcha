@@ -1,102 +1,120 @@
+
 <?php
-// 6 voorbeeldvideo's met thumbnails
-$videos = [
-    ['title' => 'Video 1', 'thumbnail' => 'https://images.unsplash.com/photo-1514516877083-76c3c8c3f0d3?w=320&h=180&fit=crop'],
-    ['title' => 'Video 2', 'thumbnail' => 'https://images.unsplash.com/photo-1502767089025-6572583495f3?w=320&h=180&fit=crop'],
-    ['title' => 'Video 3', 'thumbnail' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=320&h=180&fit=crop'],
-    ['title' => 'Video 4', 'thumbnail' => 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=320&h=180&fit=crop'],
-    ['title' => 'Video 5', 'thumbnail' => 'https://images.unsplash.com/photo-1523475496153-3d6cc1e9f907?w=320&h=180&fit=crop'],
-    ['title' => 'Video 6', 'thumbnail' => 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=320&h=180&fit=crop'],
-];
+require_once 'database/connection.php';
+
+/** @var mysqli $db */
+
+$sql = "SELECT * FROM history ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$query = "SELECT * FROM users";
+
+$userResult = mysqli_query($db, $query)
+    or die('Error ' . mysqli_error($db) . ' with query ' . $query);
+
+
+$sql = "SELECT * FROM history ORDER BY id DESC";
+$result = mysqli_query($db, $sql);
+
+$videos = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $videos[] = $row;
+    }
+} else {
+    die("Query failed: " . mysqli_error($db));
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
+<!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+<script>
+    // json flags om speciale characters niet code te laten breken
+    const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    console.log(videos);
+</script>
+
+
+<!doctype html>
+<html lang="en">
+
+
 <head>
     <meta charset="UTF-8">
-    <title>Video History</title>
-
-    <!-- CSS-bestanden importeren -->
-    <link rel="stylesheet" href="styling/channel.css">
-    <link rel="stylesheet" href="styling/crud.css">
-    <link rel="stylesheet" href="styling/header.css">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
     <link rel="stylesheet" href="styling/style.css">
-
-    <style>
-        /* Extra styling voor de video thumbnails grid */
-        .rightDiv {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            padding-top: 20px;
-
-            /* Zorg dat de grid naar rechts wordt uitgelijnd */
-            justify-content: end; /* schuift de hele grid naar rechts */
-            padding-right: 40px; /* optioneel: afstand tot de rechterkant */
-        }
-
-
-        .video-card {
-            background-color: #414141;
-            border-radius: 8px;
-            overflow: hidden;
-            width: 200px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .video-card:hover {
-            transform: scale(1.05);
-        }
-
-        .video-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .video-card p {
-            margin: 5px 0;
-            font-size: 0.9em;
-            color: white;
-        }
-    </style>
+    <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
+    <script>
+        // json flags om speciale characters niet code te laten breken
+        const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+        console.log(videos);
+    </script>
+    <script src="javascript/index.js"></script>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
 </head>
+
+
 <body>
 
-<header>
-    <nav>
-        <h1>History</h1>
-        <div class="search-form">
-            <form>
-                <input type="text" placeholder="Zoek video..." id="searchVideo">
-                <button type="submit" id="searchSubmit">🔍</button>
-            </form>
-        </div>
-        <a href="#" id="login_button">Login</a>
-    </nav>
-</header>
+    <?php include "header.php" ?>
 
-<main class="divContainer">
-    <!-- Links sidepanel -->
-    <div class="leftDiv">
-        <h2>Menu</h2>
-        <div>Home</div>
-        <div>History</div>
-        <div>Subscriptions</div>
-    </div>
+    <main>
+        <!-- left -->
+        <div class="left_side">
+            <div>
+                <div>
+                    <label id="ai_filter_label">
+                        AI Filter
+                        <span class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </div>
 
-    <!-- Rechts: Video thumbnails grid -->
-    <div class="rightDiv">
-        <?php foreach ($videos as $video): ?>
-            <div class="video-card">
-                <img src="<?= $video['thumbnail'] ?>" alt="<?= htmlspecialchars($video['title']) ?>">
-                <p><?= htmlspecialchars($video['title']) ?></p>
+                <a href="index.php">Home</a>
+                <a href="trending.php">Trending</a>
+                <a href="history.php">history</a>
+                <a>Subcriptions</a>
+                <a href="channel.php">My channel</a>
+
+                <?php if (isset($_SESSION['loggedInUser'])): ?>
+                    <a href="upload.php" class="btn">Video uploaden</a>
+                    <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
+                    <a href="logout.php">Logout</a>
+                <?php else: ?>
+                    <a href="login.php">Login</a>
+                    <a href="register.php">Register</a>
+                <?php endif; ?>
+
+
             </div>
-        <?php endforeach; ?>
-    </div>
-</main>
+            <div>
+                <!-- channels here -->
+                <a>channel 1</a>
+                <a>channel 123</a>
+
+            </div>
+        </div>
+        <!-- right -->
+
+        <div class="flex_right_side">
+            <div class="right_side"></div>
+        </div>
+
+    </main>
+    <footer>
+
+    </footer>
 
 </body>
+
 </html>

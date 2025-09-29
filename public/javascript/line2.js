@@ -387,10 +387,7 @@ function analyzeDrawing() {
                 resultBox.textContent = "Captcha complete! Redirecting...";
                 resultBox.style.color = "#0077ff";
                 setTimeout(() => {
-                    let redirect = params.get('redirect') || 'login.php';
-                    if (!allowedRedirects.has(redirect)) {
-                        redirect = 'login.php';
-                    }
+                    const redirect = getRedirectTarget();
                     window.location.href = redirect;
                 }, 1200);
             }, 1000);
@@ -427,3 +424,12 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(button1);
     container.appendChild(button2);
 });
+
+// Whitelist for safe redirect targets
+const allowedRedirects = new Set(['login.php','register.php']);
+function getRedirectTarget() {
+  const p = new URLSearchParams(window.location.search);
+  let target = p.get('redirect') || 'login.php';
+  if (!allowedRedirects.has(target)) target = 'login.php';
+  return target;
+}

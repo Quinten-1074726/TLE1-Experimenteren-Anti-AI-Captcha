@@ -1,5 +1,7 @@
+
 <?php
-    require_once "./database/connection.php";
+session_start();
+require_once "./database/connection.php";
 
 // redirect terug als captcha cookie er niet is, als wel, verwijder cookie
 if (!isset($_COOKIE['captcha_pass'])) {
@@ -51,6 +53,7 @@ if (isset($_POST['submit'])) {
                     'id' => $user ['id'],
                     'name' => $user ['name'],
                     'email' => $user ['email'],
+                    'is_admin' => $is_admin ['is_admin']
                 ];
                 header("Location: index.php");
                 exit;

@@ -6,17 +6,17 @@ backdrop.style.top = '0';
 backdrop.style.left = '0';
 backdrop.style.width = '100vw';
 backdrop.style.height = '100vh';
-backdrop.style.background = 'rgba(0,0,0,0.25)';
-backdrop.style.zIndex = '1000';
+backdrop.style.background = 'rgba(0, 0, 0, 0.63)';
+backdrop.style.zIndex = '10';
 document.body.appendChild(backdrop);
 
-// Create modal window
+// modal
 const modal = document.createElement('div');
 modal.style.position = 'fixed';
 modal.style.top = '50%';
 modal.style.left = '50%';
 modal.style.transform = 'translate(-50%, -50%)';
-modal.style.background = 'linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%)';
+modal.style.background = 'linear-gradient(135deg, #dbd9d9ff 0%, #b2b2b2ff 100%)';
 modal.style.borderRadius = '18px';
 modal.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
 modal.style.padding = '32px 40px 32px 40px';
@@ -44,7 +44,7 @@ canvas.style.pointerEvents = 'auto';
 modal.appendChild(canvas);
 const ctx = canvas.getContext('2d');
 
-// --- Professional Background ---
+// bg
 document.body.style.margin = '0';
 document.body.style.height = '100vh';
 document.body.style.background = '#f8fafc';
@@ -53,10 +53,7 @@ document.body.style.background = '#f8fafc';
 const info = document.createElement('div');
 info.style.position = 'static';
 info.style.marginBottom = '0px';
-info.style.background = 'rgba(255,255,255,0.95)';
 info.style.padding = '18px 12px 18px 12px';
-info.style.borderRadius = '16px';
-info.style.boxShadow = '0 4px 24px rgba(0,0,0,0.08)';
 info.style.fontFamily = 'Segoe UI, Arial, sans-serif';
 info.style.fontSize = '18px';
 info.style.color = '#222';
@@ -70,10 +67,10 @@ const resultBox = document.createElement('div');
 resultBox.style.marginTop = '16px';
 resultBox.style.fontSize = '17px';
 resultBox.style.fontWeight = '500';
-resultBox.style.color = '#0077ff';
+resultBox.style.color = '#004695ff';
 resultBox.style.background = 'rgba(240,247,255,0.95)';
 resultBox.style.borderRadius = '10px';
-resultBox.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+resultBox.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.72)';
 resultBox.style.padding = '12px 20px';
 resultBox.style.display = 'none';
 resultBox.style.transition = 'opacity 0.2s';
@@ -89,19 +86,68 @@ resetBtn.style.padding = '8px 24px';
 resetBtn.style.cursor = 'pointer';
 resetBtn.style.borderRadius = '8px';
 resetBtn.style.border = 'none';
-resetBtn.style.background = 'linear-gradient(90deg,#0077ff 0%,#00c6ff 100%)';
+// subtle blue-gray gradient
+resetBtn.style.background = 'linear-gradient(90deg,#4d5a66 0%,#6b7b88 100%)';
 resetBtn.style.color = '#fff';
 resetBtn.style.fontWeight = 'bold';
 resetBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)';
-resetBtn.style.transition = 'background 0.2s';
+resetBtn.style.transition = 'background 0.2s, box-shadow 0.2s';
 resetBtn.onmouseover = () => {
-    resetBtn.style.background = 'linear-gradient(90deg,#005bb5 0%,#0099cc 100%)';
+    resetBtn.style.background = 'linear-gradient(90deg,#3b4550 0%,#5a6a76 100%)';
 };
 resetBtn.onmouseout = () => {
-    resetBtn.style.background = 'linear-gradient(90deg,#0077ff 0%,#00c6ff 100%)';
+    resetBtn.style.background = 'linear-gradient(90deg,#4d5a66 0%,#6b7b88 100%)';
+};
+resetBtn.onfocus = () => {
+    resetBtn.style.outline = '2px solid #3a7bd5';
+    resetBtn.style.outlineOffset = '2px';
+};
+resetBtn.onblur = () => {
+    resetBtn.style.outline = 'none';
 };
 modal.appendChild(resetBtn);
 
+// --- Second Button ---
+const secondBtn = document.createElement('button');
+secondBtn.textContent = 'Alternative Captcha';
+secondBtn.style.marginTop = '18px';
+secondBtn.style.display = 'inline-block';
+secondBtn.style.fontSize = '16px';
+secondBtn.style.padding = '8px 24px';
+secondBtn.style.cursor = 'pointer';
+secondBtn.style.borderRadius = '8px';
+secondBtn.style.border = 'none';
+// medium blue-gray variant
+secondBtn.style.background = 'linear-gradient(90deg,#375268 0%,#4a6b82 100%)';
+secondBtn.style.color = '#fff';
+secondBtn.style.fontWeight = 'bold';
+secondBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)';
+secondBtn.style.transition = 'background 0.2s, box-shadow 0.2s';
+secondBtn.onmouseover = () => {
+    secondBtn.style.background = 'linear-gradient(90deg,#2f4659 0%,#3f5b71 100%)';
+};
+secondBtn.onmouseout = () => {
+    secondBtn.style.background = 'linear-gradient(90deg,#375268 0%,#4a6b82 100%)';
+};
+secondBtn.onfocus = () => {
+    secondBtn.style.outline = '2px solid #3a7bd5';
+    secondBtn.style.outlineOffset = '2px';
+};
+secondBtn.onblur = () => {
+    secondBtn.style.outline = 'none';
+};
+modal.appendChild(secondBtn);
+
+// Flex container for buttons
+const buttonContainer = document.createElement('div');
+buttonContainer.style.display = 'flex';
+buttonContainer.style.flexDirection = 'row';
+buttonContainer.style.gap = '10px'; // Spacing between buttons
+modal.appendChild(buttonContainer);
+
+// Add buttons to container
+buttonContainer.appendChild(resetBtn);
+buttonContainer.appendChild(secondBtn);
 
 const params = new URLSearchParams(window.location.search);
 
@@ -115,6 +161,17 @@ resetBtn.addEventListener('click', () => {
     userPoints = [];
     drawPath();
     resultBox.style.display = 'none';
+});
+
+secondBtn.addEventListener('click', () => {
+    // preserve redirect query if present
+    const p = new URLSearchParams(window.location.search);
+    const r = p.get('redirect');
+    if (r && /^[a-zA-Z0-9_.-]+\.php$/.test(r)) {
+        window.location.href = `captcha2.php?redirect=${encodeURIComponent(r)}`;
+    } else {
+        window.location.href = 'captcha2.php';
+    }
 });
 
 // --- Drawing Prompts ---
@@ -168,16 +225,24 @@ submitBtn.style.padding = '8px 24px';
 submitBtn.style.cursor = 'pointer';
 submitBtn.style.borderRadius = '8px';
 submitBtn.style.border = 'none';
-submitBtn.style.background = 'linear-gradient(90deg,#22c55e 0%,#16a34a 100%)';
+// dark blue-gray gradient
+submitBtn.style.background = 'linear-gradient(90deg,#253544 0%,#1a2530 100%)';
 submitBtn.style.color = '#fff';
 submitBtn.style.fontWeight = 'bold';
-submitBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)';
-submitBtn.style.transition = 'background 0.2s';
+submitBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+submitBtn.style.transition = 'background 0.2s, box-shadow 0.2s';
 submitBtn.onmouseover = () => {
-    submitBtn.style.background = 'linear-gradient(90deg,#15803d 0%,#22c55e 100%)';
+    submitBtn.style.background = 'linear-gradient(90deg,#1f2c38 0%,#14202a 100%)';
 };
 submitBtn.onmouseout = () => {
-    submitBtn.style.background = 'linear-gradient(90deg,#22c55e 0%,#16a34a 100%)';
+    submitBtn.style.background = 'linear-gradient(90deg,#253544 0%,#1a2530 100%)';
+};
+submitBtn.onfocus = () => {
+    submitBtn.style.outline = '2px solid #3a7bd5';
+    submitBtn.style.outlineOffset = '2px';
+};
+submitBtn.onblur = () => {
+    submitBtn.style.outline = 'none';
 };
 modal.appendChild(submitBtn);
 
@@ -326,10 +391,15 @@ function analyzeDrawing() {
         drawPath();
         if (success) {
             setTimeout(() => {
+                //cookie
+                document.cookie = "captcha=completed";
+                // Set one-time pass cookie (5 minute validity)
+                const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString();
+                document.cookie = `captcha_pass=1; Expires=${expires}; Path=/; SameSite=Lax`;
                 resultBox.textContent = "Captcha complete! Redirecting...";
                 resultBox.style.color = "#0077ff";
                 setTimeout(() => {
-                    const redirect = params.get('redirect') || 'index.php';
+                    const redirect = getRedirectTarget();
                     window.location.href = redirect;
                 }, 1200);
             }, 1000);
@@ -339,3 +409,39 @@ function analyzeDrawing() {
 
 // --- Initial Draw ---
 drawPath();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".right_side");
+
+    // Create the first button
+    const button1 = document.createElement("button");
+    button1.innerText = "Go to Captcha1";
+    button1.addEventListener("click", () => {
+        window.location.href = "captcha1.php";
+    });
+
+    // Create the second button
+    const button2 = document.createElement("button");
+    button2.innerText = "Alternative Captcha";
+    button2.addEventListener("click", () => {
+        window.location.href = "captcha2.php";
+    });
+
+    // Style the container to make buttons flex in a row
+    container.style.display = "flex";
+    container.style.flexDirection = "row";
+    container.style.gap = "10px"; // Add spacing between buttons
+
+    // Append buttons to the container
+    container.appendChild(button1);
+    container.appendChild(button2);
+});
+
+// Whitelist for safe redirect targets
+const allowedRedirects = new Set(['login.php','register.php']);
+function getRedirectTarget() {
+  const p = new URLSearchParams(window.location.search);
+  let target = p.get('redirect') || 'login.php';
+  if (!allowedRedirects.has(target)) target = 'login.php';
+  return target;
+}

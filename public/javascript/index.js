@@ -1,56 +1,87 @@
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(".right_side");
+    const aiFilterCheckbox = document.getElementById("ai_filter");
+    const loadMoreButtonSide = document.querySelector(".flex_right_side");
 
-    const videosPerPage = 9; // 9 videos per keer
+    const videosPerPage = 9;
     let currentIndex = 0;
+    let currentVideos = [];
 
+    const loadMoreBtn = document.createElement("button");
+    loadMoreBtn.innerText = "Load More";
+    loadMoreBtn.addEventListener("click", displayMoreVideos);
+    loadMoreButtonSide.appendChild(loadMoreBtn);
 
-    function displayVideos() {
-        const nextVideos = videos.slice(currentIndex, currentIndex + videosPerPage);
+    async function fetchVideos() {
+        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
+        const url = `api/videos.php?ai_only=${aiOnly}`;
+        try {
+            const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+            if (!res.ok) throw new Error('Network response was not ok');
+            const data = await res.json();
 
-        nextVideos.forEach(video => {
-            const videoDiv = document.createElement('div')
-            videoDiv.style.display = "flex";
-            videoDiv.style.flexDirection = "column";
-            videoDiv.style.margin = "2vh 0.5vw";
-            container.appendChild(videoDiv)
+            currentVideos = Array.isArray(data.videos) ? data.videos : [];
+            currentIndex = 0;
+            container.innerHTML = "";
+            loadMoreBtn.style.display = currentVideos.length > 0 ? "inline-block" : "none";
 
-            const videoImgContainer = document.createElement("a")
-            videoImgContainer.href = "./video.php?id=" + video.id;
-            console.log(video.file_path)
-            videoDiv.appendChild(videoImgContainer)
+            if (currentVideos.length === 0) {
+                const emptyMsg = document.createElement("p");
+                emptyMsg.textContent = aiOnly === '1' ? 'Geen AI gegenereerde videos gevonden.' : 'Geen videos gevonden.';
+                container.appendChild(emptyMsg);
+                return;
+            }
 
-            const videoImg = document.createElement("img")
-            videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
-            videoImg.style.width = "350px";
-            videoImg.style.height = "200px";
-            videoImg.classList = "videoClass";
-            videoImg.style.borderRadius = "5px";
-            videoImgContainer.appendChild(videoImg)
+            displayMoreVideos();
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = '<p style="color:red">Fout bij laden van videos.</p>';
+        }
+    }
 
-            const videoTitle = document.createElement("h2")
-            videoTitle.innerText = video.video_title;
-            videoDiv.appendChild(videoTitle)
-
-            const videoChannel = document.createElement("p")
-            videoChannel.innerText = video.channel_name;
-            videoChannel.style.margin = 0;
-            videoDiv.appendChild(videoChannel)
-        });
-
+    function displayMoreVideos() {
+        const nextVideos = currentVideos.slice(currentIndex, currentIndex + videosPerPage);
+        nextVideos.forEach(renderVideoCard);
         currentIndex += videosPerPage;
-
-        // button weghalen als alles er is
-        if (currentIndex >= videos.length) {
+        if (currentIndex >= currentVideos.length) {
             loadMoreBtn.style.display = "none";
         }
     }
 
-    const loadMoreButtonSide = document.querySelector(".flex_right_side")
-    const loadMoreBtn = document.createElement("button");
-    loadMoreBtn.innerText = "Load More";
-    loadMoreBtn.addEventListener("click", displayVideos);
-    loadMoreButtonSide.appendChild(loadMoreBtn);
+    function renderVideoCard(video) {
+        const videoDiv = document.createElement("div");
+        videoDiv.style.display = "flex";
+        videoDiv.style.flexDirection = "column";
+        videoDiv.style.margin = "2vh 0.5vw";
+        container.appendChild(videoDiv);
 
-    displayVideos();
+        const videoLink = document.createElement("a");
+        videoLink.href = "./video.php?id=" + video.id;
+        videoDiv.appendChild(videoLink);
+
+        const videoImg = document.createElement("img");
+        videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
+        videoImg.alt = video.video_title || "video thumbnail";
+        videoImg.style.width = "350px";
+        videoImg.style.height = "200px";
+        videoImg.style.borderRadius = "5px";
+        videoLink.appendChild(videoImg);
+
+        const videoTitle = document.createElement("h2");
+        videoTitle.innerText = video.video_title;
+        videoDiv.appendChild(videoTitle);
+
+        const videoChannel = document.createElement("p");
+        videoChannel.innerText = video.channel_name;
+        videoDiv.appendChild(videoChannel);
+    }
+
+    if (aiFilterCheckbox) {
+        aiFilterCheckbox.addEventListener("change", () => {
+            fetchVideos(); // refetch videos when checkbox changes
+        });
+    }
+
+    // Initial fetch (default = all videos)
+    fetchVideos();
 });

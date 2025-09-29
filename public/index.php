@@ -31,7 +31,6 @@ if ($result) {
 <script>
     // json flags om speciale characters niet code te laten breken
     const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
-    console.log(videos);
 </script>
 
 
@@ -51,7 +50,6 @@ if ($result) {
     <script>
         // json flags om speciale characters niet code te laten breken
         const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
-        console.log(videos);
     </script>
     <script src="javascript/index.js"></script>
     <!-- font -->
@@ -75,7 +73,7 @@ if ($result) {
                     <label id="ai_filter_label">
                         AI Filter
                         <span class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" name="ai_filter" id="ai_filter" value="1">
                             <span class="slider round"></span>
                         </span>
                     </label>
@@ -84,15 +82,15 @@ if ($result) {
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
+                <a href="channel.php">My channel</a>
 
                 <?php if (isset($_SESSION['loggedInUser'])): ?>
-                    <a href="channel.php">My channel</a>
                     <a href="upload.php" class="btn">Video uploaden</a>
                     <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
                     <a href="logout.php">Logout</a>
                 <?php else: ?>
-                    <a href="captcha1.php?redirect=login.php">Login</a>
-                    <a href="captcha1.php?redirect=register.php">Register</a>
+                    <a href="login.php">Login</a>
+                    <a href="register.php">Register</a>
                 <?php endif; ?>
 
 
@@ -109,6 +107,7 @@ if ($result) {
         <div class="flex_right_side">
             <div class="right_side"></div>
         </div>
+
 
     </main>
     <footer>

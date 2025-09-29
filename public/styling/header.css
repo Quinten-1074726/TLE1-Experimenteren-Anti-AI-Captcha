@@ -9,20 +9,14 @@ a {
 nav {
     max-width: 95%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    display: flex;
+    justify-content: space-between; 
     align-items: center;
     gap: 10px;
     padding: 2vh 0;
 }
 
-nav h1 {
-    justify-self: start;
-}
-
-nav .search-form {
-    justify-self: center;
-}
+/* Removed grid-specific justify-self rules (not needed for flex layout) */
 
 nav .nav-actions {
     display: flex;

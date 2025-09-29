@@ -1,27 +1,23 @@
 <?php
+require_once './database/connection.php';
 
-
-require_once 'database/connection.php';
-
-$videoID = $_GET['id'];
-//input validatie
-$videoID = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-if (!isset($videoID)) {
-    header("Location: ./index.php");
-    exit;
+// Get video ID from URL
+if (!isset($_GET['id'])) {
+    die('No video specified.');
 }
 
-$sql = "SELECT * FROM videos WHERE id = $videoID";
+$videoId = intval($_GET['id']); // prevent SQL injection
+$sql = "SELECT * FROM videos WHERE id = $videoId LIMIT 1";
+
 $result = mysqli_query($db, $sql);
 
-if ($result) {
-    $video = mysqli_fetch_assoc($result);
-} else {
-    die("Query failed: " . mysqli_error($db));
+if (!$result || mysqli_num_rows($result) === 0) {
+    die('Video not found.');
 }
 
+$video = mysqli_fetch_assoc($result);
 ?>
+
 
 <html lang="en">
 

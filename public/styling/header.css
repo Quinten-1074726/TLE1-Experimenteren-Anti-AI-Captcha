@@ -1,3 +1,23 @@
+nav .search-form { justify-self: center; display: flex; align-items: center; gap: .5rem; }
+
+#site-search {
+  background-color: #333;
+  color: #fff;              
+  padding: 1vh 8vw;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #555;
+}
+
+#site-search::placeholder { color: #bbb; }
+
+#searchSubmit {
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 header {
     box-shadow: 0 1px 5px 0 black;
 }

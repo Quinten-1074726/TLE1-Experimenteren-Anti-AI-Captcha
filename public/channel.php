@@ -7,17 +7,17 @@ $password = "";
 
 $db = mysqli_connect($host, $user, $password, $database)
 or die("Error: " . mysqli_connect_error());
-
-////
-//$id = $_GET['id'];
-//
-//$query = "SELECT * FROM users WHERE id = $id";
-//
-//$result = mysqli_query($db, $query);
-//$users = mysqli_fetch_assoc($result);
-//mysqli_close($db);
-// required when working with sessions
 session_start();
+
+$id = $_SESSION['loggedInUser']['id'];
+
+$id = $_GET['id'];
+
+$query = "SELECT * FROM users WHERE id= $id";
+
+$result = mysqli_query($db, $query);
+$users = mysqli_fetch_assoc($result);
+
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
@@ -27,6 +27,8 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     header("Location: 'index.php'");
     exit;
 }
+mysqli_close($db);
+
 ?>
 
 <!doctype html>
@@ -90,13 +92,13 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
                     </div>
                     <div class="channelDetails">
                         <div class="channelName">
-                            <h2>Channel name</h2>
+                            <h2><?= $users['username'] ?></h2>
                         </div>
 
 
                         <div class="amounts">
                             <p>
-                                subscribers count || a/o video's
+                                <?= $users['email'] ?> subscribers count || a/o video's
                             </p>
 
                             <div class="description">

@@ -33,11 +33,13 @@ if (isset($_POST['submit'])) {
     $errorName = '';
     $errorEmail = '';
     $errorPassword = '';
+    $errorProfilePicture = '';
 
     // Escapen
     $username = mysqli_real_escape_string($db, $_POST['username'] ?? '');
     $email = mysqli_real_escape_string($db, $_POST['email'] ?? '');
     $password = mysqli_real_escape_string($db, $_POST['password'] ?? '');
+    $profile_picture = mysqli_real_escape_string($db, $_POST['profile_picture'] ?? '' );
     $id = (int)($_POST['updateId'] ?? 0);
 
     // Validatie
@@ -50,12 +52,17 @@ if (isset($_POST['submit'])) {
     if ($password === '') {
         $errorPassword = 'Vul een wachtwoord in';
     }
+    if ($profile_picture === '') {
+        $errorProfilePicture = 'Upload een profiel foto';
+    }
+
+
 
     // Alles ingevuld? Dan updaten
-    if ($errorName === '' && $errorEmail === '' && $errorPassword === '') {
+    if ($errorName === '' && $errorEmail === '' && $errorPassword === '' && $errorProfilePicture === '') {
         $query = "
             UPDATE users 
-            SET username='$username', email='$email', password='$password'
+            SET username='$username', email='$email', password='$password', profile_picture='$profile_picture'
             WHERE id = $id";
         mysqli_query($db, $query) or die('Error: ' . mysqli_error($db));
 
@@ -68,61 +75,93 @@ if (isset($_POST['submit'])) {
     $users['username'] = $username;
     $users['email'] = $email;
     $users['password'] = $password;
+    $users['profile_picture'] = $profile_picture;
 }
 
 mysqli_close($db);
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-    <title>Account bewerken</title>
+    <title>Log in</title>
+    <?php include "defaultsettings.php" ?>
+    <link rel="stylesheet" href="styling/crud.css">
+    <link rel="stylesheet" href="styling/editaccount.css">
+    <script src="javascript/editaccount.js" defer></script>
 </head>
 <body>
-<div class="container px-4">
-    <h1 class="title mt-4">Edit account</h1>
-
-    <section class="columns">
-        <form class="column is-6" action="" method="post">
-
-            <div class="field">
-                <label class="label" for="username">Name</label>
-                <div class="control">
+<?php include 'header.php' ?>
+<section>
+    <form action="" method="post">
+        <div class="column" style="width: 65vw; margin: 10vh auto">
+            <p class="title" style="font-size: var(--font-header); font-weight: bold">Edit</p>
+            <div class="form-column" style="margin: 10px auto 5px auto">
+                <div>
+                    <label class="label" for="username">Naam</label>
+                </div>
+                <div>
                     <input class="input" id="username" type="text" name="username"
                            value="<?= htmlentities($users['username']) ?>"/>
+
                 </div>
-                <p class="help is-danger"><?= $errorName ?? '' ?></p>
+                <p class="Danger">
+                    <?= $errors['username'] ?? '' ?>
+                </p>
             </div>
 
-            <div class="field">
-                <label class="label" for="email">Email</label>
-                <div class="control">
+            <div class="form-column" style="margin: 10px auto 5px auto">
+                <div>
+                    <label class="label" for="email">E-mailadres</label>
+                </div>
+                <div>
                     <input class="input" id="email" type="email" name="email"
                            value="<?= htmlentities($users['email']) ?>"/>
                 </div>
-                <p class="help is-danger"><?= $errorEmail ?? '' ?></p>
+                <p class="Danger">
+                    <?= $errors['email'] ?? '' ?>
+                </p>
             </div>
-
-            <div class="field">
-                <label class="label" for="password">Password</label>
-                <div class="control">
+            <div class="form-column" style="margin: 5px auto 10px auto">
+                <div>
+                    <label class="label" for="password">Wachtwoord</label>
+                </div>
+                <div>
                     <input class="input" id="password" type="text" name="password"
                            value="<?= htmlentities($users['password']) ?>"/>
                 </div>
-                <p class="help is-danger"><?= $errorPassword ?? '' ?></p>
+                <p class="Danger">
+                    <?= $errors['password'] ?? '' ?>
+                </p>
             </div>
+            <div class="form-column" style="margin: 5px auto 10px auto">
+                <div>
+                    <img class="profilePicture" alt="pp" src="images/profile-icon.jpg" id="profile_picture">
+                    <label class="profile-label" for="profile">profiel foto veranderen</label>
+                </div>
+                <div>
+                    <input class="input, hidden" id="profile" type="file" name="profile" accept="image/jpeg, image/png, image.jpg"
+                           value="<?= htmlentities($users['profile_picture']) ?>"/>
+                </div>
+                <p class="Danger">
+                    <?= $errors['password'] ?? '' ?>
+                </p>
+            </div>
+            <?php if (isset($errors['loginFailed'])) { ?>
+                <div class="Danger">
+                    <?= $errors['loginFailed'] ?>
+                </div>
+            <?php } ?>
+            <!-- Save -->
 
             <div class="field">
                 <button class="button is-link is-fullwidth" type="submit" name="submit">Save</button>
             </div>
 
             <input type="hidden" name="updateId" value="<?= $users['id'] ?>">
-        </form>
-    </section>
-
-    <a href="account.php?id=<?= $users['id'] ?>">&laquo; Go back to account</a>
-</div>
+        </div>
+    </form>
+</section>
+<?php include('footer.php') ?>
 </body>
 </html>

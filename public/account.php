@@ -30,23 +30,39 @@ $users = mysqli_fetch_assoc($result);
 mysqli_close($db);
 ?>
 
+
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Log in</title>
+    <?php include "defaultsettings.php" ?>
+    <link rel="stylesheet" href="styling/crud.css">
+
 </head>
 <body>
-<h1>Account</h1>
-<h2><?= $users['username'] ?></h2>
-<h2><?= $users['email'] ?></h2>
-<a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
+<?php include 'header.php' ?>
+<section>
+
+    <form action="" method="post">
+        <div class="column" style="width: 65vw; margin: 10vh auto">
+            <p class="title" style="font-size: var(--font-header); font-weight: bold">Account</p>
+
+            <div class="form-column" style="margin: 10px auto 5px auto">
 
 
+                <p>Gebruikernaam: <?= $users['username'] ?></p>
+                <p>E-mail: <?= $users['email'] ?></p>
+                <p>Profiel foto: <img alt="#" src="<?= $users['profile_picture'] ?>"></p>
 
-<a href="index.php?id=<?= $users['id'] ?>">&laquo; Go back to homepage</a>
+            </div>
+            <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
+
+
+            <a href="index.php?id=<?= $users['id'] ?>">&laquo; Go back to homepage</a>
+        </div>
+    </form>
+</section>
+<?php include('footer.php') ?>
 </body>
 </html>
+

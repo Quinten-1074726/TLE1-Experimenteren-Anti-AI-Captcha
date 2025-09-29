@@ -21,6 +21,9 @@ $video = mysqli_fetch_assoc($result);
 
 <html lang="en">
 
+<!-- +1 video view naar de database (als we tijd hebben) -->
+
+
 <head>
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/upload.css">

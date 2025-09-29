@@ -4,7 +4,7 @@
 </head>
 
 <header>
-    <nav>
+    <nav >
         <h1> <a href="index.php"> StreamHub </a></h1>
         <form action="/search" method="post" class="search-form">
             <label for="site-search" hidden>Search</label>

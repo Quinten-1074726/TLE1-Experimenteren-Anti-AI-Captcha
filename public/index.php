@@ -77,15 +77,15 @@ if ($result) {
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
-                <a href="channel.php">My channel</a>
 
                 <?php if (isset($_SESSION['loggedInUser'])): ?>
+                    <a href="channel.php">My channel</a>
                     <a href="upload.php" class="btn">Video uploaden</a>
                     <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
                     <a href="logout.php">Logout</a>
                 <?php else: ?>
-                    <a href="login.php">Login</a>
-                    <a href="register.php">Register</a>
+                    <a href="captcha1.php?redirect=login.php">Login</a>
+                    <a href="captcha1.php?redirect=register.php">Register</a>
                 <?php endif; ?>
 
 

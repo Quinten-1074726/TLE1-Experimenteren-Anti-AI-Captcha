@@ -1,5 +1,7 @@
+
 <?php
-    require_once "./database/connection.php";
+session_start();
+require_once "./database/connection.php";
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
@@ -42,6 +44,7 @@ if (isset($_POST['submit'])) {
                     'id' => $user ['id'],
                     'name' => $user ['name'],
                     'email' => $user ['email'],
+                    'is_admin' => $is_admin ['is_admin']
                 ];
                 header("Location: index.php");
                 exit;

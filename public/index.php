@@ -1,6 +1,7 @@
-
 <?php
+session_start();
 require_once 'database/connection.php';
+
 
 /** @var mysqli $db */
 
@@ -11,7 +12,6 @@ $query = "SELECT * FROM users";
 
 $userResult = mysqli_query($db, $query)
     or die('Error ' . mysqli_error($db) . ' with query ' . $query);
-
 
 $sql = "SELECT * FROM videos ORDER BY id DESC";
 $result = mysqli_query($db, $sql);
@@ -25,6 +25,7 @@ if ($result) {
     die("Query failed: " . mysqli_error($db));
 }
 ?>
+
 
 <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
 <script>

@@ -200,7 +200,7 @@ const prompts = [
     "2 tall buildings",
     "a building on fire",
     "a campfire",
-    "the titannic",
+    "the titanic",
     "fred durst"
 
 ];

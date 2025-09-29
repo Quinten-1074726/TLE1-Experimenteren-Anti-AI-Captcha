@@ -7,9 +7,6 @@ require_once "./database/connection.php";
 if (!isset($_COOKIE['captcha_pass'])) {
     header('Location: index.php');
     exit;
-} else {
-    // Invalidate the one-time cookie
-    setcookie('captcha_pass', '', time() - 3600, '/');
 }
 
 // Redirect if already logged in
@@ -50,11 +47,13 @@ if (isset($_POST['submit'])) {
                 $login = true;
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['loggedInUser'] = [
-                    'id' => $user ['id'],
-                    'name' => $user ['name'],
-                    'email' => $user ['email'],
-                    'is_admin' => $is_admin ['is_admin']
+                    'id' => $user['id'],
+                    'name' => $user['username'],
+                    'email' => $user['email'],
+                    'is_admin' => $user['is_admin']
                 ];
+                // Verwijder captcha cookie pas na succesvolle login
+                setcookie('captcha_pass', '', time() - 3600, '/');
                 header("Location: index.php");
                 exit;
             } else {

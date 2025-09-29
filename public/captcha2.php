@@ -29,6 +29,6 @@
     </div>
   </div>
 
-  <script src="captcha.js"></script>
+  <script src="javascript/captcha.js"></script>
 </body>
 </html>

@@ -1,6 +1,15 @@
 <?php
     require_once "./database/connection.php";
 
+// redirect terug als captcha cookie er niet is, als wel, verwijder cookie
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+} else {
+    // Invalidate the one-time cookie
+    setcookie('captcha_pass', '', time() - 3600, '/');
+}
+
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';

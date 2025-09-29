@@ -124,15 +124,17 @@
     font-style: italic;
 }
 
-* {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
+html, body { color:#fff; font-family:'Poppins',sans-serif; }
+* { margin:0; padding:0; border:0; }
 
-html {
-    background-color: var(--colors-background-dark);
-    color: var(--colors-text-dark);
-}
+html { background:#414141; }
+
+/* `bezochte links  */
+a, a:visited { color:#fff; text-decoration:none; }
+a:hover { color:#b7bcc2; }
+
+/* Font Awesome  */
+.fa-solid, .fas { font-family:"Font Awesome 6 Free" !important; font-weight:900 !important; }
+.fa-regular, .far { font-family:"Font Awesome 6 Free" !important; font-weight:400 !important; }
+.fa-brands, .fab { font-family:"Font Awesome 6 Brands" !important; }
+

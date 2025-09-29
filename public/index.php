@@ -2,24 +2,27 @@
 require_once 'database/connection.php';
 require_once __DIR__ . '/app/video_filter.php';
 
+
 $s = $_GET['s'] ?? '';
 $videos = filter_videos($db, $s, 60);
 ?>
+
+
 <!doctype html>
 <html lang="en">
 <head>
+    <?php include "defaultsettings.php" ?>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StreamHub</title>
 
-    <link rel="stylesheet" href="styling/style.css">
+    
     <link rel="stylesheet" href="styling/header.css">
     <link rel="stylesheet" href="styling/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-k5Qf1H5n3nhhM5yP8b5K2QFZ7q0WlM3aVbG0m0gPqzR6V2lZr0ePp/2c6Wk2qC1i0yJ2u7p8eV8bX6kqB7YwVw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- PHP naar Javascript-->
+    <!-- PHP en JS includes-->
     <script>
       const videos = <?= json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
     </script>

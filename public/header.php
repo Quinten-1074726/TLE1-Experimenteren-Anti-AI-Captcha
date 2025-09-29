@@ -22,7 +22,7 @@
             </button>
 
             <button id="searchSubmit" type="submit" class="submit-btn" aria-label="Zoeken">
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </div>
     </form>

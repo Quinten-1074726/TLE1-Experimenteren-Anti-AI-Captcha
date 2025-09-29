@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   input.addEventListener('input', () => {
     toggleHasValue();
     clearTimeout(t);
-    t = setTimeout(() => form.requestSubmit(), 300); // live filter
+    t = setTimeout(() => form.requestSubmit(), 300); 
   });
 
   clearBtn?.addEventListener('click', () => {
     input.value = '';
     toggleHasValue();
-    form.requestSubmit(); // alles tonen
+    form.requestSubmit(); 
   });
 });

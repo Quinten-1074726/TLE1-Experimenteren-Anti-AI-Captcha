@@ -13,6 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="styling/index.css">
+    <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/index.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,10 +36,31 @@
         <!-- left -->
         <div class="left_side">
             <div>
-                <a>AI Filter</a>
-                <a>Home</a>
-                <a>Trending</a>
+                <div>
+                    <label id="ai_filter_label">
+                        AI Filter
+                        <span class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <a href="index.php">Home</a>
+                <a href="trending.php">Trending</a>
                 <a>Subcriptions</a>
+
+                <?php if (isset($_SESSION['loggedInUser'])): ?>
+                    <a href="channel.php">My channel</a>
+                    <a href="upload.php" class="btn">Video uploaden</a>
+                    <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
+                    <a href="logout.php">Logout</a>
+                <?php else: ?>
+                    <a href="captcha1.php?redirect=login.php">Login</a>
+                    <a href="captcha1.php?redirect=register.php">Register</a>
+                <?php endif; ?>
+
+
             </div>
             <div>
                 <!-- channels here -->
@@ -48,8 +70,10 @@
             </div>
         </div>
         <!-- right -->
-        <div class="right_side">
-        <!-- script -->
+        <div class="flex_right_side">
+            <div class="right_side">
+                <!-- script -->
+            </div>
         </div>
 
     </main>

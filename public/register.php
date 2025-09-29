@@ -1,4 +1,12 @@
 <?php
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+} else {
+    // Invalidate the one-time cookie
+    setcookie('captcha_pass', '', time() - 3600, '/');
+}
+
 if (isset($_POST['submit'])) {
     /** @var mysqli $db */
     require_once "./database/connection.php";
@@ -45,6 +53,9 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,6 +111,5 @@ if (isset($_POST['submit'])) {
         </div>
     </form>
 </section>
-<?php include('footer.php') ?>
 </body>
 </html>

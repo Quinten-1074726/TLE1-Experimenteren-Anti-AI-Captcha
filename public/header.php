@@ -20,7 +20,7 @@
         if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
             echo '<a href="account.php" id="login_button">Account</a>';
         } else {
-            echo '<a href="login.php" id="login_button">Login</a>';
+            echo '<a href="captcha1.php?redirect=login.php" id="login_button">Login</a>';
         }
         ?>
         </div>

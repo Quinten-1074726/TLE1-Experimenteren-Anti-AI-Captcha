@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Line Captcha</title>
+</head>
+
+<body>
+    <script src="javascript/line2.js"></script>
+</body>
+
+</html>

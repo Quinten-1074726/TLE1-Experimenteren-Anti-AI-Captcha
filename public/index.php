@@ -60,8 +60,6 @@ $videos = filter_videos($db, $s, 60);
 
       <a href="index.php">Home</a>
       <a href="trending.php">Trending</a>
-      <a>Subcriptions</a>
-
       <?php if (isset($_SESSION['loggedInUser'])): ?>
         <a href="channel.php">My channel</a>
         <a href="upload.php" class="btn">Video uploaden</a>

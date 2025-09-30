@@ -47,6 +47,10 @@ $video = mysqli_fetch_assoc($result);
                 <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
             </video>
             <h2> <?= htmlspecialchars($video['video_title']) ?></h2>
+            <div id="viewsAndDescription">
+                <p><?= htmlspecialchars($video['views']) ?> Views</p>
+                <p><?= htmlspecialchars($video['video_description']) ?></p>
+            </div>
         </div>
     </main>
 </body>

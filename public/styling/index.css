@@ -3,7 +3,7 @@ a {
 }
 
 a:hover {
-  color: #777;
+  color: var(--colors-text);
 }
 
 main{
@@ -57,7 +57,7 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--colors-slider);
   transition: .3s;
   border-radius: 18px;
 }
@@ -69,13 +69,13 @@ h2 {
   width: 14px;
   left: 2px;
   bottom: 2px;
-  background-color: white;
+  background-color: var(--colors-text-light);
   transition: .3s;
   border-radius: 50%;
 }
 
 input:checked+.slider {
-  background-color: #2196F3;
+  background-color: var(--colors-main);
 }
 
 input:checked+.slider:before {
@@ -95,13 +95,15 @@ input:checked+.slider:before {
 }
 
 .flex_right_side button {
-  background-color: rgb(92, 92, 255);
+  color: var(--colors-text-light);
+  background-color: var(--colors-main);
   padding: 2vh 2vw;
   border-radius: 4px;
+  transition: background 0.05s;
 }
 
 .flex_right_side button:hover {
-  background-color: rgb(188, 188, 255);
+  background-color: var(--colors-text-hover);
 }
 
 .vid-card {
@@ -122,7 +124,7 @@ input:checked+.slider:before {
 
 .vid-card.preview_card .thumb,
 .vid-card.preview_card .line {
-  background: linear-gradient(90deg, #2b2b2b 25%, #333 37%, #2b2b2b 63%);
+  background: linear-gradient(90deg, var(--colors-accent) 25%, var(--colors-background-gray) 37%, var(--colors-accent) 63%);
   background-size: 400% 100%;
   animation: shimmer 1.2s infinite;
   border-radius: 5px;
@@ -149,7 +151,7 @@ input:checked+.slider:before {
   opacity:.95;
 }
 .empty-state h3{ font-size:1.1rem; margin-bottom:.35rem; }
-.empty-state p{ color:#b7bcc2; }
+.empty-state p{ color: var(--colors-text); }
 
 @keyframes shimmer {
   0%   { background-position: 200% 0; }

@@ -6,7 +6,7 @@ body{
 .leftDiv{
     display: flex;
     flex-direction: column;
-    background-color: #2f2f2f;
+    background-color: var(--colors-background);
     padding: 80px 40px;
 
     height: 100vh;
@@ -16,7 +16,7 @@ body{
 .channelDetails {
     display: flex;
     flex-direction: column;
-    background-color: #2f2f2f;
+    background-color: var(--colors-background);
     justify-content: center;
 }
 
@@ -41,7 +41,7 @@ body{
 .rightDiv {
     display: flex;
     flex-direction: column;
-    background-color: #2f2f2f;
+    background-color: var(--colors-background);
     padding: 50px;
 
     height: 100vh;
@@ -74,7 +74,7 @@ body{
 }
 
 .lijntje{
-    background-color: #414141;
+    background-color: var(--colors-accent);
     height: 10px;
     width: auto;
     margin: 30px 0px 40px 0px;
@@ -82,7 +82,7 @@ body{
 
 .video1{
 
-    background-color: #414141 ;
+    background-color: var(--colors-accent);
     width: 400px;
     height: 250px;
 }

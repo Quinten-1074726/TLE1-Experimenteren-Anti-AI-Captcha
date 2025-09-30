@@ -106,7 +106,7 @@ mysqli_close($db);
 
                 </div>
                 <p class="Danger">
-                    <?= $errors['username'] ?? '' ?>
+                    <?= $errorName ?? '' ?>
                 </p>
             </div>
 
@@ -119,7 +119,7 @@ mysqli_close($db);
                            value="<?= htmlentities($users['email']) ?>"/>
                 </div>
                 <p class="Danger">
-                    <?= $errors['email'] ?? '' ?>
+                    <?= $errorEmail ?? '' ?>
                 </p>
             </div>
             <div class="form-column" style="margin: 5px auto 10px auto">
@@ -131,20 +131,21 @@ mysqli_close($db);
                            value="<?= htmlentities($users['password']) ?>"/>
                 </div>
                 <p class="Danger">
-                    <?= $errors['password'] ?? '' ?>
+                    <?= $errorPassword ?? '' ?>
                 </p>
             </div>
             <div class="form-column" style="margin: 5px auto 10px auto">
                 <div>
+
                     <img class="profilePicture" alt="pp" src="images/profile-icon.jpg" id="profile_picture">
                     <label class="profile-label" for="profile">profiel foto veranderen</label>
                 </div>
                 <div>
-                    <input class="input, hidden" id="profile" type="file" name="profile" accept="image/jpeg, image/png, image.jpg"
+                    <input class="input, hidden" id="inputfile" type="file" name="profile" accept="image/jpeg, image/png, image/jpg"
                            value="<?= htmlentities($users['profile_picture']) ?>"/>
                 </div>
                 <p class="Danger">
-                    <?= $errors['password'] ?? '' ?>
+                    <?= $errorProfilePicture ?? '' ?>
                 </p>
             </div>
             <?php if (isset($errors['loginFailed'])) { ?>

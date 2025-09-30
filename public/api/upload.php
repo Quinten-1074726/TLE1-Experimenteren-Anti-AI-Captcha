@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $visibility = $_POST['visibility'] ?? 'public';
+    $ai_generated = isset($_POST['ai_generated']) && $_POST['ai_generated'] == '1' ? 1 : 0;
     // Haal user_id uit sessie
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
@@ -83,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         move_uploaded_file($thumb['tmp_name'], $thumbPath);
 
         // In database zetten: sla alleen de bestandsnaam op
-        $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssisss', $title, $description, $thumbFileName, $user_id, $date, $videoFileName, $channel_name);
+        $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name, ai_generated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssisssi', $title, $description, $thumbFileName, $user_id, $date, $videoFileName, $channel_name, $ai_generated);
         if ($stmt->execute()) {
             header('Location: ../index.php');
             exit;

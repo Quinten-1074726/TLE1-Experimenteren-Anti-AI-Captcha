@@ -2,7 +2,6 @@
 session_start();
 require_once 'database/connection.php';
 
-
 /** @var mysqli $db */
 
 $sql = "SELECT * FROM videos ORDER BY id DESC";
@@ -31,6 +30,8 @@ if ($result) {
 <script>
     // json flags om speciale characters niet code te laten breken
     const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    // Admin check
+    const isAdmin = <?php echo isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1 ? 'true' : 'false'; ?>;
 </script>
 
 
@@ -44,8 +45,8 @@ if ($result) {
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/index.css">
-    <link rel="stylesheet" href="styling/style.css">
     <!-- script zorgt ervoor dat php data omgezet word naar json, wat javascript (in de head) gebruikt) -->
     <script>
         // json flags om speciale characters niet code te laten breken
@@ -59,6 +60,7 @@ if ($result) {
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
         rel="stylesheet">
 </head>
+
 
 
 <body>

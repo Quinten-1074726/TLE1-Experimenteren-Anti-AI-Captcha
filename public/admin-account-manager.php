@@ -93,6 +93,17 @@ if (isset($_POST['delete_video'])) {
     }
 }
 
+// AJAX update voor ai_generated van video
+if (isset($_POST['video_id']) && isset($_POST['ai_generated'])) {
+    $video_id = intval($_POST['video_id']);
+    $ai_generated = intval($_POST['ai_generated']);
+    $stmt = mysqli_prepare($db, "UPDATE videos SET ai_generated = ? WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "ii", $ai_generated, $video_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    // Geen output nodig, AJAX
+}
+
 // Gebruikers zoeken (dynamisch op username of email)
 $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 if ($search !== '') {
@@ -160,7 +171,7 @@ if ($search !== '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gebruikers</title>
-    <link rel="stylesheet" href="styling/style.css">
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/admin-account-dashboard.css">
     <script src="javascript/admin-account-manager.js" defer></script>
 </head>
@@ -205,7 +216,7 @@ if ($search !== '') {
                                     $videoResult = $videoStmt->get_result();
                                     if ($videoResult->num_rows > 0) {
                                     ?>
-                                        <form class="modal" action="" method="post" onsubmit="return confirmDeleteVideos(this)">
+                                        <form class="modal" action="" method="post">
                                             <input type="hidden" name="delete_video" value="1">
                                             <div class="admin-modal-video-grid">
                                             <?php while ($video = $videoResult->fetch_assoc()) { ?>
@@ -213,11 +224,12 @@ if ($search !== '') {
                                                     <input type="checkbox" name="video_ids[]" value="<?= htmlspecialchars($video['id']) ?>" style="display:none;">
                                                     <img class="admin-modal-video-thumbnail" src="../public/uploads/user-thumbnails/<?= htmlspecialchars($video['thumbnail']) ?>" alt="thumb">
                                                     <span><?= htmlspecialchars($video['video_title']) ?></span>
+                                                    <label>AI <input type="checkbox" class="ai-checkbox" data-video-id="<?= $video['id'] ?>" <?= $video['ai_generated'] ? 'checked' : '' ?> ></label>
                                                 </div>
                                             <?php } ?>
                                             </div>
                                             <div class="admin-modal-actions">
-                                                <button type="submit" name="delete_selected_videos">Verwijder geselecteerde video's</button>
+                                                <button type="submit" name="delete_selected_videos" onclick="return confirmAction('Weet je zeker dat je de geselecteerde video\'s wilt verwijderen?')">Verwijder geselecteerde video's</button>
                                             </div>
                                         </form>
                                     <?php

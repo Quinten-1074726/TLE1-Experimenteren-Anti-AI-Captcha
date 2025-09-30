@@ -1,9 +1,51 @@
 // Client-side file size check for video upload (max 8MB)
 document.addEventListener('DOMContentLoaded', function() {
+  // --- Video main preview logic ---
+  const videoMainPreview = document.getElementById('videoMainPreview');
   const uploadForm = document.getElementById('uploadForm');
   const videoInput = document.getElementById('videoInput');
   const videoDrop = document.getElementById('videoDrop');
   let errorMsg = null;
+
+    // --- Thumbnail preview logic ---
+    const thumbInput = document.getElementById('thumbInput');
+    const thumbDrop = document.getElementById('thumbDrop');
+    const thumbPreview = document.getElementById('thumbPreview');
+    const thumbDropText = thumbDrop.querySelector('span');
+
+    thumbInput.addEventListener('change', function(e) {
+      const file = thumbInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          thumbPreview.hidden = true;
+          thumbPreview.onload = function() {
+            thumbPreview.hidden = false;
+            if (thumbDropText) thumbDropText.style.display = 'none';
+          };
+          thumbPreview.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        thumbPreview.src = '';
+        thumbPreview.hidden = true;
+        if (thumbDropText) thumbDropText.style.display = '';
+      }
+    });
+
+    // Als thumbnail input al een bestand heeft bij laden (terug navigeren)
+    if (thumbInput.files && thumbInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        thumbPreview.hidden = true;
+        thumbPreview.onload = function() {
+          thumbPreview.hidden = false;
+          if (thumbDropText) thumbDropText.style.display = 'none';
+        };
+        thumbPreview.src = ev.target.result;
+      };
+      reader.readAsDataURL(thumbInput.files[0]);
+    }
 
   function showError(message) {
     if (!errorMsg) {
@@ -73,13 +115,39 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       selectedSlotIdx = null;
 
+      // Video preview in rechtervak
+      if (videoMainPreview) {
+        const video = document.createElement('video');
+        video.preload = 'auto';
+        video.muted = true;
+        video.src = URL.createObjectURL(file);
+        video.style.display = 'none';
+        document.body.appendChild(video);
+        function showMainPreview() {
+          // Wacht 50ms zodat het frame goed geladen is
+          setTimeout(function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            videoMainPreview.src = canvas.toDataURL('image/jpeg');
+            videoMainPreview.style.display = 'block';
+            canvas.remove();
+            document.body.removeChild(video);
+            video.removeEventListener('loadeddata', showMainPreview);
+          }, 50);
+        }
+        video.addEventListener('loadeddata', showMainPreview);
+      }
+
+      // Frames voor thumbnails
       const video = document.createElement('video');
       video.preload = 'auto';
       video.muted = true;
       video.src = URL.createObjectURL(file);
       video.style.display = 'none';
       document.body.appendChild(video);
-
       video.addEventListener('loadedmetadata', function() {
         const duration = video.duration;
         if (!duration || duration < 1) {
@@ -96,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           video.currentTime = times[idx];
           video.addEventListener('seeked', function handler() {
-            // Canvas maken
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -104,13 +171,15 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const img = document.getElementById('videoPreview' + (idx + 1));
             if (img) {
+              img.style.display = 'none';
+              img.onload = function() {
+                img.style.display = 'block';
+              };
               img.src = canvas.toDataURL('image/jpeg');
-              img.style.display = 'block';
             }
             canvas.remove();
             video.removeEventListener('seeked', handler);
             idx++;
-            // Pak pas het volgende frame als deze klaar is
             setTimeout(grabNextFrame, 200);
           });
         }

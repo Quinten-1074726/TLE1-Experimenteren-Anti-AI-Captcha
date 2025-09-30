@@ -68,12 +68,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="private">Privé</option>
           </select>
         </div>
+        <div class="upload-field">
+          <label class="upload-label" style="display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" name="ai_generated" value="1" style="width:18px;height:18px;">
+            <span>AI-gegenereerde video?</span>
+          </label>
+        </div>
       </div>
       <!-- RECHTERKOLOM -->
       <div class="upload-col upload-col-right">
         <span class="upload-label upload-strong">Upload hier je video</span>
         <label class="upload-video-drop upload-dropzone" id="videoDrop" tabindex="0">
           <input type="file" id="videoInput" name="video" accept="video/mp4,video/webm" hidden required>
+          <img id="videoMainPreview" alt="Video preview" style="display:none;max-width:100%;max-height:320px;border-radius:12px;margin-bottom:12px;object-fit:cover;" />
           <div class="upload-dz-inner">
             <p>Sleep of klik</p>
             <small>MP4/WebM - max 8MB</small>

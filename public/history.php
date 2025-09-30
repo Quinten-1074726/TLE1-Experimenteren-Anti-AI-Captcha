@@ -15,13 +15,11 @@ $videos = [
 <head>
     <meta charset="UTF-8">
     <title>Video History</title>
-
-    <!-- CSS-bestanden importeren -->
+    <?php include "defaultsettings.php" ?>
+    <!-- page-specific CSS -->
     <link rel="stylesheet" href="styling/channel.css">
     <link rel="stylesheet" href="styling/crud.css">
-    <link rel="stylesheet" href="styling/header.css">
     <link rel="stylesheet" href="styling/index.css">
-    <link rel="stylesheet" href="styling/style.css">
 
     <style>
         /* Extra styling voor de video thumbnails grid */

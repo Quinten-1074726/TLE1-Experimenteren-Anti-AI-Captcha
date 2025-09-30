@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
 
 } else {
-    header("Location: 'index.php'");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -34,11 +34,11 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/channel.css">
     <link rel="stylesheet" href="styling/index.css" >
-    <link rel="stylesheet" href="styling/style.css" >
     <script src="javascript/channel.js" defer></script>
     <title>Channel page</title>
 </head>

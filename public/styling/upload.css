@@ -1,7 +1,7 @@
 /* Highlight selected thumbnail slot */
 .selected-thumb-slot {
   outline: 3px solid #2196F3;
-  box-shadow: 0 0 8px #2196F3;
+  border: 3px solid #2196F3;
 }
 .upload-col-left input[type="text"] {
   width: 100%;
@@ -76,7 +76,6 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding-right: 12px;
 }
 .upload-col-right {
   display: flex;
@@ -139,10 +138,9 @@
   gap: 16px;
 }
 .upload-thumb-slot{
-  height: 96px;
+  min-height: 81.1167px;
   background: #626262;
   border: 1px solid var(--border);
-  border-radius: 12px;
 }
 .upload-thumb-slot.is-drop{
   background: #414141;

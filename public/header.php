@@ -1,8 +1,3 @@
-<head>
-    <!-- deze shit werkt niet bro ik heb ze allemaal toegevoegd -->
-    <link rel="stylesheet" href="styling/header.css">
-</head>
-
 <header>
     <nav>
         <h1> <a href="index.php"> StreamHub </a></h1>

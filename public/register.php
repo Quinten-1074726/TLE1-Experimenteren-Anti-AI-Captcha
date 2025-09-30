@@ -2,12 +2,11 @@
 if (!isset($_COOKIE['captcha_pass'])) {
     header('Location: index.php');
     exit;
-} else {
-    // Invalidate the one-time cookie
-    setcookie('captcha_pass', '', time() - 3600, '/');
 }
 
 if (isset($_POST['submit'])) {
+    // Verwijder captcha cookie pas na succesvolle registratie
+    setcookie('captcha_pass', '', time() - 3600, '/');
     /** @var mysqli $db */
     require_once "./database/connection.php";
     $errors = [];

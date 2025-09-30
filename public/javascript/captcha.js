@@ -21,30 +21,56 @@ const ICONS = [
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 const hintCheckbox = document.getElementById('hint');
-const resultEl = document.getElementById('result');
+function getResultEl() {
+  return document.getElementById('result');
+}
 const tolEl = document.getElementById('tol');
+
+// tolerance: how close user must be to the reference line (in px)
+let tolerance = 18; // default value, can be changed by keyboard +/-
+
+
+// Define targetArea for icon placement
+const targetArea = { x: 40, y: 40, w: canvas.width - 80, h: canvas.height - 80 };
+
+// Result box logic: only show when there is content
+function ensureResultBox(text) {
+  let resultEl = getResultEl();
+  if (!resultEl) {
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#276BD2';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
+    document.querySelector('.controls').prepend(resultEl);
+  }
+  resultEl.textContent = text || '';
+  resultEl.style.display = text ? 'block' : 'none';
+}
+
+
+// user drawing data (declare once, top-level)
+let drawing = false;
+let userSegments = [];
+let currentSegment = [];
+let drawingStartTime = null;
 
 let chosenPath = null; // SVG path string
 let chosenName = null; // name of the icon
 let path2d = null;     // Path2D built from chosenPath
 let transform = { sx: 1, sy: 1, tx: 0, ty: 0 };
 
-// user drawing data
-let drawing = false;
-let userSegments = [];
-let currentSegment = [];
-let drawingStartTime = null;
-
-// parameters
-let tolerance = 18; // pixels
-const targetArea = { x: 10, y: 10, w: 400, h: 400 }; // where to fit icon within canvas
-
-// helpers: pick random icon
+// Utility to pick a random icon
 function pickIcon() {
   const idx = Math.floor(Math.random() * ICONS.length);
   return { path: ICONS[idx], name: ICON_NAMES[idx] };
 }
 
+// ...removed duplicate block...
 // compute bbox using an offscreen SVG element
 function computeBBox(pathD) {
   const svgNS = 'http://www.w3.org/2000/svg';
@@ -62,7 +88,7 @@ function computeBBox(pathD) {
 
 function setNewIcon() {
   // reset result and choose a new icon
-  resultEl.textContent = '';
+  ensureResultBox('');
   const icon = pickIcon();
   chosenPath = icon.path;
   chosenName = icon.name;
@@ -91,6 +117,7 @@ function clearUser() {
   userSegments = [];
   currentSegment = [];
   drawingStartTime = null;
+  ensureResultBox('');
   redrawAll();
 }
 
@@ -192,7 +219,22 @@ function checkDrawing() {
   if (!path2d) return;
   // Verzamel alle punten van alle segmenten
   let allPoints = userSegments.flat().concat(currentSegment);
-  if (allPoints.length < 6) { resultEl.textContent = 'Teken iets voordat je controleert.'; return; }
+  if (allPoints.length < 6) {
+    const resultEl = getResultEl();
+    if (resultEl) resultEl.remove();
+    const newResultEl = document.createElement('div');
+    newResultEl.id = 'result';
+    newResultEl.style.fontWeight = '700';
+    newResultEl.style.marginBottom = '12px';
+    newResultEl.style.color = '#276BD2';
+    newResultEl.style.background = 'rgba(240,247,255,0.08)';
+    newResultEl.style.borderRadius = '10px';
+    newResultEl.style.padding = '8px 18px';
+    newResultEl.style.minHeight = '28px';
+    newResultEl.textContent = 'Teken iets voordat je controleert.';
+    document.querySelector('.controls').prepend(newResultEl);
+  return;
+  }
 
   ctx.setTransform(transform.sx, 0, 0, transform.sy, transform.tx, transform.ty);
   ctx.lineWidth = tolerance * 2 / transform.sx;
@@ -300,25 +342,55 @@ function checkDrawing() {
 
   const humanScore = calculateHumanScore(allPoints);
 
+  let resultEl = getResultEl();
   if (score >= 0.72 && refScore >= 0.8 && humanScore >= 0.2) {
     // Set one-time pass cookie (5 minute validity)
     const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString();
     document.cookie = `captcha_pass=1; Expires=${expires}; Path=/; SameSite=Lax`;
-    resultEl.textContent = `✅ Geslaagd — ${Math.round(score * 100)}% op lijn, ${Math.round(refScore * 100)}% gevolgd.`;
+    if (resultEl) resultEl.remove();
+    const msg = '✅ Goed gedaan! Je hebt de captcha gehaald.';
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#276BD2';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
+    resultEl.textContent = msg;
+    document.querySelector('.controls').prepend(resultEl);
     // redirect after small delay
     setTimeout(() => {
-      resultEl.textContent = 'Captcha voltooid. Doorsturen...';
+      const el2 = getResultEl();
+      if (el2) {
+        el2.textContent = 'Captcha voltooid. Doorsturen...';
+        el2.style.visibility = el2.textContent ? 'visible' : 'hidden';
+      }
       setTimeout(() => { window.location.href = getRedirectTarget(); }, 900);
     }, 800);
   } else {
+    // Always show feedback for failed attempts
+    if (resultEl) resultEl.remove();
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#ef4444';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
     resultEl.textContent = `❌ Niet goed genoeg — ${Math.round(score * 100)}% op lijn, ${Math.round(refScore * 100)}% gevolgd.`;
+    document.querySelector('.controls').prepend(resultEl);
+    resultEl.style.visibility = 'visible';
   }
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 // --- Redirect Support ---
-const allowedRedirects = new Set(['login.php', 'register.php']);
+const allowedRedirects = new Set(['login.php', 'register.php', 'upload.php']);
 function getRedirectTarget() {
   const p = new URLSearchParams(window.location.search);
   let target = p.get('redirect') || 'login.php';
@@ -336,6 +408,11 @@ hintCheckbox.addEventListener('change', () => { redrawAll(); });
 window.addEventListener('keydown', (e) => {
   if (e.key === '+' || e.key === '=') { tolerance = Math.min(60, tolerance + 2); tolEl.textContent = tolerance; }
   if (e.key === '-') { tolerance = Math.max(4, tolerance - 2); tolEl.textContent = tolerance; }
+});
+
+// Load initial icon on page load
+window.addEventListener('load', () => {
+  setNewIcon();
 });
 
 // init

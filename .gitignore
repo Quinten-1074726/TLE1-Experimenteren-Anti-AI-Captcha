@@ -3,3 +3,5 @@
 /storage/uploads/
 .env
 public/database/connection.php
+public/uploads/user-thumbnails/thumb_peter.jpg
+public/uploads/user-videos/Family-Guy-S07E02-I-Dream-of-Jesus-Uncensored.mp4

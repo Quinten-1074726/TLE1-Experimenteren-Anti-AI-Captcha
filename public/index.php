@@ -65,7 +65,6 @@ $videos = filter_videos($db, $s, 60);
       <?php if (isset($_SESSION['loggedInUser'])): ?>
         <a href="channel.php">My channel</a>
         <a href="upload.php" class="btn">Video uploaden</a>
-        <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
         <a href="logout.php">Logout</a>
       <?php else: ?>
         <a href="captcha1.php?redirect=login.php">Login</a>

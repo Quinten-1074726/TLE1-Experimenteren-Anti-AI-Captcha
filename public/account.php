@@ -4,15 +4,8 @@
 //pfp
 //details voor edit pagina acc
 
-$host = '127.0.0.1';
-$username = 'root';
-$password = '';
-$database = 'tle1';
-
-$db = mysqli_connect($host, $username, $password, $database)
-or die('Error: ' . mysqli_connect_error());
-
 session_start();
+require_once 'database/connection.php';
 
 if (!isset($_SESSION['loggedInUser'])) {
     header('Location: login.php');
@@ -34,16 +27,33 @@ mysqli_close($db);
 <html lang="en">
 <head>
     <?php include "defaultsettings.php" ?>
-    <title>Document</title>
+    <link rel="stylesheet" href="styling/crud.css">
+    <title>Account</title>
 </head>
 <body>
-<h1>Account</h1>
-<h2><?= $users['username'] ?></h2>
-<h2><?= $users['email'] ?></h2>
-<a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
-
-
-
-<a href="index.php?id=<?= $users['id'] ?>">&laquo; Go back to homepage</a>
+<section>
+    <div class="column" style="width: 65vw; margin: 10vh auto">
+        <p class="title" style="font-size: var(--font-header); font-weight: bold">Account</p>
+        <div class="form-column" style="margin: 10px auto 5px auto">
+            <div>
+                <label class="label">Gebruikersnaam</label>
+            </div>
+            <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
+                <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['username']) ?></p>
+            </div>
+        </div>
+        <div class="form-column" style="margin: 5px auto 10px auto">
+            <div>
+                <label class="label">E-mailadres</label>
+            </div>
+            <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
+                <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['email']) ?></p>
+            </div>
+        </div>
+        <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;" href="editaccount.php?id=<?= $users['id'] ?>">Bewerk account</a>
+        <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;" href="logout.php">Uitloggen</a>
+        <a href="index.php" style="margin-bottom: 5vh; display: inline-block; text-align: center;">&laquo; Ga terug naar homepage</a>
+    </div>
+</section>
 </body>
 </html>

@@ -31,9 +31,10 @@
     <?php
         if (session_status() === PHP_SESSION_NONE) session_start();
         if (!empty($_SESSION['loggedIn'])) {
-        echo '<a href="account.php" id="login_button">Account</a>';
+            $userId = $_SESSION['loggedInUser']['id'];
+            echo "<a href='account.php?id=$userId'>Account</a>";
         } else {
-        echo '<a href="captcha1.php?redirect=login.php" id="login_button">Login</a>';
+            echo '<a href="captcha1.php?redirect=login.php" id="login_button">Login</a>';
         }
     ?>
     </nav>

@@ -1,18 +1,4 @@
 <?php
-// public/app/video_service.php
-
-/**
- * Haalt video's op met optionele filters.
- *
- * Opties ($opts):
- * - 'search'  : string  (zoekt in video_title & channel_name, LIKE %term%)
- * - 'ai_only' : '1' => alleen AI, '0' => geen AI, anders => geen filter
- * - 'sort'    : 'new' (default) of 'views'
- * - 'limit'   : int (default 30)
- * - 'offset'  : int (default 0)
- *
- * Retourneert: [ 'videos' => array ]
- */
 function get_videos(mysqli $db, array $opts = []): array
 {
     $search = isset($opts['search']) ? trim((string)$opts['search']) : '';
@@ -33,7 +19,7 @@ function get_videos(mysqli $db, array $opts = []): array
         $params[] = $like;
     }
 
-    // ai_only interpretatie: '1' => alleen AI, '0' => geen AI, anders negeren
+    // '1' => alleen AI, '0' => geen AI
     if ($aiOnly === '1') {
         $where[] = 'ai_generated = 1';
     } elseif ($aiOnly === '0') {
@@ -45,7 +31,7 @@ function get_videos(mysqli $db, array $opts = []): array
         $whereSql = 'WHERE ' . implode(' AND ', $where);
     }
 
-    $orderBy = 'ORDER BY id DESC'; // default 'new'
+    $orderBy = 'ORDER BY id DESC'; 
     if ($sort === 'views') {
         $orderBy = 'ORDER BY views DESC, id DESC';
     }

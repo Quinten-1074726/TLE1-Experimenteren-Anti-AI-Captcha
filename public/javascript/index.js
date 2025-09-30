@@ -3,33 +3,72 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".right_side");
   const aiFilterCheckbox = document.getElementById("ai_filter");
   const loadMoreWrap = document.querySelector(".flex_right_side");
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchTerm = urlParams.get('s') || '';
+  const searchInput = document.getElementById("site-search");
 
   const perPage = 9;
   let offset = 0;
   let hasMore = true;
-  let currentAiOnly = ''; // '', '1', '0'
+  let currentAiOnly = '';
+  let currentQuery = new URLSearchParams(window.location.search).get('s') || '';
 
-  // UI: button
+  // Abort vorige fetch
+  let inFlightController = null;
+
+  // UI: Load more
   const loadMoreBtn = document.createElement("button");
   loadMoreBtn.innerText = "Load More";
-  loadMoreBtn.addEventListener("click", fetchAndRender);
+  loadMoreBtn.addEventListener("click", () => fetchAndRender(false));
   loadMoreWrap.appendChild(loadMoreBtn);
 
-  function getAiOnlyValue() {
-    // interpretatie: aangevinkt = alleen AI
-    return aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '';
+  // PREVIEW placeholders
+  const previewHTML = (n = perPage) =>
+    Array.from({ length: n }, () => `
+      <div class="vid-card preview_card">
+        <div class="thumb"></div>
+        <div class="line title"></div>
+        <div class="line meta"></div>
+      </div>
+    `).join('');
+
+  function applyFadeIn() {
+    container.classList.remove('fade-in');
+    // force reflow zodat animatie herstart
+    // eslint-disable-next-line no-unused-expressions
+    container.offsetWidth;
+    container.classList.add('fade-in');
   }
 
-  async function fetchAndRender() {
+  function getAiOnlyValue() {
+    return aiFilterCheckbox?.checked ? '1' : '';
+  }
+
+  function buildCardsHTML(list) {
+    return list.map(video => `
+      <div class="vid-card">
+        <a href="./video.php?id=${video.id}">
+          <img class="thumb-img" src="uploads/user-thumbnails/${video.thumbnail || ''}" alt="${video.video_title || 'video thumbnail'}">
+        </a>
+        <h2>${video.video_title || ''}</h2>
+        <p>${video.channel_name || ''}</p>
+      </div>
+    `).join('');
+  }
+
+  async function fetchAndRender(reset = false) {
+    if (reset) {
+      offset = 0;
+      hasMore = true;
+      container.innerHTML = previewHTML(6); // <-- preview_cards tonen
+      loadMoreBtn.style.display = "none";
+    }
     if (!hasMore) return;
 
-    const ai_only = currentAiOnly;
+    inFlightController?.abort();
+    inFlightController = new AbortController();
+
     const qs = new URLSearchParams({
-      s: searchTerm,
-      ai_only,
+      s: currentQuery,
+      ai_only: currentAiOnly,
       sort: 'new',
       limit: String(perPage),
       offset: String(offset),
@@ -37,13 +76,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const res = await fetch(`api/videos.php?${qs.toString()}`, {
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json' },
+        signal: inFlightController.signal
       });
       if (!res.ok) throw new Error('Netwerkfout');
       const data = await res.json();
 
       const list = Array.isArray(data.videos) ? data.videos : [];
-      list.forEach(renderVideoCard);
+
+      if (offset === 0) {
+        container.innerHTML = buildCardsHTML(list);
+        applyFadeIn();
+      } else {
+        container.insertAdjacentHTML('beforeend', buildCardsHTML(list));
+      }
 
       offset += list.length;
       if (list.length < perPage) {
@@ -53,58 +99,42 @@ document.addEventListener("DOMContentLoaded", () => {
         loadMoreBtn.style.display = "inline-block";
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.error(err);
-      container.insertAdjacentHTML('beforeend', '<p style="color:red">Fout bij laden van videos.</p>');
+      container.innerHTML = '<p style="color:red">Fout bij laden van videos.</p>';
       hasMore = false;
       loadMoreBtn.style.display = "none";
     }
   }
 
-  function resetAndFetch() {
-    container.innerHTML = "";
-    offset = 0;
-    hasMore = true;
+  // 120ms debounce
+  let typeTimer;
+  function scheduleSearch() {
+    clearTimeout(typeTimer);
+    typeTimer = setTimeout(() => {
+      const url = new URL(window.location);
+      if (currentQuery) url.searchParams.set('s', currentQuery);
+      else url.searchParams.delete('s');
+      window.history.replaceState({}, '', url);
+      fetchAndRender(true);
+    }, 120);
+  }
+
+  // Events
+  aiFilterCheckbox?.addEventListener("change", () => {
     currentAiOnly = getAiOnlyValue();
-    loadMoreBtn.style.display = "none";
-    fetchAndRender();
+    fetchAndRender(true);
+  });
+
+  if (searchInput) {
+    searchInput.value = currentQuery;
+    searchInput.addEventListener('input', () => {
+      currentQuery = searchInput.value.trim();
+      scheduleSearch();
+    });
   }
 
-  function renderVideoCard(video) {
-    const wrap = document.createElement("div");
-    wrap.style.display = "flex";
-    wrap.style.flexDirection = "column";
-    wrap.style.margin = "2vh 0.5vw";
-    container.appendChild(wrap);
-
-    const a = document.createElement("a");
-    a.href = "./video.php?id=" + video.id;
-    wrap.appendChild(a);
-
-    const img = document.createElement("img");
-    // Let op pad: vanaf /public/index.php is dit goed:
-    img.src = "uploads/user-thumbnails/" + (video.thumbnail || "");
-    img.alt = video.video_title || "video thumbnail";
-    img.style.width = "350px";
-    img.style.height = "200px";
-    img.style.borderRadius = "5px";
-    img.style.objectFit = "cover";
-    a.appendChild(img);
-
-    const h2 = document.createElement("h2");
-    h2.innerText = video.video_title || '';
-    wrap.appendChild(h2);
-
-    const p = document.createElement("p");
-    p.innerText = video.channel_name || '';
-    wrap.appendChild(p);
-  }
-
-  // events
-  if (aiFilterCheckbox) {
-    aiFilterCheckbox.addEventListener("change", resetAndFetch);
-  }
-
-  // initial
+  // Start
   currentAiOnly = getAiOnlyValue();
-  resetAndFetch();
+  fetchAndRender(true);
 });

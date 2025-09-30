@@ -83,7 +83,6 @@ $stmt->close();
 
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
-                <a>Subcriptions</a>
                 <a href="channel.php">My channel</a>
 
                 <?php if (isset($_SESSION['loggedInUser'])): ?>
@@ -97,12 +96,7 @@ $stmt->close();
 
 
             </div>
-            <div>
-                <!-- channels here -->
-                <a>channel 1</a>
-                <a>channel 123</a>
 
-            </div>
         </div>
         <!-- right -->
 

@@ -60,8 +60,6 @@ $videos = filter_videos($db, $s, 60);
 
       <a href="index.php">Home</a>
       <a href="trending.php">Trending</a>
-      <a>Subcriptions</a>
-
       <?php if (isset($_SESSION['loggedInUser'])): ?>
         <a href="channel.php">My channel</a>
         <a href="captcha1.php?redirect=upload.php" class="btn">Video uploaden</a>
@@ -71,11 +69,7 @@ $videos = filter_videos($db, $s, 60);
       <?php endif; ?>
     </div>
 
-    <div>
-      <!-- channels here -->
-      <a>channel 1</a>
-      <a>channel 123</a>
-    </div>
+
   </div>
 
   <!-- right -->

@@ -9,7 +9,6 @@
     <title>Document</title>
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/index.css">
-    <script src="javascript/index.js"></script>
     <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/trending.js"></script>
     <!-- font -->
@@ -42,8 +41,6 @@
 
                 <a href="index.php">Home</a>
                 <a href="trending.php">Trending</a>
-                <a>Subcriptions</a>
-
                 <?php if (isset($_SESSION['loggedInUser'])): ?>
                     <a href="channel.php">My channel</a>
                     <a href="upload.php" class="btn">Video uploaden</a>
@@ -56,12 +53,7 @@
 
 
             </div>
-            <div>
-                <!-- channels here -->
-                <a>channel 1</a>
-                <a>channel 123</a>
 
-            </div>
         </div>
         <!-- right -->
         <div class="flex_right_side">

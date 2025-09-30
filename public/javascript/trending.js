@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMoreButtonSide.appendChild(loadMoreBtn);
 
     async function fetchVideos() {
-        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '0' : '1';
+        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
         const url = `api/videos.php?ai_only=${aiOnly}`;
         try {
             const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
 
             currentVideos = Array.isArray(data.videos) ? data.videos : [];
+            // Sort by views descending before displaying
+            currentVideos.sort((a, b) => {
+                const av = parseInt(a.views || 0, 10);
+                const bv = parseInt(b.views || 0, 10);
+                return bv - av; // highest first
+            });
             currentIndex = 0;
             container.innerHTML = "";
             loadMoreBtn.style.display = currentVideos.length > 0 ? "inline-block" : "none";

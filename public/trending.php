@@ -10,6 +10,8 @@
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/index.css">
     <script src="javascript/index.js"></script>
+    <link rel="stylesheet" href="styling/style.css">
+    <script src="javascript/trending.js"></script>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

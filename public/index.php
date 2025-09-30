@@ -72,11 +72,7 @@ $videos = filter_videos($db, $s, 60);
       <?php endif; ?>
     </div>
 
-    <div>
-      <!-- channels here -->
-      <a>channel 1</a>
-      <a>channel 123</a>
-    </div>
+
   </div>
 
   <!-- right -->

@@ -55,12 +55,7 @@
 
 
             </div>
-            <div>
-                <!-- channels here -->
-                <a href="#">pewdiepie</a>
-                <a href="#">MrBeast</a>
 
-            </div>
         </div>
         <!-- right -->
         <div class="flex_right_side">

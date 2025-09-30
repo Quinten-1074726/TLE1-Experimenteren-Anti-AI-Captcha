@@ -97,12 +97,7 @@ $stmt->close();
 
 
             </div>
-            <div>
-                <!-- channels here -->
-                <a>channel 1</a>
-                <a>channel 123</a>
 
-            </div>
         </div>
         <!-- right -->
 

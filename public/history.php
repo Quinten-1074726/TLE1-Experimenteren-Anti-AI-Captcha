@@ -25,6 +25,11 @@ if (isset($_SESSION['loggedInUser'])) {
 <html lang="en">
 
 <head>
+      <script>
+        // json flags om speciale characters niet code te laten breken
+        const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+        console.log(videos);
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -89,13 +94,10 @@ if (isset($_SESSION['loggedInUser'])) {
             <?php if (isset($_SESSION['loggedInUser'])): ?>
                 <?php if (!empty($videos)): ?>
                     <?php foreach ($videos as $video): ?>
-                        <div class="video-card">
-                            <h3><?= htmlspecialchars($video['title']) ?></h3>
-                            <p><?= htmlspecialchars($video['description']) ?></p>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>Je hebt nog geen bekeken video's in je geschiedenis.</p>
+                    <p class="history-message"Je hebt nog geen bekeken video in je geschiedenis.</p>
                 <?php endif; ?>
             <?php else: ?>
                 <p class="history-message">Je moet inloggen om je geschiedenis te zien.</p>

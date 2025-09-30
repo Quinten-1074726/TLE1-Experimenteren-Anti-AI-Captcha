@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMoreButtonSide.appendChild(loadMoreBtn);
 
     async function fetchVideos() {
-        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '0' : '1';
-        const url = `api/videos.php?ai_only=${aiOnly}`;
+        // New logic: unchecked = all, checked = only non AI generated
+        const nonAiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
+        const url = `api/videos.php?non_ai_only=${nonAiOnly}`;
         try {
             const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
             if (!res.ok) throw new Error('Network response was not ok');
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (currentVideos.length === 0) {
                 const emptyMsg = document.createElement("p");
-                emptyMsg.textContent = aiOnly === '1' ? 'Geen AI gegenereerde videos gevonden.' : 'Geen videos gevonden.';
+                emptyMsg.textContent = nonAiOnly === '1' ? 'Geen niet-AI videos gevonden.' : 'Geen videos gevonden.';
                 container.appendChild(emptyMsg);
                 return;
             }

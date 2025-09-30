@@ -2,13 +2,6 @@
 // 1. connectie met database
 require_once 'database/connection.php';
 
-$host = '127.0.0.1';
-$username = 'root';
-$password = '';
-$database = 'tle1-2';
-
-$db = mysqli_connect($host, $username, $password, $database)
-or die('Error: ' . mysqli_connect_error());
 
 // 2. Haal ID op
 $id = $_GET['id'] ?? null;
@@ -37,7 +30,6 @@ if (isset($_POST['submit'])) {
     // Escapen
     $username = mysqli_real_escape_string($db, $_POST['username'] ?? '');
     $email = mysqli_real_escape_string($db, $_POST['email'] ?? '');
-    $password = mysqli_real_escape_string($db, $_POST['password'] ?? '');
     $id = (int)($_POST['updateId'] ?? 0);
 
     // Validatie
@@ -47,15 +39,12 @@ if (isset($_POST['submit'])) {
     if ($email === '') {
         $errorEmail = 'Vul een email in';
     }
-    if ($password === '') {
-        $errorPassword = 'Vul een wachtwoord in';
-    }
 
     // Alles ingevuld? Dan updaten
     if ($errorName === '' && $errorEmail === '' && $errorPassword === '') {
         $query = "
             UPDATE users 
-            SET username='$username', email='$email', password='$password'
+            SET username='$username', email='$email'
             WHERE id = $id";
         mysqli_query($db, $query) or die('Error: ' . mysqli_error($db));
 
@@ -77,52 +66,46 @@ mysqli_close($db);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <?php include "defaultsettings.php" ?>
+    <link rel="stylesheet" href="styling/crud.css">
     <title>Account bewerken</title>
 </head>
 <body>
-<div class="container px-4">
-    <h1 class="title mt-4">Edit account</h1>
-
-    <section class="columns">
-        <form class="column is-6" action="" method="post">
-
-            <div class="field">
-                <label class="label" for="username">Name</label>
-                <div class="control">
+<section>
+    <form action="" method="post">
+        <div class="column" style="width: 65vw; margin: 10vh auto">
+            <p class="title" style="font-size: var(--font-header); font-weight: bold">Edit account</p>
+            <p class="title" style="font-size: var(--font-paragraph)">Bewerk je accountgegevens</p>
+            <div class="form-column" style="margin: 10px auto 5px auto">
+                <div>
+                    <label class="label" for="username">Name</label>
+                </div>
+                <div>
                     <input class="input" id="username" type="text" name="username"
                            value="<?= htmlentities($users['username']) ?>"/>
                 </div>
-                <p class="help is-danger"><?= $errorName ?? '' ?></p>
+                <p class="Danger">
+                    <?= $errorName ?? '' ?>
+                </p>
             </div>
-
-            <div class="field">
-                <label class="label" for="email">Email</label>
-                <div class="control">
+            <div class="form-column" style="margin: 5px auto 10px auto">
+                <div>
+                    <label class="label" for="email">Email</label>
+                </div>
+                <div>
                     <input class="input" id="email" type="email" name="email"
                            value="<?= htmlentities($users['email']) ?>"/>
                 </div>
-                <p class="help is-danger"><?= $errorEmail ?? '' ?></p>
+                <p class="Danger">
+                    <?= $errorEmail ?? '' ?>
+                </p>
             </div>
-
-            <div class="field">
-                <label class="label" for="password">Password</label>
-                <div class="control">
-                    <input class="input" id="password" type="text" name="password"
-                           value="<?= htmlentities($users['password']) ?>"/>
-                </div>
-                <p class="help is-danger"><?= $errorPassword ?? '' ?></p>
-            </div>
-
-            <div class="field">
-                <button class="button is-link is-fullwidth" type="submit" name="submit">Save</button>
-            </div>
-
+            <!-- Submit -->
+            <button class="link-button" style="margin-bottom: 5vh" type="submit" name="submit">Save</button>
+            <a href="account.php?id=<?= $users['id'] ?>" style="margin-bottom: 5vh; display: inline-block; text-align: center;">&laquo; Go back to account</a>
             <input type="hidden" name="updateId" value="<?= $users['id'] ?>">
-        </form>
-    </section>
-
-    <a href="account.php?id=<?= $users['id'] ?>">&laquo; Go back to account</a>
-</div>
+        </div>
+    </form>
+</section>
 </body>
 </html>

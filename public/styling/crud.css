@@ -25,7 +25,8 @@ input {
     padding: 5px;
 }
 
-button {
+button,
+.button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,6 +37,7 @@ button {
     transition: ease-in-out 0.05s;
 }
 
-button:hover {
+button:hover,
+.button:hover {
     color: var(--colors-text-hover);
 }

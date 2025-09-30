@@ -33,7 +33,7 @@ html.theme-light {
     --colors-background: #FFFFFF;
     --colors-background-gray: #ADB5BD;
     --colors-accent: #FFFFFF;
-    --colors-slider: #6c757d;
+    --colors-slider: #F00;
     --colors-main: #70b5ff;
     --colors-content-light: #FFFFFF;
     --colors-content-dark: #F8F9FA;
@@ -97,7 +97,7 @@ html.theme-cold {
 /* Andere thema nog niet bedacht */
 html.theme-warm {
     --colors-background-light: #FFF8DC;
-    --colors-background-dark: linear-gradient(180deg, #8B4513 0%, #D2691E 100%);
+    --colors-background-dark: linear-gradient(180deg, #4b311f 0%, #31261e 100%);
     --colors-background: #654321;
     --colors-background-gray: #DEB887;
     --colors-accent: #F5F5DC;
@@ -109,6 +109,22 @@ html.theme-warm {
     --colors-text: #a27242;
     --colors-text-dark: #8B4513;
     --colors-text-hover: #FF6347;
+}
+
+html.theme-high-contrast {
+    --colors-background-light: #000000;
+    --colors-background-dark: #000000;
+    --colors-background: #000000;
+    --colors-background-gray: #333333;
+    --colors-accent: #000000;
+    --colors-slider: #F00;
+    --colors-main: #00FF00;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #000000;
+    --colors-text-light: #FFFFFF;
+    --colors-text: #FFFFFF;
+    --colors-text-dark: #FFFFFF;
+    --colors-text-hover: #FFFF00;
 }
 
 .poppins-thin {

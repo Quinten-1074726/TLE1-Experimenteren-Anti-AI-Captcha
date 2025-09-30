@@ -80,8 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Define themes
     const themes = [
-        { key: 'default', name: 'Standaard (Grijs)' },
+        { key: 'default', name: 'Standaard (donkere modus)' },
         { key: 'light', name: 'Licht' },
+        { key: 'high-contrast', name: 'Hoog Contrast' },
         { key: 'gum', name: 'Kauwgom' },
         { key: 'tropical', name: 'Tropisch' },
         { key: 'cold', name: 'Koud' },

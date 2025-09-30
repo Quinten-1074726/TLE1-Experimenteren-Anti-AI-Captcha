@@ -32,7 +32,7 @@
                     <label id="ai_filter_label">
                         AI Filter
                         <span class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" name="ai_filter" id="ai_filter" value="1">
                             <span class="slider round"></span>
                         </span>
                     </label>

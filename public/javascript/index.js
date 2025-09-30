@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMoreButtonSide.appendChild(loadMoreBtn);
 
     async function fetchVideos() {
-        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '0' : '1';
+        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
         const url = `api/videos.php?ai_only=${aiOnly}`;
         try {
             const res = await fetch(url, { headers: { 'Accept': 'application/json' } });

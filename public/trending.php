@@ -9,7 +9,6 @@
     <title>Document</title>
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/index.css">
-    <script src="javascript/index.js"></script>
     <link rel="stylesheet" href="styling/style.css">
     <script src="javascript/trending.js"></script>
     <!-- font -->
@@ -58,8 +57,8 @@
             </div>
             <div>
                 <!-- channels here -->
-                <a>channel 1</a>
-                <a>channel 123</a>
+                <a href="#">pewdiepie</a>
+                <a href="#">MrBeast</a>
 
             </div>
         </div>

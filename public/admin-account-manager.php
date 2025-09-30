@@ -176,9 +176,8 @@ if ($search !== '') {
     <script src="javascript/admin-account-manager.js" defer></script>
 </head>
 <body>
-<?php include('header.php') ?>
 <main>
-    <section class="search-bar">
+    <section class="search-user-bar">
         <form id="userSearchForm" action="" method="post" autocomplete="off">
             <input class="account-searchbar" type="text" id="userSearchInput" name="search" placeholder="Zoek op gebruikersnaam of e-mail..." style="width:320px;">
             <button type="submit">Zoeken</button>
@@ -253,6 +252,5 @@ if ($search !== '') {
         </div>
     </section>
 </main>
-<?php include('footer.php') ?>
 </body>
 </html>

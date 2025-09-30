@@ -28,14 +28,19 @@
     </form>
 
 
+    <div class="nav-links">
     <?php
         if (session_status() === PHP_SESSION_NONE) session_start();
-        if (!empty($_SESSION['loggedIn'])) {
+        if (isset($_SESSION['loggedIn']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
+            echo '<a href="admin-account-manager.php" id="admin-dashboard" class="nav-link">Admin</a>';
+        }
+        if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
             $userId = $_SESSION['loggedInUser']['id'];
-            echo "<a href='account.php?id=$userId'>Account</a>";
+            echo "<a href='account.php?id=$userId' class='nav-link'>Account</a>";
         } else {
-            echo '<a href="captcha1.php?redirect=login.php" id="login_button">Login</a>';
+            echo '<a href="captcha1.php?redirect=login.php" id="login_button" class="nav-link">Login</a>';
         }
     ?>
+    </div>
     </nav>
 </header>

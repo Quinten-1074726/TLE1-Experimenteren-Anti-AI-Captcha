@@ -1,16 +1,17 @@
 <?php
 /** @var mysqli $db */
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+} else {
+    // Invalidate the one-time cookie
+    setcookie('captcha_pass', '', time() - 3600, '/');
+}
+
 session_start();
 require_once "./database/connection.php";
 $errors = [];
 
-
-//eerst captcha checken en dan form opsturen
-
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">

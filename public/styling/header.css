@@ -17,7 +17,22 @@ nav{
 }
 
 nav h1{ justify-self:start; }
-nav a{ justify-self:end; }
+
+.nav-links {
+  justify-self: end;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-link {
+  background:#333; color:#fff; border:2px solid #555;
+  padding:8px 16px; border-radius:8px;
+  transition:color .15s, border-color .15s, background .15s;
+  display:inline-block;
+}
+
+.nav-link:hover{ color:var(--colors-text-hover, #276BD2); }
 
 nav .search-form{
   justify-self:center;       
@@ -59,14 +74,6 @@ nav .search-form{
 
 .search-bar .clear-btn{ opacity:0; pointer-events:none; }
 .search-bar.has-value .clear-btn{ opacity:1; pointer-events:auto; }
-
-#login_button{
-  background:#333; color:#fff; border:2px solid #555;
-  padding:8px 16px; border-radius:8px;
-  transition:color .15s, border-color .15s, background .15s;
-  display:inline-block;
-}
-#login_button:hover{ color:var(--colors-text-hover, #276BD2); }
 
 /*  Responsive  */
 @media (max-width: 900px){

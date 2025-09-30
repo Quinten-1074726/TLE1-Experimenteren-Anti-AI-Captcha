@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Whitelist for safe redirect targets
-const allowedRedirects = new Set(['login.php','register.php']);
+const allowedRedirects = new Set(['login.php','register.php', 'upload.php']);
 function getRedirectTarget() {
   const p = new URLSearchParams(window.location.search);
   let target = p.get('redirect') || 'login.php';

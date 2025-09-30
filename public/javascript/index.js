@@ -1,4 +1,3 @@
-// public/javascript/index.js
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".right_side");
   const aiFilterCheckbox = document.getElementById("ai_filter");
@@ -11,16 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentAiOnly = '';
   let currentQuery = new URLSearchParams(window.location.search).get('s') || '';
 
-  // Abort vorige fetch
   let inFlightController = null;
 
-  // UI: Load more
   const loadMoreBtn = document.createElement("button");
   loadMoreBtn.innerText = "Load More";
   loadMoreBtn.addEventListener("click", () => fetchAndRender(false));
   loadMoreWrap.appendChild(loadMoreBtn);
 
-  // PREVIEW placeholders
   const previewHTML = (n = perPage) =>
     Array.from({ length: n }, () => `
       <div class="vid-card preview_card">
@@ -30,20 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join('');
 
+  const escapeHTML = (s='') => s.replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)
+  );
+
   function applyFadeIn() {
     container.classList.remove('fade-in');
-    // force reflow zodat animatie herstart
-    // eslint-disable-next-line no-unused-expressions
-    container.offsetWidth;
+    container.offsetWidth; 
     container.classList.add('fade-in');
   }
 
-  function getAiOnlyValue() {
-    return aiFilterCheckbox?.checked ? '1' : '';
-  }
+  const getAiOnlyValue = () => (aiFilterCheckbox?.checked ? '1' : '');
 
-  function buildCardsHTML(list) {
-    return list.map(video => `
+  const buildCardsHTML = list => list.map(video => `
       <div class="vid-card">
         <a href="./video.php?id=${video.id}">
           <img class="thumb-img" src="uploads/user-thumbnails/${video.thumbnail || ''}" alt="${video.video_title || 'video thumbnail'}">
@@ -52,13 +47,24 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>${video.channel_name || ''}</p>
       </div>
     `).join('');
+
+  function showEmptyState() {
+    const q = currentQuery.trim();
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Geen resultaten gevonden</h3>
+        <p>${q ? `Er zijn geen resultaten voor “${escapeHTML(q)}”.` : 'Probeer een andere zoekterm of pas je filters aan.'}</p>
+      </div>
+    `;
+    hasMore = false;
+    loadMoreBtn.style.display = "none";
   }
 
   async function fetchAndRender(reset = false) {
     if (reset) {
       offset = 0;
       hasMore = true;
-      container.innerHTML = previewHTML(6); // <-- preview_cards tonen
+      container.innerHTML = previewHTML(6);
       loadMoreBtn.style.display = "none";
     }
     if (!hasMore) return;
@@ -84,6 +90,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const list = Array.isArray(data.videos) ? data.videos : [];
 
+      if (offset === 0 && list.length === 0) {
+        showEmptyState();
+        return;
+      }
+
       if (offset === 0) {
         container.innerHTML = buildCardsHTML(list);
         applyFadeIn();
@@ -107,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 120ms debounce
   let typeTimer;
   function scheduleSearch() {
     clearTimeout(typeTimer);
@@ -120,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 120);
   }
 
-  // Events
   aiFilterCheckbox?.addEventListener("change", () => {
     currentAiOnly = getAiOnlyValue();
     fetchAndRender(true);
@@ -134,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Start
   currentAiOnly = getAiOnlyValue();
   fetchAndRender(true);
 });

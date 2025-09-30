@@ -21,41 +21,7 @@ require_once 'database/connection.php';
 <?php include "header.php" ?>
 
 <main>
-  <!-- left -->
-  <div class="left_side">
-    <div>
-      <div>
-        <label id="ai_filter_label">
-          AI Filter
-          <span class="switch">
-            <input type="checkbox" id="ai_filter">
-            <span class="slider round"></span>
-          </span>
-        </label>
-      </div>
-
-      <a href="index.php">Home</a>
-      <a href="trending.php">Trending</a>
-      <a>Subcriptions</a>
-
-      <?php if (isset($_SESSION['loggedInUser'])): ?>
-        <a href="channel.php">My channel</a>
-        <a href="upload.php" class="btn">Video uploaden</a>
-        <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
-        <a href="logout.php">Logout</a>
-      <?php else: ?>
-        <a href="captcha1.php?redirect=login.php">Login</a>
-        <a href="captcha1.php?redirect=register.php">Register</a>
-      <?php endif; ?>
-    </div>
-
-    <div>
-      <!-- channels here -->
-      <a>channel 1</a>
-      <a>channel 123</a>
-    </div>
-  </div>
-
+  <?php $active='home'; $showAiFilter=true; include './partials/sidebar.php'; ?>
   <!-- right -->
   <div class="flex_right_side">
     <div class="right_side"></div>

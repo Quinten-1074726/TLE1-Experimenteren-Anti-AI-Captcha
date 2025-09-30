@@ -1,4 +1,3 @@
-// public/javascript/search.js
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('site-search');
   const clearBtn = document.getElementById('clearSearch');
@@ -11,11 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   toggleHasValue();
 
-  // alleen veld behavior; geen form.submit
   input.addEventListener('input', toggleHasValue);
   clearBtn?.addEventListener('click', () => {
     input.value = '';
     toggleHasValue();
-    input.dispatchEvent(new Event('input')); // laat index.js reageren
+    input.dispatchEvent(new Event('input'));
   });
 });

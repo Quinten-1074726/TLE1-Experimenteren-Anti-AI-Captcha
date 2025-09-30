@@ -1,93 +1,100 @@
+// public/javascript/trending.js
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".right_side");
-    const aiFilterCheckbox = document.getElementById("ai_filter");
-    const loadMoreButtonSide = document.querySelector(".flex_right_side");
+  const container = document.querySelector(".right_side");
+  const aiFilterCheckbox = document.getElementById("ai_filter");
+  const loadMoreWrap = document.querySelector(".flex_right_side");
 
-    const videosPerPage = 9;
-    let currentIndex = 0;
-    let currentVideos = [];
+  const perPage = 9;
+  let offset = 0;
+  let hasMore = true;
+  let currentAiOnly = '';
 
-    const loadMoreBtn = document.createElement("button");
-    loadMoreBtn.innerText = "Load More";
-    loadMoreBtn.addEventListener("click", displayMoreVideos);
-    loadMoreButtonSide.appendChild(loadMoreBtn);
+  const loadMoreBtn = document.createElement("button");
+  loadMoreBtn.innerText = "Load More";
+  loadMoreBtn.addEventListener("click", fetchAndRender);
+  loadMoreWrap.appendChild(loadMoreBtn);
 
-    async function fetchVideos() {
-        const aiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
-        const url = `api/videos.php?ai_only=${aiOnly}`;
-        try {
-            const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-            if (!res.ok) throw new Error('Network response was not ok');
-            const data = await res.json();
+  function getAiOnlyValue() {
+    return aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '';
+  }
 
-            currentVideos = Array.isArray(data.videos) ? data.videos : [];
-            // Sort by views descending before displaying
-            currentVideos.sort((a, b) => {
-                const av = parseInt(a.views || 0, 10);
-                const bv = parseInt(b.views || 0, 10);
-                return bv - av; // highest first
-            });
-            currentIndex = 0;
-            container.innerHTML = "";
-            loadMoreBtn.style.display = currentVideos.length > 0 ? "inline-block" : "none";
+  async function fetchAndRender() {
+    if (!hasMore) return;
 
-            if (currentVideos.length === 0) {
-                const emptyMsg = document.createElement("p");
-                emptyMsg.textContent = aiOnly === '1' ? 'Geen AI gegenereerde videos gevonden.' : 'Geen videos gevonden.';
-                container.appendChild(emptyMsg);
-                return;
-            }
+    const qs = new URLSearchParams({
+      s: '',               // trending: geen zoekterm
+      ai_only: currentAiOnly,
+      sort: 'views',       // <-- belangrijk
+      limit: String(perPage),
+      offset: String(offset),
+    });
 
-            displayMoreVideos();
-        } catch (e) {
-            console.error(e);
-            container.innerHTML = '<p style="color:red">Fout bij laden van videos.</p>';
-        }
+    try {
+      const res = await fetch(`api/videos.php?${qs.toString()}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) throw new Error('Netwerkfout');
+      const data = await res.json();
+
+      const list = Array.isArray(data.videos) ? data.videos : [];
+      list.forEach(renderVideoCard);
+
+      offset += list.length;
+      if (list.length < perPage) {
+        hasMore = false;
+        loadMoreBtn.style.display = "none";
+      } else {
+        loadMoreBtn.style.display = "inline-block";
+      }
+    } catch (e) {
+      console.error(e);
+      container.insertAdjacentHTML('beforeend', '<p style="color:red">Fout bij laden van videos.</p>');
+      hasMore = false;
+      loadMoreBtn.style.display = "none";
     }
+  }
 
-    function displayMoreVideos() {
-        const nextVideos = currentVideos.slice(currentIndex, currentIndex + videosPerPage);
-        nextVideos.forEach(renderVideoCard);
-        currentIndex += videosPerPage;
-        if (currentIndex >= currentVideos.length) {
-            loadMoreBtn.style.display = "none";
-        }
-    }
+  function resetAndFetch() {
+    container.innerHTML = "";
+    offset = 0;
+    hasMore = true;
+    currentAiOnly = getAiOnlyValue();
+    loadMoreBtn.style.display = "none";
+    fetchAndRender();
+  }
 
-    function renderVideoCard(video) {
-        const videoDiv = document.createElement("div");
-        videoDiv.style.display = "flex";
-        videoDiv.style.flexDirection = "column";
-        videoDiv.style.margin = "2vh 0.5vw";
-        container.appendChild(videoDiv);
+  function renderVideoCard(video) {
+    const wrap = document.createElement("div");
+    wrap.style.display = "flex";
+    wrap.style.flexDirection = "column";
+    wrap.style.margin = "2vh 0.5vw";
+    container.appendChild(wrap);
 
-        const videoLink = document.createElement("a");
-        videoLink.href = "./video.php?id=" + video.id;
-        videoDiv.appendChild(videoLink);
+    const a = document.createElement("a");
+    a.href = "./video.php?id=" + video.id;
+    wrap.appendChild(a);
 
-        const videoImg = document.createElement("img");
-        videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
-        videoImg.alt = video.video_title || "video thumbnail";
-        videoImg.style.width = "350px";
-        videoImg.style.height = "200px";
-        videoImg.style.borderRadius = "5px";
-        videoLink.appendChild(videoImg);
+    const img = document.createElement("img");
+    img.src = "uploads/user-thumbnails/" + (video.thumbnail || "");
+    img.alt = video.video_title || "video thumbnail";
+    img.style.width = "350px";
+    img.style.height = "200px";
+    img.style.borderRadius = "5px";
+    img.style.objectFit = "cover";
+    a.appendChild(img);
 
-        const videoTitle = document.createElement("h2");
-        videoTitle.innerText = video.video_title;
-        videoDiv.appendChild(videoTitle);
+    const h2 = document.createElement("h2");
+    h2.innerText = video.video_title || '';
+    wrap.appendChild(h2);
 
-        const videoChannel = document.createElement("p");
-        videoChannel.innerText = video.channel_name;
-        videoDiv.appendChild(videoChannel);
-    }
+    const p = document.createElement("p");
+    p.innerText = video.channel_name || '';
+    wrap.appendChild(p);
+  }
 
-    if (aiFilterCheckbox) {
-        aiFilterCheckbox.addEventListener("change", () => {
-            fetchVideos(); // refetch videos when checkbox changes
-        });
-    }
+  if (aiFilterCheckbox) {
+    aiFilterCheckbox.addEventListener("change", resetAndFetch);
+  }
 
-    // Initial fetch (default = all videos)
-    fetchVideos();
+  resetAndFetch();
 });

@@ -14,6 +14,12 @@
     --font-header3: 1.5rem;
     --font-header4: 1rem;
     --font-paragraph: 0.75rem;
+
+    --header-h: 72px;
+    --sidebar-w: 300px;
+    --sidebar-gutter: 50px;
+    --search-min: 380px; 
+    --search-max: 760px;
 }
 
 .poppins-thin {
@@ -129,12 +135,26 @@ html, body { color:#fff; font-family:'Poppins',sans-serif; }
 
 html { background:#414141; }
 
-/* `bezochte links  */
 a, a:visited { color:#fff; text-decoration:none; }
 a:hover { color:#b7bcc2; }
 
-/* Font Awesome  */
 .fa-solid, .fas { font-family:"Font Awesome 6 Free" !important; font-weight:900 !important; }
 .fa-regular, .far { font-family:"Font Awesome 6 Free" !important; font-weight:400 !important; }
 .fa-brands, .fab { font-family:"Font Awesome 6 Brands" !important; }
 
+.empty-state{
+  width:100%;
+  text-align:center;
+  padding:32px 8px;
+  opacity:.95;
+}
+.empty-state h3{ font-size:1.1rem; margin-bottom:.35rem; }
+.empty-state p{ color:#b7bcc2; }
+
+html{
+  scrollbar-gutter: stable both-edges;  
+}
+
+@supports not (scrollbar-gutter: stable){
+  html { overflow-y: scroll; }       
+}

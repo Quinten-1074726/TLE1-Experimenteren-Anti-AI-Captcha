@@ -1,94 +1,148 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".right_side");
-    const aiFilterCheckbox = document.getElementById("ai_filter");
-    const loadMoreButtonSide = document.querySelector(".flex_right_side");
+  const container = document.querySelector(".right_side");
+  const aiFilterCheckbox = document.getElementById("ai_filter");
+  const loadMoreWrap = document.querySelector(".flex_right_side");
+  const searchInput = document.getElementById("site-search");
 
-    const videosPerPage = 9;
-    let currentIndex = 0;
-    let currentVideos = [];
+  const perPage = 9;
+  let offset = 0;
+  let hasMore = true;
+  let currentAiOnly = '';
+  let currentQuery = new URLSearchParams(window.location.search).get('s') || '';
 
-    const loadMoreBtn = document.createElement("button");
-    loadMoreBtn.innerText = "Load More";
-    loadMoreBtn.addEventListener("click", displayMoreVideos);
-    loadMoreButtonSide.appendChild(loadMoreBtn);
+  let inFlightController = null;
 
-    async function fetchVideos() {
-        // Inverted: checked = only non-AI videos
-        const nonAiOnly = aiFilterCheckbox && aiFilterCheckbox.checked ? '1' : '0';
-        const url = `api/videos.php?non_ai_only=${nonAiOnly}`;
-        try {
-            const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-            if (!res.ok) throw new Error('Network response was not ok');
-            const data = await res.json();
+  const loadMoreBtn = document.createElement("button");
+  loadMoreBtn.innerText = "Load More";
+  loadMoreBtn.addEventListener("click", () => fetchAndRender(false));
+  loadMoreWrap.appendChild(loadMoreBtn);
 
-            currentVideos = Array.isArray(data.videos) ? data.videos : [];
-            // Sort by views descending before displaying
-            currentVideos.sort((a, b) => {
-                const av = parseInt(a.views || 0, 10);
-                const bv = parseInt(b.views || 0, 10);
-                return bv - av; // highest first
-            });
-            currentIndex = 0;
-            container.innerHTML = "";
-            loadMoreBtn.style.display = currentVideos.length > 0 ? "inline-block" : "none";
+  const previewHTML = (n = perPage) =>
+    Array.from({ length: n }, () => `
+      <div class="vid-card preview_card">
+        <div class="thumb"></div>
+        <div class="line title"></div>
+        <div class="line meta"></div>
+      </div>
+    `).join('');
 
-            if (currentVideos.length === 0) {
-                const emptyMsg = document.createElement("p");
-                emptyMsg.textContent = nonAiOnly === '1' ? 'Geen niet-AI videos gevonden.' : 'Geen videos gevonden.';
-                container.appendChild(emptyMsg);
-                return;
-            }
+  const escapeHTML = (s='') => s.replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c)
+  );
 
-            displayMoreVideos();
-        } catch (e) {
-            console.error(e);
-            container.innerHTML = '<p style="color:red">Fout bij laden van videos.</p>';
-        }
+  function applyFadeIn() {
+    container.classList.remove('fade-in');
+    container.offsetWidth;
+    container.classList.add('fade-in');
+  }
+
+  const getAiOnlyValue = () => (aiFilterCheckbox?.checked ? '1' : '');
+
+  const buildCardsHTML = list => list.map(v => `
+      <div class="vid-card">
+        <a href="./video.php?id=${v.id}">
+          <img class="thumb-img" src="uploads/user-thumbnails/${v.thumbnail || ''}" alt="${v.video_title || 'video thumbnail'}">
+        </a>
+        <h2>${v.video_title || ''}</h2>
+        <p>${v.channel_name || ''}</p>
+      </div>
+    `).join('');
+
+  function showEmptyState() {
+    const q = currentQuery.trim();
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Geen resultaten gevonden</h3>
+        <p>${q ? `Er zijn geen trending resultaten voor “${escapeHTML(q)}”.` : 'Er zijn momenteel geen trending resultaten voor je filter.'}</p>
+      </div>
+    `;
+    hasMore = false;
+    loadMoreBtn.style.display = "none";
+  }
+
+  async function fetchAndRender(reset = false) {
+    if (reset) {
+      offset = 0;
+      hasMore = true;
+      container.innerHTML = previewHTML(6);
+      loadMoreBtn.style.display = "none";
     }
+    if (!hasMore) return;
 
-    function displayMoreVideos() {
-        const nextVideos = currentVideos.slice(currentIndex, currentIndex + videosPerPage);
-        nextVideos.forEach(renderVideoCard);
-        currentIndex += videosPerPage;
-        if (currentIndex >= currentVideos.length) {
-            loadMoreBtn.style.display = "none";
-        }
+    inFlightController?.abort();
+    inFlightController = new AbortController();
+
+    const qs = new URLSearchParams({
+      s: currentQuery,
+      ai_only: currentAiOnly,
+      sort: 'views',           
+      limit: String(perPage),
+      offset: String(offset),
+    });
+
+    try {
+      const res = await fetch(`api/videos.php?${qs.toString()}`, {
+        headers: { 'Accept': 'application/json' },
+        signal: inFlightController.signal
+      });
+      if (!res.ok) throw new Error('Netwerkfout');
+      const data = await res.json();
+
+      const list = Array.isArray(data.videos) ? data.videos : [];
+
+      if (offset === 0 && list.length === 0) {
+        showEmptyState();
+        return;
+      }
+
+      if (offset === 0) {
+        container.innerHTML = buildCardsHTML(list);
+        applyFadeIn();
+      } else {
+        container.insertAdjacentHTML('beforeend', buildCardsHTML(list));
+      }
+
+      offset += list.length;
+      if (list.length < perPage) {
+        hasMore = false;
+        loadMoreBtn.style.display = "none";
+      } else {
+        loadMoreBtn.style.display = "inline-block";
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      console.error(err);
+      container.innerHTML = '<p style="color:red">Fout bij laden van videos.</p>';
+      hasMore = false;
+      loadMoreBtn.style.display = "none";
     }
+  }
 
-    function renderVideoCard(video) {
-        const videoDiv = document.createElement("div");
-        videoDiv.style.display = "flex";
-        videoDiv.style.flexDirection = "column";
-        videoDiv.style.margin = "2vh 0.5vw";
-        container.appendChild(videoDiv);
+  let typeTimer;
+  function scheduleSearch() {
+    clearTimeout(typeTimer);
+    typeTimer = setTimeout(() => {
+      const url = new URL(window.location);
+      if (currentQuery) url.searchParams.set('s', currentQuery);
+      else url.searchParams.delete('s');
+      window.history.replaceState({}, '', url);
+      fetchAndRender(true);
+    }, 120);
+  }
 
-        const videoLink = document.createElement("a");
-        videoLink.href = "./video.php?id=" + video.id;
-        videoDiv.appendChild(videoLink);
+  aiFilterCheckbox?.addEventListener("change", () => {
+    currentAiOnly = getAiOnlyValue();
+    fetchAndRender(true);
+  });
 
-        const videoImg = document.createElement("img");
-        videoImg.src = "../public/uploads/user-thumbnails/" + video.thumbnail;
-        videoImg.alt = video.video_title || "video thumbnail";
-        videoImg.style.width = "350px";
-        videoImg.style.height = "200px";
-        videoImg.style.borderRadius = "5px";
-        videoLink.appendChild(videoImg);
+  if (searchInput) {
+    searchInput.value = currentQuery;
+    searchInput.addEventListener('input', () => {
+      currentQuery = searchInput.value.trim();
+      scheduleSearch();
+    });
+  }
 
-        const videoTitle = document.createElement("h2");
-        videoTitle.innerText = video.video_title;
-        videoDiv.appendChild(videoTitle);
-
-        const videoChannel = document.createElement("p");
-        videoChannel.innerText = video.channel_name;
-        videoDiv.appendChild(videoChannel);
-    }
-
-    if (aiFilterCheckbox) {
-        aiFilterCheckbox.addEventListener("change", () => {
-            fetchVideos(); // refetch videos when checkbox changes
-        });
-    }
-
-    // Initial fetch (default = all videos)
-    fetchVideos();
+  currentAiOnly = getAiOnlyValue();
+  fetchAndRender(true);
 });

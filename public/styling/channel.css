@@ -86,3 +86,28 @@ body{
     width: 400px;
     height: 250px;
 }
+
+@media (max-width: 768px) {
+    .divContainer {
+        flex-direction: column;
+    }
+    .leftDiv {
+        padding: 20px;
+        height: auto;
+        max-height: none;
+    }
+    .rightDiv {
+        width: 100%;
+        padding: 20px;
+        height: auto;
+        max-height: none;
+    }
+    .emptyContainer {
+        display: none;
+    }
+    .video1 {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16/9;
+    }
+}

@@ -18,5 +18,8 @@
       <div class="right_side"></div>
     </div>
   </main>
+
+<?php include './partials/mobile-footer.php'; ?>
+
 </body>
 </html>

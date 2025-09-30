@@ -7,7 +7,7 @@ a{ text-decoration:none; }
 
 /* Sticky header */
 header{
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 1000;
   background: var(--colors-background);
@@ -112,15 +112,40 @@ header > nav .search-form{
 }
 #login_button:hover{ color:var(--colors-text-hover, #276BD2); }
 
-@media (max-width: 900px){
-  header > nav{ grid-template-columns: 1fr; gap:10px; }
-  header > nav h1{ justify-self:center; }
-  header > nav .search-form{ justify-self:stretch; }
+@media (min-width: 769px) {
+    header {
+        position: sticky;
+    }
 }
 @media (max-width: 480px){
   .search-bar{ padding:.45rem .55rem; }
   #site-search{ font-size:.9rem; }
   .search-bar .submit-btn, .search-bar .clear-btn{ width:32px; height:32px; }
+}
+
+@media (max-width: 768px) {
+    header {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+    header > nav {
+        padding: 5px;
+        gap: 0;
+    }
+    header .brand span {
+        display: none;
+    }
+    .search-bar {
+        width: 100%;
+    }
+    header > nav .search-form {
+        width: 85%;
+    }
+    .header-actions {
+        display: none !important;
+    }
 }
 
 /* Gray Theme Overrides */

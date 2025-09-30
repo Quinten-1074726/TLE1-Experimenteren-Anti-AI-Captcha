@@ -94,6 +94,23 @@ html.theme-cold {
     --colors-text-hover: #45609e;
 }
 
+/* Andere thema nog niet bedacht */
+html.theme-warm {
+    --colors-background-light: #FFF8DC;
+    --colors-background-dark: linear-gradient(180deg, #8B4513 0%, #D2691E 100%);
+    --colors-background: #654321;
+    --colors-background-gray: #DEB887;
+    --colors-accent: #F5F5DC;
+    --colors-slider: #A0522D;
+    --colors-main: #7f3f28;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #F5F5DC;
+    --colors-text-light: #c49668;
+    --colors-text: #a27242;
+    --colors-text-dark: #8B4513;
+    --colors-text-hover: #FF6347;
+}
+
 .poppins-thin {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
@@ -206,7 +223,7 @@ html, body { color: var(--colors-text-light); font-family:'Poppins',sans-serif; 
 * { margin:0; padding:0; border:0; }
 
 html { background: var(--colors-background-dark); }
-body { background: inherit; }
+body { background: inherit; height:100vh; }
 
 a, a:visited { color: var(--colors-text-light); text-decoration:none; }
 a:hover { color: var(--colors-text); }
@@ -230,4 +247,59 @@ html{
 
 @supports not (scrollbar-gutter: stable){
   html { overflow-y: scroll; }       
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        padding-bottom: 70px;
+    }
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
+    main, section, .divContainer, .upload-wrap {
+        padding-top: var(--header-h);
+    }
+    body {
+        height: auto;
+    }
+}
+
+.mobile-footer {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--colors-accent);
+    border-top: 1px solid var(--colors-main);
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--colors-text-light);
+    font-size: 12px;
+}
+
+.mobile-nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.mobile-nav-item.is-active {
+    color: var(--colors-text-hover);
+}
+
+@media (max-width: 768px) {
+    .mobile-footer {
+        display: flex;
+    }
 }

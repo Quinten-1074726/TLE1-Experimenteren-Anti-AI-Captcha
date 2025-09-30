@@ -35,7 +35,7 @@
     <?php
         if (session_status() === PHP_SESSION_NONE) session_start();
     ?>
-    <div style="display: flex; gap: 16px; align-items: center;">
+    <div class="header-actions" style="display: flex; gap: 16px; align-items: center;">
         <?php
         if (isset($_SESSION['loggedIn']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
             echo '<a href="admin-account-manager.php" id="admin-dashboard" class="nav-link">Admin</a>';

@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { key: 'light', name: 'Licht' },
         { key: 'gum', name: 'Kauwgom' },
         { key: 'tropical', name: 'Tropisch' },
-        { key: 'cold', name: 'Koud' }
+        { key: 'cold', name: 'Koud' },
+        { key: 'warm', name: 'Warm' }
     ];
 
     // Generate buttons
@@ -133,3 +134,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
+<?php $active='account'; include './partials/mobile-footer.php'; ?>

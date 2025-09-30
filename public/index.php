@@ -9,8 +9,6 @@ require_once 'database/connection.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamHub</title>
-
-    <link rel="stylesheet" href="styling/header.css">
     <link rel="stylesheet" href="styling/index.css">
 
     <script src="javascript/index.js" defer></script>
@@ -27,6 +25,8 @@ require_once 'database/connection.php';
     <div class="right_side"></div>
   </div>
 </main>
+
+<?php include './partials/mobile-footer.php'; ?>
 
 </body>
 </html>

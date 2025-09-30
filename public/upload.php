@@ -62,7 +62,7 @@ $errors = [];
           </div>
         </div>
         <div class="upload-field">
-          <span class="upload-label">Zichtbaarheid</span>
+          <span class="upload-label" style="color: var(--colors-text-light)">Zichtbaarheid</span>
           <select name="visibility">
             <option value="public">Openbaar</option>
             <option value="unlisted">Verborgen</option>
@@ -72,7 +72,7 @@ $errors = [];
         <div class="upload-field">
           <label class="upload-label" style="display:flex;align-items:center;gap:8px;">
             <input type="checkbox" name="ai_generated" value="1" style="width:18px;height:18px;">
-            <span>AI-gegenereerde video?</span>
+            <span style="color: var(--colors-text-light)">AI-gegenereerde video?</span>
           </label>
         </div>
       </div>
@@ -101,3 +101,5 @@ $errors = [];
 <script src="javascript/upload.js" defer></script>
 </body>
 </html>
+
+<?php $active='upload'; include './partials/mobile-footer.php'; ?>

@@ -60,3 +60,21 @@ button:hover,
 .theme-option:hover {
     background: var(--colors-main);
 }
+
+@media (max-width: 768px) {
+    section {
+        padding: 20px;
+    }
+    form {
+        width: 100%;
+        max-width: 400px;
+    }
+    input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    button, .button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

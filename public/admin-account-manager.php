@@ -81,6 +81,22 @@ if (isset($_POST['delete_video'])) {
         $deleted = 0;
         foreach ($videoIds as $vid) {
             $vid = intval($vid);
+            // Haal file_path en thumbnail op voordat verwijderen
+            $stmt = mysqli_prepare($db, "SELECT file_path, thumbnail FROM videos WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $vid);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $file_path, $thumbnail);
+            if (mysqli_stmt_fetch($stmt)) {
+                // Verwijder bestanden
+                if ($file_path && file_exists("./uploads/user-videos/" . $file_path)) {
+                    unlink("./uploads/user-videos/" . $file_path);
+                }
+                if ($thumbnail && file_exists("./uploads/user-thumbnails/" . $thumbnail)) {
+                    unlink("./uploads/user-thumbnails/" . $thumbnail);
+                }
+            }
+            mysqli_stmt_close($stmt);
+            // Verwijder uit database
             $delete_query = "DELETE FROM videos WHERE id = ?";
             $stmt = $db->prepare($delete_query);
             $stmt->bind_param("i", $vid);
@@ -254,3 +270,5 @@ if ($search !== '') {
 </main>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>

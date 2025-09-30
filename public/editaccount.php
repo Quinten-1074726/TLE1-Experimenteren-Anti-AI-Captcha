@@ -119,3 +119,5 @@ mysqli_close($db);
 </section>
 </body>
 </html>
+
+<?php $active='account'; include './partials/mobile-footer.php'; ?>

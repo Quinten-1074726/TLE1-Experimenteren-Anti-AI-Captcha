@@ -78,13 +78,9 @@
 .sidebar::-webkit-scrollbar-thumb{ background: var(--colors-accent); border-radius:10px; }
 .sidebar::-webkit-scrollbar-track{ background: var(--colors-background); border-radius:10px; }
 
-@media (max-width: 900px){
-.sidebar{
-    position: static;
-    width: 100%;
-    height: auto;
-    z-index: auto;
-    margin: 8px 5px;
-    border-radius: 12px;
-  }
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Verberg sidebar op mobiel, of gebruik een toggle */
+    }
 }

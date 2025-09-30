@@ -2,3 +2,4 @@
 /node_modules/
 /storage/uploads/
 .env
+public/database/connection.php

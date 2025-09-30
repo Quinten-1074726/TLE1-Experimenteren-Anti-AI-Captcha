@@ -120,3 +120,5 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     <!--</div>-->
 </body>
 </html>
+
+<?php $active='channel'; include './partials/mobile-footer.php'; ?>

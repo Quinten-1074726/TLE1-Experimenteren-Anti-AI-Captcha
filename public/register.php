@@ -1,5 +1,12 @@
 <?php
 $errors = [];
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+} else {
+    // Invalidate the one-time cookie
+    setcookie('captcha_pass', '', time() - 3600, '/');
+}
 
 if (isset($_POST['submit'])) {
     /** @var mysqli $db */
@@ -103,3 +110,5 @@ if (isset($_POST['submit'])) {
 </section>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>

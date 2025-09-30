@@ -3,6 +3,12 @@
 session_start();
 require_once "./database/connection.php";
 
+// redirect terug als captcha cookie er niet is, als wel, verwijder cookie
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+}
+
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
@@ -54,6 +60,8 @@ if (isset($_POST['submit'])) {
                 echo "<b>Sessie na login:</b>\n";
                 print_r($_SESSION);
                 echo '</pre>';
+                // Verwijder captcha cookie pas na succesvolle login
+                setcookie('captcha_pass', '', time() - 3600, '/');
                 header("Location: index.php");
                 exit;
             } else {
@@ -114,5 +122,7 @@ if (isset($_POST['submit'])) {
 </section>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>
 
 

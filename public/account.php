@@ -4,136 +4,165 @@
 //pfp
 //details voor edit pagina acc
 
+$host = '127.0.0.1';
+$username = 'root';
+$password = '';
+$database = 'tle1';
+
+$db = mysqli_connect($host, $username, $password, $database)
+or die('Error: ' . mysqli_connect_error());
+
 session_start();
 require_once 'database/connection.php';
 
 
-
 if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || !isset($_SESSION['loggedInUser']['id'])) {
-    header('Location: login.php');
-    exit;
+    if (!isset($_SESSION['loggedInUser'])) {
+        header('Location: login.php');
+        exit;
+    }
 }
+    $id = isset($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : $_SESSION['loggedInUser']['id'];
+    $id = $_SESSION['loggedInUser']['id'];
 
-$id = isset($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : $_SESSION['loggedInUser']['id'];
+    $id = $_GET['id'];
 
-$query = "SELECT * FROM users WHERE id= " . intval($id);
-$result = mysqli_query($db, $query);
-$users = mysqli_fetch_assoc($result);
-mysqli_close($db);
-?>
+   // $query = "SELECT * FROM users WHERE id= " . intval($id);
+    $query = "SELECT * FROM users WHERE id= $id";
 
-<!doctype html>
-<html lang="en">
-<head>
-    <?php include "defaultsettings.php" ?>
-    <link rel="stylesheet" href="styling/crud.css">
-    <title>Account</title>
-</head>
-<body>
-<section>
-    <div class="column" style="width: 65vw; margin: 10vh auto">
-        <p class="title" style="font-size: var(--font-header); font-weight: bold">Account</p>
-        <div style="background-color: var(--colors-accent); padding: 20px; border: 0 solid #000; border-radius: 18px">
-            <div class="form-column" style="margin: 10px auto 5px auto">
-                <div>
-                    <label class="label">Gebruikersnaam</label>
+    $result = mysqli_query($db, $query);
+    $users = mysqli_fetch_assoc($result);
+    mysqli_close($db);
+    ?>
+
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <?php include "defaultsettings.php" ?>
+        <link rel="stylesheet" href="styling/crud.css">
+        <title>Account</title>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+    <section>
+        <div class="column" style="width: 65vw; margin: 10vh auto">
+            <p class="title" style="font-size: var(--font-header); font-weight: bold">Account</p>
+            <div style="background-color: var(--colors-accent); padding: 20px; border: 0 solid #000; border-radius: 18px">
+                <div class="form-column" style="margin: 10px auto 5px auto">
+                    <div>
+                        <label class="label">Gebruikersnaam</label>
+                    </div>
+                    <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
+                        <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['username']) ?></p>
+                    </div>
                 </div>
-                <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
-                    <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['username']) ?></p>
+                <div class="form-column" style="margin: 5px auto 10px auto">
+                    <div>
+                        <label class="label">E-mailadres</label>
+                    </div>
+                    <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
+                        <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['email']) ?></p>
+                    </div>
                 </div>
             </div>
-            <div class="form-column" style="margin: 5px auto 10px auto">
-                <div>
-                    <label class="label">E-mailadres</label>
-                </div>
-                <div style="background-color: var(--colors-content-dark); padding: 10px 40px; border: 1px #000 solid; border-radius: 10px">
-                    <p style="font-weight: 600; font-size: var(--font-header3); margin: 0;"><?= htmlspecialchars($users['email']) ?></p>
+            <div class="buttons" style="margin-top:20px;display:flex;flex-direction:row;gap:10px">
+                <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;"
+                   href="captcha1.php?redirect=editaccount.php?id=<?= $users['id'] ?>">Bewerk account</a>
+                <button class="button" id="themeBtn"
+                        style="margin-bottom: 2vh; display: inline-block; text-align: center; ;">Kies Thema
+                </button>
+                <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;"
+                   href="logout.php">Uitloggen</a>
+            </div>
+            <a href="index.php" style="margin-bottom: 5vh; display: inline-block; text-align: center;">&laquo; Ga terug
+                naar homepage</a>
+
+            <!-- Theme Modal -->
+            <div id="themeModal"
+                 style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+                <div style="background: var(--colors-content-light); padding: 20px; border-radius: 10px; max-width: 400px; width: 90%;">
+                    <h3 style="margin-top: 0;">Kies een Thema</h3>
+                    <div id="themeContainer" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <!-- Buttons will be generated by JS -->
+                    </div>
+                    <button id="closeModal" style="margin-top: 20px;">Sluiten</button>
                 </div>
             </div>
         </div>
-        <div class="buttons" style="margin-top:20px;display:flex;flex-direction:row;gap:10px">
-            <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;" href="captcha1.php?redirect=editaccount.php?id=<?= $users['id'] ?>">Bewerk account</a>
-            <button class="button" id="themeBtn" style="margin-bottom: 2vh; display: inline-block; text-align: center; font-size: var(--font-header5);">Kies Thema</button>
-            <a class="button" style="margin-bottom: 2vh; display: inline-block; text-align: center;" href="logout.php">Uitloggen</a>
-        </div>
-        <a href="index.php" style="margin-bottom: 5vh; display: inline-block; text-align: center;">&laquo; Ga terug naar homepage</a>
+    </section>
 
-        <!-- Theme Modal -->
-        <div id="themeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-            <div style="background: var(--colors-content-light); padding: 20px; border-radius: 10px; max-width: 400px; width: 90%;">
-                <h3 style="margin-top: 0;">Kies een Thema</h3>
-                <div id="themeContainer" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <!-- Buttons will be generated by JS -->
-                </div>
-                <button id="closeModal" style="margin-top: 20px;">Sluiten</button>
-            </div>
-        </div>
-    </div>
-</section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeBtn = document.getElementById('themeBtn');
+            const themeModal = document.getElementById('themeModal');
+            const closeModal = document.getElementById('closeModal');
+            const themeContainer = document.getElementById('themeContainer');
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const themeBtn = document.getElementById('themeBtn');
-    const themeModal = document.getElementById('themeModal');
-    const closeModal = document.getElementById('closeModal');
-    const themeContainer = document.getElementById('themeContainer');
+            // Define themes
+            const themes = [
+                {key: 'default', name: 'Standaard (donkere modus)'},
+                {key: 'light', name: 'Licht'},
+                {key: 'high-contrast', name: 'Hoog Contrast'},
+                {key: 'gum', name: 'Kauwgom'},
+                {key: 'tropical', name: 'Tropisch'},
+                {key: 'cold', name: 'Koud'},
+                {key: 'warm', name: 'Warm'}
+            ];
 
-    // Define themes
-    const themes = [
-        { key: 'default', name: 'Standaard (donkere modus)' },
-        { key: 'light', name: 'Licht' },
-        { key: 'high-contrast', name: 'Hoog Contrast' },
-        { key: 'gum', name: 'Kauwgom' },
-        { key: 'tropical', name: 'Tropisch' },
-        { key: 'cold', name: 'Koud' },
-        { key: 'warm', name: 'Warm' }
-    ];
+            // Generate buttons
+            themes.forEach(theme => {
+                const btn = document.createElement('button');
+                btn.className = 'theme-option';
+                btn.dataset.theme = theme.key;
+                btn.textContent = theme.name;
+                themeContainer.appendChild(btn);
+            });
 
-    // Generate buttons
-    themes.forEach(theme => {
-        const btn = document.createElement('button');
-        btn.className = 'theme-option';
-        btn.dataset.theme = theme.key;
-        btn.textContent = theme.name;
-        themeContainer.appendChild(btn);
-    });
+            const themeOptions = document.querySelectorAll('.theme-option');
 
-    const themeOptions = document.querySelectorAll('.theme-option');
+            // Load saved theme
+            const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+            document.documentElement.className = `theme-${savedTheme}`;
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
-    document.documentElement.className = `theme-${savedTheme}`;
+            // Open modal
+            themeBtn.addEventListener('click', () => {
+                themeModal.style.display = 'flex';
+            });
+            <h1>Account</h1>
+            <h2><?= $users['username'] ?></h2>
+            <h2><?= $users['email'] ?></h2>
+            <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
 
-    // Open modal
-    themeBtn.addEventListener('click', () => {
-        themeModal.style.display = 'flex';
-    });
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                themeModal.style.display = 'none';
+            });
 
-    // Close modal
-    closeModal.addEventListener('click', () => {
-        themeModal.style.display = 'none';
-    });
+            // Select theme
+            themeOptions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    document.documentElement.className = `theme-${theme}`;
+                    localStorage.setItem('selectedTheme', theme);
+                    themeModal.style.display = 'none';
+                });
+            });
 
-    // Select theme
-    themeOptions.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const theme = btn.dataset.theme;
-            document.documentElement.className = `theme-${theme}`;
-            localStorage.setItem('selectedTheme', theme);
-            themeModal.style.display = 'none';
+            // Close on outside click
+            themeModal.addEventListener('click', (e) => {
+                if (e.target === themeModal) {
+                    themeModal.style.display = 'none';
+                }
+            });
         });
-    });
+    </script>
 
-    // Close on outside click
-    themeModal.addEventListener('click', (e) => {
-        if (e.target === themeModal) {
-            themeModal.style.display = 'none';
-        }
-    });
-});
-</script>
+    </body>
+    </html>
 
-</body>
-</html>
-
-<?php $active='account'; include './partials/mobile-footer.php'; ?>
+    <?php $active = 'account';
+    include './partials/mobile-footer.php'; ?>

@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+/** @var mysqli $db */
+/** @var mysqli $password */
+
 if (!isset($_COOKIE['captcha_pass'])) {
     header('Location: index.php');
     exit;

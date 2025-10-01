@@ -7,9 +7,6 @@ session_start();
 if (!isset($_COOKIE['captcha_pass'])) {
     header('Location: index.php');
     exit;
-} else {
-    // Invalidate the one-time cookie
-    setcookie('captcha_pass', '', time() - 3600, '/');
 }
 
 // 1. connectie met database
@@ -62,6 +59,7 @@ if (isset($_POST['submit'])) {
         mysqli_query($db, $query) or die('Error: ' . mysqli_error($db));
 
         // Klaar → terug naar overzicht
+        setcookie('captcha_pass', '', time() - 3600, '/');
         header("Location: account.php?id=$id");
         exit;
     }

@@ -42,11 +42,11 @@ $errors = [];
       <div class="upload-col upload-col-left">
         <div class="upload-field">
           <span class="upload-label upload-strong">Titel:</span>
-          <input type="text" name="title" required>
+          <input type="text" name="title" style="color: black" required>
         </div>
         <div class="upload-field">
           <span class="upload-label upload-strong">Beschrijving:</span>
-          <textarea name="description" rows="7" required></textarea>
+          <textarea name="description" rows="7" style="color: black" required></textarea>
         </div>
         <div class="upload-field">
           <span class="upload-label upload-strong">Thumbnail:</span>
@@ -64,11 +64,11 @@ $errors = [];
           </div>
         </div>
         <div class="upload-field">
-          <span class="upload-label" style="color: var(--colors-text-light)">Zichtbaarheid</span>
-          <select name="visibility">
-            <option value="public">Openbaar</option>
-            <option value="unlisted">Verborgen</option>
-            <option value="private">Privé</option>
+          <span class="upload-label" ">Zichtbaarheid</span>
+          <select name="visibility" style="color: black">
+            <option value="public" style="color: black">Openbaar</option>
+            <option value="unlisted" style="color: black">Verborgen</option>
+            <option value="private" style="color: black">Privé</option>
           </select>
         </div>
         <div class="upload-field">

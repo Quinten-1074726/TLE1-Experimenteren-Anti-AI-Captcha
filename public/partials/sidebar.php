@@ -39,7 +39,8 @@ $isLoggedIn = isset($_SESSION['loggedInUser']);
     <div class="sidebar__section">
       <div class="sidebar__heading">Bibliotheek</div>
 
-      <a href="channel.php"
+
+      <a href="channel.php?id=<?= $_SESSION['loggedInUser']['id']?>"
          class="nav-item <?= $active==='mychannel'?'is-active':'' ?>"
          <?= $active==='mychannel'?'aria-current="page"':'' ?>>
         <i class="fa-solid fa-user nav-icon" aria-hidden="true"></i>

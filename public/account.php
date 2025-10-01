@@ -127,6 +127,8 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || !isset($_
             });
             <h1>Account</h1>
             <h2><?= $users['username'] ?></h2>
+            <p>profile picture</p>
+            <img>images/<?=  $users['profile_picture'] ?>.png </img>
             <h2><?= $users['email'] ?></h2>
             <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
 

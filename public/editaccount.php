@@ -79,6 +79,7 @@ mysqli_close($db);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/crud.css">
+    <script rel="script" src="javascript/editaccount.js" defer></script>
     <title>Account bewerken</title>
 </head>
 <body>
@@ -111,6 +112,33 @@ mysqli_close($db);
                     <?= $errorEmail ?? '' ?>
                 </p>
             </div>
+
+            <div class="form-column" style="margin: 5px auto 10px auto">
+                <div>
+
+                    <img class="profilePicture" alt="pp" src="images/profile-icon.jpg" id="profile_picture">
+                    <!--                    <label class="profile-label" for="input_file">profiel foto veranderen</label>-->
+
+                </div>
+                <div>
+                    <!--                    <input class="input" id="input_file" type="file" name="profile" accept="image/jpeg, image/png, image/jpg"-->
+                    <!--                           value="-->
+                    <?php //= htmlentities($users['profile_picture']) ?><!--"/>-->
+
+                    <label for="profile_selector">kies een profiel foto</label>
+
+                    <select class="profile-selector" name="profile_selector" style="color: #12161b">
+
+                        <option id="cake" value="cake">Cake</option>
+                        <option id="donut" value="donut">Donut</option>
+
+                    </select>
+                </div>
+                <p class="Danger">
+                    <?= $errorProfilePicture ?? '' ?>
+                </p>
+            </div>
+
             <!-- Submit -->
             <button class="link-button" style="margin-bottom: 5vh" type="submit" name="submit">Save</button>
             <a href="account.php?id=<?= $users['id'] ?>" style="margin-bottom: 5vh; display: inline-block; text-align: center;">&laquo; Go back to account</a>

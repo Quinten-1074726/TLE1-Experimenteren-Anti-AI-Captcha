@@ -1,12 +1,6 @@
 <?php
 
-
-require_once 'database/connection.php';
-/** @var mysqli $db */
-
-$videoID = $_GET['id'];
-//input validatie
-$videoID = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+require_once './database/connection.php';
 
 // Get video ID from URL
 if (!isset($_GET['id'])) {
@@ -23,11 +17,6 @@ if (!$result || mysqli_num_rows($result) === 0) {
 }
 
 $video = mysqli_fetch_assoc($result);
-if ($result) {
-    $video = mysqli_fetch_assoc($result);
-} else {
-    die("Query failed: " . mysqli_error($db));
-}
 //comments
 if (isset($_POST['submit'])) {
     //altijd de variabele erboven zetten, zodat hij geen errors aangeeft.
@@ -80,6 +69,7 @@ mysqli_close($db);
 ?>
 
 
+<!DOCTYPE html>
 <html lang="en">
 
 <!-- +1 video view naar de database (als we tijd hebben) -->
@@ -96,42 +86,34 @@ mysqli_close($db);
     <?php include "header.php" ?>
     <main id="">
         <div id="flexDezeShitNaarBeneden">
+            <?php
+            // Bepaal het juiste pad naar de video
+            $filePath = $video['file_path'];
+            if ($filePath === null) {
+                $filePath = '';
+            } elseif (strpos($filePath, 'http') === 0) {
+                // URL, leave as is
+            } elseif (strpos($filePath, 'user-videos/') === 0) {
+                $filePath = 'uploads/' . $filePath;
+            } elseif (strpos($filePath, 'uploads/') !== 0) {
+                $filePath = 'uploads/user-videos/' . $filePath;
+            }
+            if ($filePath === '') {
+                echo '<p style="color:red;">Video file not found.</p>';
+            } else {
+            ?>
             <video id="video" width="auto" height="560" controls>
-                <?php
-                // Bepaal het juiste pad naar de video
-                $filePath = $video['file_path'];
-                // Als het pad niet begint met 'uploads/', voeg dan de map toe
-                if (strpos($filePath, 'uploads/') !== 0 && strpos($filePath, 'http') !== 0) {
-                    $filePath = 'uploads/user-videos/' . $filePath;
-                }
-                ?>
                 <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
             </video>
+            <?php } ?>
             <h2> <?= htmlspecialchars($video['video_title']) ?></h2>
             <div id="viewsAndDescription">
                 <p><?= htmlspecialchars($video['views']) ?> Views</p>
                 <p><?= htmlspecialchars($video['video_description']) ?></p>
             </div>
         </div>
-    </main>
-<?php include "header.php" ?>
-<main id="">
-    <div id="flexDezeShitNaarBeneden">
-        <video id="video" width="940" height="560" controls>
-            <?php
-            // Bepaal het juiste pad naar de video
-            $filePath = $video['file_path'];
-            // Als het pad niet begint met 'uploads/', voeg dan de map toe
-            if (strpos($filePath, 'uploads/') !== 0 && strpos($filePath, 'http') !== 0) {
-                $filePath = 'uploads/user-videos/' . $filePath;
-            }
-            ?>
-            <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
-        </video>
-        <h2> <?= htmlspecialchars($video['video_title']) ?></h2>
-    </div>
-    <!---comments--->
-    <div class="commentContainer">
+        <!---comments--->
+        <div class="commentContainer">
         <h1 class="title mt-4">Comments</h1>
         <h2>Laat feedback achter!</h2>
 

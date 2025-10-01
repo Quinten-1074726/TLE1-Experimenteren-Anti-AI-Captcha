@@ -88,9 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $thumbPath = THUMB_UPLOAD_DIR . $thumbFileName;
         move_uploaded_file($thumb['tmp_name'], $thumbPath);
 
-        // In database zetten: sla alleen de bestandsnaam op
+        // In database zetten: sla het relatieve pad op
+        $filePath = 'user-videos/' . $videoFileName;
         $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name, ai_generated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssisssi', $title, $description, $thumbFileName, $user_id, $date, $videoFileName, $channel_name, $ai_generated);
+        $stmt->bind_param('sssisssi', $title, $description, $thumbFileName, $user_id, $date, $filePath, $channel_name, $ai_generated);
         if ($stmt->execute()) {
             header('Location: ../index.php');
             exit;

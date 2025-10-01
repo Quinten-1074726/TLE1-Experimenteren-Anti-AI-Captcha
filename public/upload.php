@@ -10,6 +10,8 @@ if (!isset($_COOKIE['captcha_pass'])) {
 
 session_start();
 require_once "./database/connection.php";
+
+/** @var mysqli $db */
 $errors = [];
 
 ?>

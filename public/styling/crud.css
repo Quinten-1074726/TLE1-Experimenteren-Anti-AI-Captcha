@@ -21,6 +21,8 @@ div {
     flex-direction: column;
 }
 
+
+
 input {
     display: flex;
     justify-content: center;

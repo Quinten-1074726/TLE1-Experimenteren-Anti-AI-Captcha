@@ -22,7 +22,7 @@
     --header-h: 72px;
     --sidebar-w: 300px;
     --sidebar-gutter: 50px;
-    --search-min: 380px; 
+    --search-min: 380px;
     --search-max: 760px;
 }
 
@@ -258,11 +258,11 @@ a:hover { color: var(--colors-text); }
 .empty-state p{ color:#b7bcc2; }
 
 html{
-  scrollbar-gutter: stable both-edges;  
+  scrollbar-gutter: stable both-edges;
 }
 
 @supports not (scrollbar-gutter: stable){
-  html { overflow-y: scroll; }       
+  html { overflow-y: scroll; }
 }
 
 @media (max-width: 768px) {

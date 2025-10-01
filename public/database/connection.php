@@ -1,6 +1,6 @@
 <?php
 $host = "127.0.0.1";
-$database = "tle1";
+$database = "tle1-2";
 $user = "root";
 $password = "";
 

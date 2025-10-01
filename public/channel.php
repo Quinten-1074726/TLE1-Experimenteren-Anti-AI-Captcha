@@ -2,15 +2,7 @@
 global $query;
 require_once 'database/connection.php';
 
-////
-//$id = $_GET['id'];
-//
-//$query = "SELECT * FROM users WHERE id = $id";
-//
-//$result = mysqli_query($db, $query);
-//$users = mysqli_fetch_assoc($result);
-//mysqli_close($db);
-// required when working with sessions
+
 session_start();
 
 // Redirect if already logged in
@@ -20,6 +12,23 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
 } else {
     header("Location: index.php");
     exit;
+}
+//delete
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    $query = "SELECT * FROM users WHERE id = $id";
+    $result = mysqli_query($db, $query);
+
+    if (mysqli_num_rows($result) === 1) {
+        $query = "DELETE FROM users WHERE id= $id";
+        $result = mysqli_query($db, $query);
+
+        header("Location: index.php");
+        exit;
+        mysqli_close($db);
+    }
+
 }
 ?>
 
@@ -33,6 +42,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/channel.css">
     <link rel="stylesheet" href="styling/index.css" >
+    <link rel="stylesheet" href="styling/style.css" >
     <script src="javascript/channel.js" defer></script>
     <title>Channel page</title>
 </head>
@@ -60,7 +70,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
             <a href="upload.php" class="btn">Video uploaden</a>
         </div>
         <div>
-            <!-- channels here -->
+
             <a>channel 1</a>
             <a>channel 123</a>
 
@@ -82,7 +92,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
                     <div class="profilePicture">
                         <img style="scale: 1.3" src="images/profile.png">
                     </div>
-                    <div class="channelDetails">
+                    <div id="channelDetails" class="channelDetails">
                         <div class="channelName">
                             <h2>Channel name</h2>
                         </div>
@@ -117,7 +127,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
         </div>
     </section>
 
-    <!--</div>-->
+
 </body>
 </html>
 

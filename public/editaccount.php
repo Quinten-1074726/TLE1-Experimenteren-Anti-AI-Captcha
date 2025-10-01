@@ -34,12 +34,14 @@ if (isset($_POST['submit'])) {
     $errorEmail = '';
     $errorPassword = '';
     $errorProfilePicture = '';
+    $errorBio = '';
 
     // Escapen
     $username = mysqli_real_escape_string($db, $_POST['username'] ?? '');
     $email = mysqli_real_escape_string($db, $_POST['email'] ?? '');
     $password = mysqli_real_escape_string($db, $_POST['password'] ?? '');
-    $profile_picture = mysqli_real_escape_string($db, $_POST['profile_picture'] ?? '' );
+    $profile_picture = mysqli_real_escape_string($db, $_POST["profile_selector"]);
+    $bio = mysqli_real_escape_string($db, $_POST['bio'] ?? '');
     $id = (int)($_POST['updateId'] ?? 0);
 
     // Validatie
@@ -55,27 +57,33 @@ if (isset($_POST['submit'])) {
     if ($profile_picture === '') {
         $errorProfilePicture = 'Upload een profiel foto';
     }
-
+    if ($bio === '') {
+        $errorBio = 'Vul een bio in';
+    }
 
 
     // Alles ingevuld? Dan updaten
-    if ($errorName === '' && $errorEmail === '' && $errorPassword === '' && $errorProfilePicture === '') {
+    if ($errorName !== '' && $errorEmail !== '' && $errorPassword !== '' && $bio !== '')
+    {
         $query = "
             UPDATE users 
-            SET username='$username', email='$email', password='$password', profile_picture='$profile_picture'
+            SET username='$username', email='$email', password='$password', profile_picture='$profile_picture', bio='$bio'
             WHERE id = $id";
+
         mysqli_query($db, $query) or die('Error: ' . mysqli_error($db));
 
         // Klaar → terug naar overzicht
         header("Location: account.php?id=$id");
         exit;
     }
-
     // Zet waarden terug in $users zodat formulier opnieuw ingevuld blijft
     $users['username'] = $username;
     $users['email'] = $email;
     $users['password'] = $password;
     $users['profile_picture'] = $profile_picture;
+    $users['bio'] = $bio;
+
+
 }
 
 mysqli_close($db);
@@ -134,15 +142,40 @@ mysqli_close($db);
                     <?= $errorPassword ?? '' ?>
                 </p>
             </div>
+
+            <div class="form-column" style="margin: 10px auto 5px auto">
+                <div>
+                    <label class="label" for="bio">Bio</label>
+                </div>
+                <div>
+                    <input class="input" id="bio" type="text" name="bio"
+                           value="<?= htmlentities($users['bio']) ?>"/>
+                </div>
+                <p class="Danger">
+                    <?= $errorBio ?? '' ?>
+                </p>
+            </div>
+
             <div class="form-column" style="margin: 5px auto 10px auto">
                 <div>
 
                     <img class="profilePicture" alt="pp" src="images/profile-icon.jpg" id="profile_picture">
-                    <label class="profile-label" for="profile">profiel foto veranderen</label>
+                    <!--                    <label class="profile-label" for="input_file">profiel foto veranderen</label>-->
+
                 </div>
                 <div>
-                    <input class="input, hidden" id="inputfile" type="file" name="profile" accept="image/jpeg, image/png, image/jpg"
-                           value="<?= htmlentities($users['profile_picture']) ?>"/>
+                    <!--                    <input class="input" id="input_file" type="file" name="profile" accept="image/jpeg, image/png, image/jpg"-->
+                    <!--                           value="-->
+                    <?php //= htmlentities($users['profile_picture']) ?><!--"/>-->
+
+                    <label for="profile_selector">kies een profiel foto</label>
+
+                    <select class="profile-selector" name="profile_selector" style="color: #12161b">
+
+                        <option id="cake" value="cake">Cake</option>
+                        <option id="donut" value="donut">Donut</option>
+
+                    </select>
                 </div>
                 <p class="Danger">
                     <?= $errorProfilePicture ?? '' ?>

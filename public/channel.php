@@ -64,7 +64,7 @@ mysqli_close($db);
             <a href="index.php">Home</a>
             <a href="trending.php">Trending</a>
             <a>Subcriptions</a>
-            <a href="channel.php">My channel</a>
+            <a href="channel.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">My channel</a>
             <a href="upload.php" class="btn">Video uploaden</a>
         </div>
         <div>
@@ -88,7 +88,7 @@ mysqli_close($db);
             <div class="profile">
                 <div style="display: flex; flex-direction: row;">
                     <div class="profilePicture">
-                        <img style="scale: 1.3" src="images/profile.png">
+                        <img style="scale: 1.3" src="images/<?=$users['profile_picture']?>.png">
                     </div>
                     <div class="channelDetails">
                         <div class="channelName">
@@ -103,7 +103,7 @@ mysqli_close($db);
 
                             <div class="description">
 
-                                    Welcome to my channel!!!, jkcbahjfbahjdashdjbsahdjasbdskdj
+                                    <?= $users['bio'] ?>
 
                             </div>
 

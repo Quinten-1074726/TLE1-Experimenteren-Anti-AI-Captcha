@@ -27,6 +27,7 @@ $query = "SELECT * FROM users WHERE id= $id";
 
 $result = mysqli_query($db, $query);
 $users = mysqli_fetch_assoc($result);
+print_r($users);
 mysqli_close($db);
 ?>
 
@@ -52,7 +53,7 @@ mysqli_close($db);
 
                 <p>Gebruikernaam: <?= $users['username'] ?></p>
                 <p>E-mail: <?= $users['email'] ?></p>
-                <p>Profiel foto: <img alt="#" src="<?= $users['profile_picture'] ?>"></p>
+                <p>Profiel foto: <img alt="#" src="images/<?= $users['profile_picture'] ?>.png"></p>
 
             </div>
             <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>

@@ -2,7 +2,7 @@
 // api/upload.php
 session_start();
 require_once __DIR__ . '/../database/connection.php';
-
+/** @var mysqli $db */
 // Zorg dat de uploads map bestaat
 define('VIDEO_UPLOAD_DIR', __DIR__ . '/../uploads/user-videos/');
 define('THUMB_UPLOAD_DIR', __DIR__ . '/../uploads/user-thumbnails/');

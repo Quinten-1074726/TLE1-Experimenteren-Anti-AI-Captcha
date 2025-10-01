@@ -4,14 +4,7 @@
 //pfp
 //details voor edit pagina acc
 
-$host = '127.0.0.1';
-$username = 'root';
-$password = '';
-$database = 'tle1';
-
-$db = mysqli_connect($host, $username, $password, $database)
-or die('Error: ' . mysqli_connect_error());
-
+/** @var mysqli $db */
 session_start();
 require_once 'database/connection.php';
 

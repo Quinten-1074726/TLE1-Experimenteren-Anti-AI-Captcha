@@ -15,16 +15,21 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || !isset($_
         exit;
     }
 }
-    $id = isset($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : $_SESSION['loggedInUser']['id'];
-    $id = $_SESSION['loggedInUser']['id'];
-
-    $id = $_GET['id'];
+    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        $id = (int)$_GET['id'];
+    } else {
+        $id = $_SESSION['loggedInUser']['id'];
+    }
 
    // $query = "SELECT * FROM users WHERE id= " . intval($id);
     $query = "SELECT * FROM users WHERE id= $id";
 
     $result = mysqli_query($db, $query);
     $users = mysqli_fetch_assoc($result);
+    if (!$users) {
+        header('Location: index.php');
+        exit;
+    }
     mysqli_close($db);
     ?>
 
@@ -127,8 +132,6 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || !isset($_
             });
             <h1>Account</h1>
             <h2><?= $users['username'] ?></h2>
-            <p>profile picture</p>
-            <img>images/<?=  $users['profile_picture'] ?>.png </img>
             <h2><?= $users['email'] ?></h2>
             <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
 

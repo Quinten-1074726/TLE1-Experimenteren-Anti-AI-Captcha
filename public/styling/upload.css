@@ -23,7 +23,7 @@
   max-width: 1300px;
   margin: 18px auto 28px;
   padding: 0 20px;
-  color: var(--text);
+  color: var(--colors-text-dark);
 }
 
 /* blauwe balk */
@@ -125,7 +125,7 @@
 .upload-wrap textarea,
 .upload-wrap select{
   width: 100%;
-  background: var(--colors-background-gray);
+  background: var(--colors-background-light);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 14px;

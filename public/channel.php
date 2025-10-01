@@ -1,12 +1,6 @@
 <?php
 global $query;
-$host = "127.0.0.1";
-$database = "tle1-2";
-$user = "root";
-$password = "";
-
-$db = mysqli_connect($host, $user, $password, $database)
-or die("Error: " . mysqli_connect_error());
+require_once 'database/connection.php';
 
 
 session_start();
@@ -16,7 +10,7 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
     $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
 
 } else {
-    header("Location: 'index.php'");
+    header("Location: index.php");
     exit;
 }
 //delete
@@ -43,8 +37,9 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/channel.css">
     <link rel="stylesheet" href="styling/index.css" >
     <link rel="stylesheet" href="styling/style.css" >
@@ -135,3 +130,5 @@ if (isset($_GET['id'])) {
 
 </body>
 </html>
+
+<?php $active='channel'; include './partials/mobile-footer.php'; ?>

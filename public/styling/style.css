@@ -1,19 +1,130 @@
 :root {
     --colors-background-light: #FFF;
-    --colors-background-dark: #414141;
-    --colors-background-gray: #9F9F9F;
-    --colors-main: #276BD2;
+    --colors-background-dark: #1a1a1a;
+    --colors-background: #2a2a2a;
+    --colors-background-gray: #3a3a3a;
+    --colors-accent: #0a0a0a;
+    --colors-slider: #000000;
+    --colors-main: #2a2a2a;
     --colors-content-light: #EAE9E9;
     --colors-content-dark: #2F2F2F;
-    --colors-text-light: #000;
+    --colors-text-light: #ffffff;
+    --colors-text: #ffffff;
     --colors-text-dark: #EAE9E9;
-    --colors-text-hover: #276BD2;
+    --colors-text-hover: #276bd2;
 
     --font-header: 3rem;
     --font-header2: 2rem;
     --font-header3: 1.5rem;
     --font-header4: 1rem;
     --font-paragraph: 0.75rem;
+
+    --header-h: 72px;
+    --sidebar-w: 300px;
+    --sidebar-gutter: 50px;
+    --search-min: 380px;
+    --search-max: 760px;
+}
+
+/* Light Theme */
+html.theme-light {
+    --colors-background-light: #F8F9FA;
+    --colors-background-dark: #E9ECEF;
+    --colors-background: #FFFFFF;
+    --colors-background-gray: #ADB5BD;
+    --colors-accent: #FFFFFF;
+    --colors-slider: #F00;
+    --colors-main: #70b5ff;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #F8F9FA;
+    --colors-text-light: #212529;
+    --colors-text: #212529;
+    --colors-text-dark: #495057;
+    --colors-text-hover: #276bd2;
+}
+
+/* Gum Theme (Kauwgom - Pastel) */
+html.theme-gum {
+    --colors-background-light: #FFF5F5;
+    --colors-background-dark: #FFB3BA;
+    --colors-background: #FFF5F5;
+    --colors-background-gray: #FFDFBA;
+    --colors-accent: #FFF5F5;
+    --colors-slider: #ff6b9d;
+    --colors-main: #FF69B4;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #FFF5F5;
+    --colors-text-light: #8B0000;
+    --colors-text: #8B0000;
+    --colors-text-dark: #DC143C;
+    --colors-text-hover: #FF1493;
+}
+
+/* Tropical Theme */
+html.theme-tropical {
+    --colors-background-light: #FFF8E1;
+    --colors-background-dark: linear-gradient(30deg, #6be8a9 0%, #f79b0d 100%);
+    --colors-background: #FFF8E1;
+    --colors-background-gray: #FFEB3B;
+    --colors-accent: #FFF8E1;
+    --colors-slider: #f9a825;
+    --colors-main: #FF9800;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #FFF8E1;
+    --colors-text-light: #2E7D32;
+    --colors-text: #2E7D32;
+    --colors-text-dark: #388E3C;
+    --colors-text-hover: #F57C00;
+}
+
+/* Cold Theme */
+html.theme-cold {
+    --colors-background-light: #E3F2FD;
+    --colors-background-dark: linear-gradient(180deg, #79a3cd 0%, #9fb0c0 100%);
+    --colors-background: #E3F2FD;
+    --colors-background-gray: #90CAF9;
+    --colors-accent: #E3F2FD;
+    --colors-slider: #1976d2;
+    --colors-main: #6280ad;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #E3F2FD;
+    --colors-text-light: #0D47A1;
+    --colors-text: #0D47A1;
+    --colors-text-dark: #1565C0;
+    --colors-text-hover: #45609e;
+}
+
+/* Andere thema nog niet bedacht */
+html.theme-warm {
+    --colors-background-light: #FFF8DC;
+    --colors-background-dark: linear-gradient(180deg, #4b311f 0%, #31261e 100%);
+    --colors-background: #654321;
+    --colors-background-gray: #DEB887;
+    --colors-accent: #F5F5DC;
+    --colors-slider: #A0522D;
+    --colors-main: #7f3f28;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #F5F5DC;
+    --colors-text-light: #c49668;
+    --colors-text: #a27242;
+    --colors-text-dark: #8B4513;
+    --colors-text-hover: #FF6347;
+}
+
+html.theme-high-contrast {
+    --colors-background-light: #000000;
+    --colors-background-dark: #000000;
+    --colors-background: #000000;
+    --colors-background-gray: #333333;
+    --colors-accent: #000000;
+    --colors-slider: #F00;
+    --colors-main: #00FF00;
+    --colors-content-light: #FFFFFF;
+    --colors-content-dark: #000000;
+    --colors-text-light: #FFFFFF;
+    --colors-text: #FFFFFF;
+    --colors-text-dark: #FFFFFF;
+    --colors-text-hover: #FFFF00;
 }
 
 .poppins-thin {
@@ -124,15 +235,87 @@
     font-style: italic;
 }
 
-* {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    border: 0;
+html, body { color: var(--colors-text-light); font-family:'Poppins',sans-serif; }
+* { margin:0; padding:0; border:0; }
+
+html { background: var(--colors-background-dark); }
+body { background: inherit; height:100vh; }
+
+a, a:visited { color: var(--colors-text-light); text-decoration:none; }
+a:hover { color: var(--colors-text); }
+
+.fa-solid, .fas { font-family:"Font Awesome 6 Free" !important; font-weight:900 !important; }
+.fa-regular, .far { font-family:"Font Awesome 6 Free" !important; font-weight:400 !important; }
+.fa-brands, .fab { font-family:"Font Awesome 6 Brands" !important; }
+
+.empty-state{
+  width:100%;
+  text-align:center;
+  padding:32px 8px;
+  opacity:.95;
+}
+.empty-state h3{ font-size:1.1rem; margin-bottom:.35rem; }
+.empty-state p{ color:#b7bcc2; }
+
+html{
+  scrollbar-gutter: stable both-edges;
 }
 
-html {
-    background-color: var(--colors-background-dark);
-    color: var(--colors-text-dark);
+@supports not (scrollbar-gutter: stable){
+  html { overflow-y: scroll; }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        padding-bottom: 70px;
+    }
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
+    main, section, .divContainer, .upload-wrap {
+        padding-top: var(--header-h);
+    }
+    body {
+        height: auto;
+    }
+}
+
+.mobile-footer {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--colors-accent);
+    border-top: 1px solid var(--colors-main);
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--colors-text-light);
+    font-size: 12px;
+}
+
+.mobile-nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.mobile-nav-item.is-active {
+    color: var(--colors-text-hover);
+}
+
+@media (max-width: 768px) {
+    .mobile-footer {
+        display: flex;
+    }
 }

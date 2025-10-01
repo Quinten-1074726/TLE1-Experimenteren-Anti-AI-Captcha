@@ -109,7 +109,7 @@ modal.appendChild(resetBtn);
 
 // --- Second Button ---
 const secondBtn = document.createElement('button');
-secondBtn.textContent = 'Alternative';
+secondBtn.textContent = 'Alternative Captcha';
 secondBtn.style.marginTop = '18px';
 secondBtn.style.display = 'inline-block';
 secondBtn.style.fontSize = '16px';
@@ -164,7 +164,14 @@ resetBtn.addEventListener('click', () => {
 });
 
 secondBtn.addEventListener('click', () => {
-    window.location.href = 'captcha2.php';
+    // preserve redirect query if present
+    const p = new URLSearchParams(window.location.search);
+    const r = p.get('redirect');
+    if (r && /^[a-zA-Z0-9_.-]+\.php$/.test(r)) {
+        window.location.href = `captcha2.php?redirect=${encodeURIComponent(r)}`;
+    } else {
+        window.location.href = 'captcha2.php';
+    }
 });
 
 // --- Drawing Prompts ---
@@ -193,7 +200,7 @@ const prompts = [
     "2 tall buildings",
     "a building on fire",
     "a campfire",
-    "the titannic",
+    "the titanic",
     "fred durst"
 
 ];
@@ -384,6 +391,11 @@ function analyzeDrawing() {
         drawPath();
         if (success) {
             setTimeout(() => {
+                //cookie
+                document.cookie = "captcha=completed";
+                // Set one-time pass cookie (5 minute validity)
+                const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString();
+                document.cookie = `captcha_pass=1; Expires=${expires}; Path=/; SameSite=Lax`;
                 resultBox.textContent = "Captcha complete! Redirecting...";
                 resultBox.style.color = "#0077ff";
                 setTimeout(() => {
@@ -426,10 +438,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Whitelist for safe redirect targets
-const allowedRedirects = new Set(['login.php','register.php']);
+const allowedRedirects = new Set(['login.php', 'register.php', 'upload.php', 'editaccount.php']);
 function getRedirectTarget() {
   const p = new URLSearchParams(window.location.search);
-  let target = p.get('redirect') || 'login.php';
-  if (!allowedRedirects.has(target)) target = 'login.php';
-  return target;
+  const r = p.get('redirect');
+  if (r) {
+    const base = r.split('?')[0];
+    if (allowedRedirects.has(base)) {
+      return r;
+    }
+  }
+  return 'index.php';
 }

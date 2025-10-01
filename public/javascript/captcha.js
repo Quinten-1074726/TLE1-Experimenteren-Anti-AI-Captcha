@@ -21,32 +21,58 @@ const ICONS = [
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 const hintCheckbox = document.getElementById('hint');
-const resultEl = document.getElementById('result');
+function getResultEl() {
+  return document.getElementById('result');
+}
 const tolEl = document.getElementById('tol');
 
-let chosenPath = null; // SVG path string
-let chosenName = null; // name of the icon
-let path2d = null;     // Path2D built from chosenPath
-let transform = { sx:1, sy:1, tx:0, ty:0 };
+// tolerance: how close user must be to the reference line (in px)
+let tolerance = 18; // default value, can be changed by keyboard +/-
 
-// user drawing data
+
+// Define targetArea for icon placement
+const targetArea = { x: 40, y: 40, w: canvas.width - 80, h: canvas.height - 80 };
+
+// Result box logic: only show when there is content
+function ensureResultBox(text) {
+  let resultEl = getResultEl();
+  if (!resultEl) {
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#276BD2';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
+    document.querySelector('.controls').prepend(resultEl);
+  }
+  resultEl.textContent = text || '';
+  resultEl.style.display = text ? 'block' : 'none';
+}
+
+
+// user drawing data (declare once, top-level)
 let drawing = false;
 let userSegments = [];
 let currentSegment = [];
 let drawingStartTime = null;
 
-// parameters
-let tolerance = 18; // pixels
-const targetArea = { x:10, y:10, w:400, h:400 }; // where to fit icon within canvas
+let chosenPath = null; // SVG path string
+let chosenName = null; // name of the icon
+let path2d = null;     // Path2D built from chosenPath
+let transform = { sx: 1, sy: 1, tx: 0, ty: 0 };
 
-// helpers: pick random icon
-function pickIcon(){
+// Utility to pick a random icon
+function pickIcon() {
   const idx = Math.floor(Math.random() * ICONS.length);
   return { path: ICONS[idx], name: ICON_NAMES[idx] };
 }
 
+// ...removed duplicate block...
 // compute bbox using an offscreen SVG element
-function computeBBox(pathD){
+function computeBBox(pathD) {
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNS, 'svg');
   const p = document.createElementNS(svgNS, 'path');
@@ -60,9 +86,9 @@ function computeBBox(pathD){
   return bb; // { x, y, width, height }
 }
 
-function setNewIcon(){
-  userPoints = [];
-  resultEl.textContent = '';
+function setNewIcon() {
+  // reset result and choose a new icon
+  ensureResultBox('');
   const icon = pickIcon();
   chosenPath = icon.path;
   chosenName = icon.name;
@@ -87,24 +113,25 @@ function setNewIcon(){
   redrawAll();
 }
 
-function clearUser(){
-userSegments = [];
-currentSegment = [];
-drawingStartTime = null;
-redrawAll();
+function clearUser() {
+  userSegments = [];
+  currentSegment = [];
+  drawingStartTime = null;
+  ensureResultBox('');
+  redrawAll();
 }
 
-function redrawAll(){
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+function redrawAll() {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // draw reference faint path if hint is on
-  if (path2d){
+  if (path2d) {
     ctx.save();
-    ctx.setTransform(transform.sx,0,0,transform.sy,transform.tx,transform.ty);
+    ctx.setTransform(transform.sx, 0, 0, transform.sy, transform.tx, transform.ty);
     ctx.lineWidth = 2 / transform.sx;
-ctx.strokeStyle = 'red';
-ctx.stroke(path2d);
+    ctx.strokeStyle = 'red';
+    ctx.stroke(path2d);
     ctx.restore();
   }
 
@@ -132,31 +159,31 @@ ctx.stroke(path2d);
   ctx.restore();
 
   // border/guide
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.strokeStyle = '#eee'; ctx.lineWidth = 1; ctx.strokeRect(10,10,400,400);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.strokeStyle = '#eee'; ctx.lineWidth = 1; ctx.strokeRect(10, 10, 400, 400);
 }
 
 // input handling (mouse & touch)
-function getPosFromEvent(e){
+function getPosFromEvent(e) {
   const rect = canvas.getBoundingClientRect();
   if (e.touches && e.touches[0]) e = e.touches[0];
   return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
 
-canvas.addEventListener('mousedown', (e)=>{
+canvas.addEventListener('mousedown', (e) => {
   drawing = true;
   const pos = getPosFromEvent(e);
-  currentSegment = [{x: pos.x, y: pos.y, time: Date.now()}];
+  currentSegment = [{ x: pos.x, y: pos.y, time: Date.now() }];
   if (!drawingStartTime) drawingStartTime = Date.now();
   redrawAll();
 });
-window.addEventListener('mousemove', (e)=>{
+window.addEventListener('mousemove', (e) => {
   if (!drawing) return;
   const pos = getPosFromEvent(e);
-  currentSegment.push({x: pos.x, y: pos.y, time: Date.now()});
+  currentSegment.push({ x: pos.x, y: pos.y, time: Date.now() });
   redrawAll();
 });
-window.addEventListener('mouseup', ()=>{
+window.addEventListener('mouseup', () => {
   if (drawing && currentSegment.length > 0) {
     userSegments.push(currentSegment);
     currentSegment = [];
@@ -164,22 +191,22 @@ window.addEventListener('mouseup', ()=>{
   drawing = false;
 });
 
-canvas.addEventListener('touchstart', (ev)=>{
+canvas.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
   drawing = true;
   const pos = getPosFromEvent(ev);
-  currentSegment = [{x: pos.x, y: pos.y, time: Date.now()}];
+  currentSegment = [{ x: pos.x, y: pos.y, time: Date.now() }];
   if (!drawingStartTime) drawingStartTime = Date.now();
   redrawAll();
 });
-window.addEventListener('touchmove', (ev)=>{
+window.addEventListener('touchmove', (ev) => {
   if (!drawing) return;
   ev.preventDefault();
   const pos = getPosFromEvent(ev);
-  currentSegment.push({x: pos.x, y: pos.y, time: Date.now()});
+  currentSegment.push({ x: pos.x, y: pos.y, time: Date.now() });
   redrawAll();
-}, {passive:false});
-window.addEventListener('touchend', ()=>{
+}, { passive: false });
+window.addEventListener('touchend', () => {
   if (drawing && currentSegment.length > 0) {
     userSegments.push(currentSegment);
     currentSegment = [];
@@ -188,46 +215,61 @@ window.addEventListener('touchend', ()=>{
 });
 
 // scoring: use ctx.isPointInStroke with a widened lineWidth (tolerance) and same transform
-function checkDrawing(){
+function checkDrawing() {
   if (!path2d) return;
   // Verzamel alle punten van alle segmenten
   let allPoints = userSegments.flat().concat(currentSegment);
-  if (allPoints.length < 6){ resultEl.textContent = 'Teken iets voordat je controleert.'; return; }
+  if (allPoints.length < 6) {
+    const resultEl = getResultEl();
+    if (resultEl) resultEl.remove();
+    const newResultEl = document.createElement('div');
+    newResultEl.id = 'result';
+    newResultEl.style.fontWeight = '700';
+    newResultEl.style.marginBottom = '12px';
+    newResultEl.style.color = '#276BD2';
+    newResultEl.style.background = 'rgba(240,247,255,0.08)';
+    newResultEl.style.borderRadius = '10px';
+    newResultEl.style.padding = '8px 18px';
+    newResultEl.style.minHeight = '28px';
+    newResultEl.textContent = 'Teken iets voordat je controleert.';
+    document.querySelector('.controls').prepend(newResultEl);
+  return;
+  }
 
-  ctx.setTransform(transform.sx,0,0,transform.sy,transform.tx,transform.ty);
+  ctx.setTransform(transform.sx, 0, 0, transform.sy, transform.tx, transform.ty);
   ctx.lineWidth = tolerance * 2 / transform.sx;
 
   // 1. Check of gebruiker genoeg punten op de lijn heeft gezet
   let hits = 0;
-  for (let p of allPoints){
+  for (let p of allPoints) {
     if (ctx.isPointInStroke(path2d, p.x, p.y)) hits++;
   }
   const score = hits / allPoints.length;
 
   // 2. Check of gebruiker langs (bijna) alle delen van de lijn is gegaan
-  function samplePath(path2d, n){
+  function samplePath(path2d, n) {
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tempCtx = tempCanvas.getContext('2d');
-    tempCtx.setTransform(transform.sx,0,0,transform.sy,transform.tx,transform.ty);
+    tempCtx.setTransform(transform.sx, 0, 0, transform.sy, transform.tx, transform.ty);
     tempCtx.lineWidth = 2;
     tempCtx.strokeStyle = 'black';
     tempCtx.stroke(path2d);
-    const imgData = tempCtx.getImageData(0,0,tempCanvas.width,tempCanvas.height).data;
+    const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
     let points = [];
-    for(let y=0;y<tempCanvas.height;y+=2){
-      for(let x=0;x<tempCanvas.width;x+=2){
-        const idx = (y*tempCanvas.width + x)*4;
-        if(imgData[idx+3]>128){
-          points.push({x:x,y:y});
+    for (let y = 0; y < tempCanvas.height; y += 2) {
+      for (let x = 0; x < tempCanvas.width; x += 2) {
+        const idx = (y * tempCanvas.width + x) * 4;
+        if (imgData[idx + 3] > 128) {
+          points.push({ x: x, y: y });
         }
       }
     }
-    if(points.length>n){
+    if (points.length > n) {
       let sampled = [];
-      for(let i=0;i<n;i++){
-        sampled.push(points[Math.floor(Math.random()*points.length)]);
+      for (let i = 0; i < n; i++) {
+        sampled.push(points[Math.floor(Math.random() * points.length)]);
       }
       return sampled;
     }
@@ -236,36 +278,36 @@ function checkDrawing(){
 
   const refPoints = samplePath(path2d, 60);
   let refHits = 0;
-  for(let rp of refPoints){
+  for (let rp of refPoints) {
     let close = allPoints.some(up => {
       const dx = up.x - rp.x;
       const dy = up.y - rp.y;
-      return (dx*dx + dy*dy) < (tolerance*tolerance);
+      return (dx * dx + dy * dy) < (tolerance * tolerance);
     });
-    if(close) refHits++;
+    if (close) refHits++;
   }
   const refScore = refHits / refPoints.length;
 
   // 3. Human-like checks: speed variation and straightness
   function calculateHumanScore(points) {
     if (points.length < 2) return 0;
-    const totalTime = points[points.length-1].time - points[0].time;
+    const totalTime = points[points.length - 1].time - points[0].time;
     if (totalTime < 500) return 0; // too fast
 
     // Speed variation
     let speeds = [];
     for (let i = 1; i < points.length; i++) {
-      const dt = points[i].time - points[i-1].time;
+      const dt = points[i].time - points[i - 1].time;
       if (dt === 0) continue;
-      const dx = points[i].x - points[i-1].x;
-      const dy = points[i].y - points[i-1].y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
+      const dx = points[i].x - points[i - 1].x;
+      const dy = points[i].y - points[i - 1].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
       const speed = dist / dt; // pixels per ms
       speeds.push(speed);
     }
     if (speeds.length < 1) return 0;
-    const avgSpeed = speeds.reduce((a,b)=>a+b,0) / speeds.length;
-    const variance = speeds.reduce((a,b)=>a + (b-avgSpeed)**2, 0) / speeds.length;
+    const avgSpeed = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+    const variance = speeds.reduce((a, b) => a + (b - avgSpeed) ** 2, 0) / speeds.length;
     const stdDev = Math.sqrt(variance);
     const speedScore = avgSpeed > 0 ? Math.min(stdDev / avgSpeed, 1) : 0; // variation relative to average
 
@@ -275,13 +317,13 @@ function checkDrawing(){
     for (let seg of userSegments) {
       if (seg.length < 3) continue;
       const start = seg[0];
-      const end = seg[seg.length-1];
+      const end = seg[seg.length - 1];
       const dx = end.x - start.x;
       const dy = end.y - start.y;
-      const length = Math.sqrt(dx*dx + dy*dy);
+      const length = Math.sqrt(dx * dx + dy * dy);
       if (length === 0) continue;
       let totalDev = 0;
-      for (let i = 1; i < seg.length-1; i++) {
+      for (let i = 1; i < seg.length - 1; i++) {
         const p = seg[i];
         const num = Math.abs(dy * (p.x - start.x) - dx * (p.y - start.y));
         const dev = num / length;
@@ -300,26 +342,87 @@ function checkDrawing(){
 
   const humanScore = calculateHumanScore(allPoints);
 
-  if (score >= 0.72 && refScore >= 0.8 && humanScore >= 0.2){
-    resultEl.textContent = `✅ Geslaagd — ${Math.round(score*100)}% op lijn, ${Math.round(refScore*100)}% gevolgd.`;
+  let resultEl = getResultEl();
+  if (score >= 0.72 && refScore >= 0.8 && humanScore >= 0.2) {
+    // Set one-time pass cookie (5 minute validity)
+    const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString();
+    document.cookie = `captcha_pass=1; Expires=${expires}; Path=/; SameSite=Lax`;
+    if (resultEl) resultEl.remove();
+    const msg = '✅ Goed gedaan! Je hebt de captcha gehaald.';
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#276BD2';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
+    resultEl.textContent = msg;
+    document.querySelector('.controls').prepend(resultEl);
+    // redirect after small delay
+    setTimeout(() => {
+      const el2 = getResultEl();
+      if (el2) {
+        el2.textContent = 'Captcha voltooid. Doorsturen...';
+        el2.style.visibility = el2.textContent ? 'visible' : 'hidden';
+      }
+      setTimeout(() => { window.location.href = getRedirectTarget(); }, 900);
+    }, 800);
   } else {
-    resultEl.textContent = `❌ Niet goed genoeg — ${Math.round(score*100)}% op lijn, ${Math.round(refScore*100)}% gevolgd.`;
+    // Always show feedback for failed attempts
+    if (resultEl) resultEl.remove();
+    resultEl = document.createElement('div');
+    resultEl.id = 'result';
+    resultEl.style.fontWeight = '700';
+    resultEl.style.marginBottom = '12px';
+    resultEl.style.color = '#ef4444';
+    resultEl.style.background = 'rgba(240,247,255,0.08)';
+    resultEl.style.borderRadius = '10px';
+    resultEl.style.padding = '8px 18px';
+    resultEl.style.minHeight = '28px';
+    resultEl.textContent = `❌ Niet goed genoeg — ${Math.round(score * 100)}% op lijn, ${Math.round(refScore * 100)}% gevolgd.`;
+    document.querySelector('.controls').prepend(resultEl);
+    resultEl.style.visibility = 'visible';
   }
 
-  ctx.setTransform(1,0,0,1,0,0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+// --- Redirect Support ---
+const allowedRedirects = new Set(['login.php', 'register.php', 'upload.php', 'editaccount.php']);
+function getRedirectTarget() {
+  const p = new URLSearchParams(window.location.search);
+  const r = p.get('redirect');
+  if (r) {
+    const base = r.split('?')[0];
+    if (allowedRedirects.has(base)) {
+      return r;
+    }
+  }
+  return 'index.php';
 }
 
 // UI wiring
-document.getElementById('new').addEventListener('click', ()=>{ setNewIcon(); });
-document.getElementById('clear').addEventListener('click', ()=>{ clearUser(); });
-document.getElementById('check').addEventListener('click', ()=>{ checkDrawing(); });
-hintCheckbox.addEventListener('change', ()=>{ redrawAll(); });
+document.getElementById('new').addEventListener('click', () => { setNewIcon(); });
+document.getElementById('clear').addEventListener('click', () => { clearUser(); });
+document.getElementById('check').addEventListener('click', () => { checkDrawing(); });
+hintCheckbox.addEventListener('change', () => { redrawAll(); });
 
 // small control to change tolerance with keyboard +/- 
-window.addEventListener('keydown', (e)=>{
-  if (e.key === '+' || e.key === '='){ tolerance = Math.min(60, tolerance+2); tolEl.textContent = tolerance; }
-  if (e.key === '-') { tolerance = Math.max(4, tolerance-2); tolEl.textContent = tolerance; }
+window.addEventListener('keydown', (e) => {
+  if (e.key === '+' || e.key === '=') { tolerance = Math.min(60, tolerance + 2); tolEl.textContent = tolerance; }
+  if (e.key === '-') { tolerance = Math.max(4, tolerance - 2); tolEl.textContent = tolerance; }
+});
+
+// Load initial icon on page load
+window.addEventListener('load', () => {
+  setNewIcon();
 });
 
 // init
 setNewIcon();
+
+if (!ctx) {
+  document.body.insertAdjacentHTML('beforeend', '<p style="color:red;font-weight:bold">Canvas context niet beschikbaar. Controleer je browser.</p>');
+}

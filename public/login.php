@@ -1,5 +1,13 @@
+
 <?php
-    require_once "./database/connection.php";
+session_start();
+require_once "./database/connection.php";
+
+// redirect terug als captcha cookie er niet is, als wel, verwijder cookie
+if (!isset($_COOKIE['captcha_pass'])) {
+    header('Location: index.php');
+    exit;
+}
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
@@ -39,10 +47,21 @@ if (isset($_POST['submit'])) {
                 $login = true;
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['loggedInUser'] = [
-                    'id' => $user ['id'],
-                    'name' => $user ['name'],
-                    'email' => $user ['email'],
+                    'id' => $user['id'],
+                    'name' => $user['username'],
+                    'email' => $user['email'],
+                    'is_admin' => $user['is_admin']
                 ];
+                // Zet ook root-level keys die andere pagina's verwachten
+                $_SESSION['is_admin'] = (int)$user['is_admin'];
+                $_SESSION['user_id'] = (int)$user['id'];
+                // Debug: toon wat er in de sessie staat
+                echo '<pre style="background:#222;color:#fff;padding:12px;">';
+                echo "<b>Sessie na login:</b>\n";
+                print_r($_SESSION);
+                echo '</pre>';
+                // Verwijder captcha cookie pas na succesvolle login
+                setcookie('captcha_pass', '', time() - 3600, '/');
                 header("Location: index.php");
                 exit;
             } else {
@@ -62,7 +81,6 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="styling/crud.css">
 </head>
 <body>
-<?php include 'header.php' ?>
 <section>
     <form action="" method="post">
         <div class="column" style="width: 65vw; margin: 10vh auto">
@@ -104,5 +122,7 @@ if (isset($_POST['submit'])) {
 </section>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>
 
 

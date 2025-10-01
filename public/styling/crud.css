@@ -1,3 +1,7 @@
+body {
+    min-height: 100vh;
+}
+
 section {
     display: flex;
     justify-content: center;
@@ -23,21 +27,56 @@ input {
     display: flex;
     justify-content: center;
     border-radius: 10px;
-    color: #000;
+    color: var(--colors-text-light);
     padding: 5px;
 }
 
-button {
+button,
+.button {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--colors-background-gray);
     color: var(--colors-text-light);
+    border: 2px solid var(--colors-main);
     border-radius: 10px;
-    padding: 5px;
+    padding: 8px 16px;
     transition: ease-in-out 0.05s;
 }
 
-button:hover {
+button:hover,
+.button:hover {
     color: var(--colors-text-hover);
+}
+
+.theme-option {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background: var(--colors-background-gray);
+    color: var(--colors-text-light);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.theme-option:hover {
+    background: var(--colors-main);
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 20px;
+    }
+    form {
+        width: 100%;
+        max-width: 400px;
+    }
+    input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    button, .button {
+        width: 100%;
+        margin-top: 10px;
+    }
 }

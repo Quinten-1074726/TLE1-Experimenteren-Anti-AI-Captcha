@@ -15,13 +15,11 @@ $videos = [
 <head>
     <meta charset="UTF-8">
     <title>Video History</title>
-
-    <!-- CSS-bestanden importeren -->
+    <?php include "defaultsettings.php" ?>
+    <!-- page-specific CSS -->
     <link rel="stylesheet" href="styling/channel.css">
     <link rel="stylesheet" href="styling/crud.css">
-    <link rel="stylesheet" href="styling/header.css">
     <link rel="stylesheet" href="styling/index.css">
-    <link rel="stylesheet" href="styling/style.css">
 
     <style>
         /* Extra styling voor de video thumbnails grid */
@@ -38,7 +36,7 @@ $videos = [
 
 
         .video-card {
-            background-color: #414141;
+            background-color: var(--colors-background-gray);
             border-radius: 8px;
             overflow: hidden;
             width: 200px;
@@ -59,11 +57,38 @@ $videos = [
         .video-card p {
             margin: 5px 0;
             font-size: 0.9em;
-            color: white;
+            color: var(--colors-text-light);
+        }
+
+        @media (max-width: 768px) {
+            .divContainer {
+                flex-direction: column;
+            }
+            .leftDiv {
+                display: none;
+            }
+            .rightDiv {
+                grid-template-columns: 1fr;
+                justify-content: center;
+                padding-right: 10px;
+                padding-left: 10px;
+            }
+            .video-card {
+                width: 100%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
 <body>
+
+<script>
+// Apply saved theme on all pages
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+    document.documentElement.className = `theme-${savedTheme}`;
+});
+</script>
 
 <header>
     <nav>
@@ -100,3 +125,5 @@ $videos = [
 
 </body>
 </html>
+
+<?php $active='history'; include './partials/mobile-footer.php'; ?>

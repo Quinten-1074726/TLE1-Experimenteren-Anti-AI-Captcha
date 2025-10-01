@@ -5,7 +5,6 @@ if (!isset($_COOKIE['captcha_pass'])) {
     exit;
 } else {
     // Invalidate the one-time cookie
-    setcookie('captcha_pass', '', time() - 3600, '/');
 }
 
 if (isset($_POST['submit'])) {
@@ -41,6 +40,7 @@ if (isset($_POST['submit'])) {
         mysqli_stmt_bind_param($stmt, 'sss', $userName, $email, $hashedPassword);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
+            setcookie('captcha_pass', '', time() - 3600, '/');
             header('Location: login.php?email=' . urlencode($email));
             exit;
         } else {

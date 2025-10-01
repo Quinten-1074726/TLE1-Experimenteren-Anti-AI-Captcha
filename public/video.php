@@ -78,6 +78,7 @@ mysqli_close($db);
         <?php include "defaultsettings.php" ?>
         <link rel="stylesheet" href="styling/upload.css">
         <link rel="stylesheet" href="styling/video.css"> <!-- added video specific styles -->
+        <script src="javascript/video.js" defer></script>
         <title>Document</title>
     </head>
 
@@ -137,6 +138,9 @@ mysqli_close($db);
                 </form>
 
                 <!-- Comments rechts -->
+
+                <button id="toggleCommentForm" class="toggle-btn">+ Voeg een comment toe</button>
+
                 <div class="comment-list">
                     <?php foreach ($comments as $comment) { ?>
                         <div class="comment-card">
@@ -153,6 +157,33 @@ mysqli_close($db);
 
                 <!-- CSS direct in de section -->
                 <style>
+
+                    .comment-form {
+                        display: none; /* standaard verborgen */
+                        flex: 1;
+                        max-width: 40%;
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+
+                    .comment-form.active {
+                        display: flex; /* zichtbaar zodra class active wordt toegevoegd */
+                    }
+
+                    .toggle-btn {
+                        background: #0077ff;
+                        color: white;
+                        border: none;
+                        padding: 0.6rem 1rem;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        margin-bottom: 1rem;
+                    }
+                    .toggle-btn:hover {
+                        background: #005fcc;
+                    }
+
+
                     .comment-layout {
                         display: flex;
                         justify-content: space-between;
@@ -165,7 +196,7 @@ mysqli_close($db);
                     .comment-form {
                         flex: 1;
                         max-width: 40%;
-                        display: flex;
+                        /*display: flex;*/
                         flex-direction: column;
                         gap: 1rem;
                     }

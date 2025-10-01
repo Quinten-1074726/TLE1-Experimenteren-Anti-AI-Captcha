@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
     }
 
     if ($name !== '' && $comment !== '') {
-        $userId = $_SESSION['user_id'] ?? 1; // 1 = Guest user in database
+        $userId = $_SESSION['user_id'] ?? 5; // 1 = Guest user in database
 
         $query = "INSERT INTO comments (`comment`, `parent_id`, `created_at`, `updated_at`, `name`, `user_id`)
               VALUES ('$comment', 0, current_timestamp, current_timestamp, '$name', $userId)";
@@ -67,7 +67,6 @@ if (isset($_POST['submit'])) {
         header("Location: video.php?id=" . urlencode($videoId));
         exit;
     }
-
 
 
 }
@@ -86,19 +85,20 @@ mysqli_close($db);
 ?>
 
 
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<!-- +1 video view naar de database (als we tijd hebben) -->
+    <!-- +1 video view naar de database (als we tijd hebben) -->
 
 
-<head>
-    <?php include "defaultsettings.php" ?>
-    <link rel="stylesheet" href="styling/upload.css">
-    <link rel="stylesheet" href="styling/video.css"> <!-- added video specific styles -->
-    <title>Document</title>
-</head>
+    <head>
+        <?php include "defaultsettings.php" ?>
+        <link rel="stylesheet" href="styling/upload.css">
+        <link rel="stylesheet" href="styling/video.css"> <!-- added video specific styles -->
+        <title>Document</title>
+    </head>
 
-<body>
+    <body>
     <?php include "header.php" ?>
     <main id="">
         <div id="flexDezeShitNaarBeneden">
@@ -117,10 +117,10 @@ mysqli_close($db);
             if ($filePath === '') {
                 echo '<p style="color:red;">Video file not found.</p>';
             } else {
-            ?>
-            <video id="video" width="auto" height="560" controls>
-                <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
-            </video>
+                ?>
+                <video id="video" width="auto" height="560" controls>
+                    <source src="<?= htmlspecialchars($filePath) ?>" type="video/mp4">
+                </video>
             <?php } ?>
             <h2> <?= htmlspecialchars($video['video_title']) ?></h2>
             <div id="viewsAndDescription">
@@ -130,141 +130,160 @@ mysqli_close($db);
         </div>
         <!---comments--->
         <div class="commentContainer">
-        <h1 class="title mt-4">Comments</h1>
-        <h2>Laat feedback achter!</h2>
+            <h1 class="title mt-4">Comments</h1>
+            <h2>Laat feedback achter!</h2>
 
-        <section class="comment-layout">
+            <section class="comment-layout">
 
-            <!-- Form links -->
-            <form action="" method="post" class="comment-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input id="name" type="text" name="name"
-                           value="<?= htmlentities($_POST['name'] ?? '') ?>"/>
-                    <p class="error"><?= $errorName ?? '' ?></p>
-                </div>
-
-                <div class="form-group">
-                    <label for="comment">Comment</label>
-                    <textarea id="comment" name="comment"><?= htmlentities($_POST['comment'] ?? '') ?></textarea>
-                    <p class="error"><?= $errorComment ?? '' ?></p>
-                </div>
-
-                <button type="submit" name="submit">Leave comment</button>
-            </form>
-
-            <!-- Comments rechts -->
-            <div class="comment-list">
-                <?php foreach ($comments as $comment) { ?>
-                    <div class="comment-card">
-                        <div class="comment-header">
-                            <span class="comment-author"><?= htmlentities($comment['name']) ?></span>
-                            <span class="comment-date"><?= htmlentities($comment['created_at']) ?></span>
-                        </div>
-                        <div class="comment-body">
-                            <?= nl2br(htmlentities($comment['comment'])) ?>
-                        </div>
+                <!-- Form links -->
+                <form action="" method="post" class="comment-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" type="text" name="name"
+                               value="<?= htmlentities($_POST['name'] ?? '') ?>"/>
+                        <p class="error"><?= $errorName ?? '' ?></p>
                     </div>
-                <?php } ?>
-            </div>
 
-            <!-- CSS direct in de section -->
-            <style>
-                .comment-layout {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    gap: 2rem;
-                    margin-top: 2rem;
-                }
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea id="comment" name="comment"><?= htmlentities($_POST['comment'] ?? '') ?></textarea>
+                        <p class="error"><?= $errorComment ?? '' ?></p>
+                    </div>
 
-                /* Form links */
-                .comment-form {
-                    flex: 1;
-                    max-width: 40%;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
+                    <button type="submit" name="submit">Leave comment</button>
+                </form>
 
-                .comment-form .form-group {
-                    display: flex;
-                    flex-direction: column;
-                }
+                <!-- Comments rechts -->
+                <div class="comment-list">
+                    <?php foreach ($comments as $comment) { ?>
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <span class="comment-author"><?= htmlentities($comment['name']) ?></span>
+                                <span class="comment-date"><?= htmlentities($comment['created_at']) ?></span>
+                            </div>
+                            <div class="comment-body">
+                                <?= nl2br(htmlentities($comment['comment'])) ?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
 
-                .comment-form label {
-                    font-weight: bold;
-                    margin-bottom: 0.3rem;
-                }
+                <!-- CSS direct in de section -->
+                <style>
+                    .comment-layout {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        gap: 2rem;
+                        margin-top: 2rem;
+                    }
 
-                .comment-form input,
-                .comment-form textarea {
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    padding: 0.5rem;
-                    font-size: 1rem;
-                }
+                    /* Form links */
+                    .comment-form {
+                        flex: 1;
+                        max-width: 40%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
 
-                .comment-form button {
-                    background: #0077ff;
-                    color: white;
-                    border: none;
-                    padding: 0.6rem 1rem;
-                    border-radius: 6px;
-                    cursor: pointer;
-                }
+                    .comment-form .form-group {
+                        display: flex;
+                        flex-direction: column;
+                    }
 
-                .comment-form button:hover {
-                    background: #005fcc;
-                }
+                    .comment-form label {
+                        font-weight: bold;
+                        margin-bottom: 0.3rem;
+                    }
 
-                .comment-form .error {
-                    color: red;
-                    font-size: 0.9rem;
-                }
+                    .comment-form input,
+                    .comment-form textarea {
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        padding: 0.5rem;
+                        font-size: 1rem;
+                    }
 
-                /* Comments rechts */
-                .comment-list {
-                    flex: 1;
-                    max-width: 55%;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
+                    .comment-form button {
+                        background: #0077ff;
+                        color: white;
+                        border: none;
+                        padding: 0.6rem 1rem;
+                        border-radius: 6px;
+                        cursor: pointer;
+                    }
 
-                .comment-card {
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 1rem;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
+                    .comment-form button:hover {
+                        background: #005fcc;
+                    }
 
-                .comment-header {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 0.5rem;
-                    font-size: 0.9rem;
-                    color: #555;
-                }
+                    .comment-form .error {
+                        color: red;
+                        font-size: 0.9rem;
+                    }
 
-                .comment-author {
-                    font-weight: bold;
-                    color: #333;
-                }
+                    /* Comments rechts */
+                    .comment-list {
+                        flex: 1;
+                        max-width: 55%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+                        align-items: stretch;
+                    }
 
-                .comment-body {
-                    font-size: 1rem;
-                    color: #222;
-                    line-height: 1.4;
-                }
-            </style>
-        </section>
+                    .comment-card {
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 1rem;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        background: var(--colors-background-gray);
+                    }
+
+                    .comment-header {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 0.5rem;
+                        font-size: 0.9rem;
+                        color: #555;
+                    }
+
+                    .comment-author {
+                        font-weight: bold;
+                        color: white;
+                        padding-right: 10px;
+                    }
+
+                    .comment-body {
+                        font-size: 1rem;
+                        color: white;
+                        line-height: 1.4;
+                    }
+
+                    .comment-date {
+                        color: #666666;
+                    }
+
+                    @media (max-width: 768px) {
+                        .comment-layout {
+                            flex-direction: column;
+                            align-items: stretch;
+                        }
+
+                        .comment-form,
+                        .comment-list {
+                            max-width: 100%;
+                        }
+                    }
+                </style>
+            </section>
 
 
-    </div>
-</main>
-</body>
+        </div>
+    </main>
+    </body>
 
-</html>
+    </html>
 
 <?php include './partials/mobile-footer.php'; ?>

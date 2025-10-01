@@ -233,7 +233,7 @@ function checkDrawing() {
     newResultEl.style.minHeight = '28px';
     newResultEl.textContent = 'Teken iets voordat je controleert.';
     document.querySelector('.controls').prepend(newResultEl);
-  return;
+    return;
   }
 
   ctx.setTransform(transform.sx, 0, 0, transform.sy, transform.tx, transform.ty);

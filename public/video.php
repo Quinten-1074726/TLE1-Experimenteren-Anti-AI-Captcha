@@ -17,7 +17,24 @@ if (!$result || mysqli_num_rows($result) === 0) {
 }
 
 $video = mysqli_fetch_assoc($result);
+// Voeg video aan history toe
+$userId = $_SESSION['user_id'] ?? 0;
+$videoTitle = addslashes($video['video_title']);
+$videoDesc  = addslashes($video['video_description']);
+$thumbnail  = addslashes($video['thumbnail'] ?? '');
+$filePath   = addslashes($video['file_path']);
+$channelName = addslashes($video['channel_name'] ?? '');
+$views = intval($video['views']);
+$date = date('Y-m-d H:i:s');
+
+mysqli_query($db, "
+    INSERT INTO history 
+        (video_title, video_description, thumbnail, user_id, date, views, file_path, channel_name, created_at, updated_at)
+    VALUES
+        ('$videoTitle', '$videoDesc', '$thumbnail', $userId, '$date', $views, '$filePath', '$channelName', NOW(), NOW())
+");
 //comments
+
 if (isset($_POST['submit'])) {
     //altijd de variabele erboven zetten, zodat hij geen errors aangeeft.
     $errorName = '';

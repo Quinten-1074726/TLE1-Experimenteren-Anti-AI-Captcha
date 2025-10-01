@@ -47,7 +47,7 @@ $isLoggedIn = isset($_SESSION['loggedInUser']);
         <span>My channel</span>
       </a>
 
-      <a href="index.php" class="nav-item">
+      <a href="history.php" class="nav-item">
         <i class="fa-solid fa-clock-rotate-left nav-icon" aria-hidden="true"></i>
         <span>History</span>
       </a>

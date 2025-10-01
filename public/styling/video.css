@@ -62,3 +62,14 @@
         height: auto;
     }
 }
+
+@media (max-width: 768px) {
+    #flexDezeShitNaarBeneden {
+        width: 100%;
+        padding: 0;
+    }
+    #viewsAndDescription {
+        max-width: 100%;
+        padding: 1vh 0;
+    }
+}

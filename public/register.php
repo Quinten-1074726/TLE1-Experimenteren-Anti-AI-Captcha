@@ -1,54 +1,53 @@
 <?php
+$errors = [];
 if (!isset($_COOKIE['captcha_pass'])) {
     header('Location: index.php');
     exit;
+} else {
+    // Invalidate the one-time cookie
+    setcookie('captcha_pass', '', time() - 3600, '/');
 }
 
 if (isset($_POST['submit'])) {
-    // Verwijder captcha cookie pas na succesvolle registratie
-    setcookie('captcha_pass', '', time() - 3600, '/');
     /** @var mysqli $db */
     require_once "./database/connection.php";
-    $errors = [];
-    if (isset($_POST['submit'])) {
-        $userName = $_POST['userName'];
-        if ($userName === '') {
-            $errors['userName'] = "Vul a.u.b. Uw gebruikersnaam in.";
+    $userName = $_POST['userName'] ?? '';
+    if ($userName === '') {
+        $errors['userName'] = "Vul a.u.b. Uw gebruikersnaam in.";
+    }
+    $email = $_POST['email'] ?? '';
+    if ($email === '') {
+        $errors['email'] = "Vul a.u.b. Uw e-mail in.";
+    }
+    $password = $_POST['password'] ?? '';
+    if ($password === '') {
+        $errors['password'] = "Maak a.u.b. een wachtwoord aan.";
+    }
+    if (empty($errors)) {
+        $query = "SELECT id FROM users WHERE email = ?";
+        $stmt = mysqli_prepare($db, $query);
+        mysqli_stmt_bind_param($stmt, 's', $email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+            $errors['email'] = "Dit e-mailadres is al in gebruik.";
         }
-        $email = $_POST['email'];
-        if ($email === '') {
-            $errors['email'] = "Vul a.u.b. Uw e-mail in.";
+        mysqli_stmt_close($stmt);
+    }
+    if (empty($errors)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($db, $query);
+        mysqli_stmt_bind_param($stmt, 'sss', $userName, $email, $hashedPassword);
+        $result = mysqli_stmt_execute($stmt);
+        if ($result) {
+            header('Location: login.php?email=' . urlencode($email));
+            exit;
+        } else {
+            // Foutmelding als de query mislukt
+            $errors['query'] = "Er is iets mis gegaan bij het registreren.";
         }
-        $password = $_POST['password'];
-        if ($password === '') {
-            $errors['password'] = "Maak a.u.b. een wachtwoord aan.";
-        }
-        if (empty($errors)) {
-            $query = "SELECT id FROM users WHERE email = ?";
-            $stmt = mysqli_prepare($db, $query);
-            mysqli_stmt_bind_param($stmt, 's', $email);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_store_result($stmt);
-            if (mysqli_stmt_num_rows($stmt) > 0) {
-                $errors['email'] = "Dit e-mailadres is al in gebruik.";
-            }
-            mysqli_stmt_close($stmt);
-        }
-        if (empty($errors)) {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-            $stmt = mysqli_prepare($db, $query);
-            mysqli_stmt_bind_param($stmt, 'sss', $userName, $email, $hashedPassword);
-            $result = mysqli_stmt_execute($stmt);
-            if ($result) {
-                header('Location: login.php?email=' . urlencode($email));
-                exit;
-            } else {
-                // Foutmelding als de query mislukt
-                $errors['query'] = "Er is iets mis gegaan bij het registreren.";
-            }
-            mysqli_stmt_close($stmt);
-        }
+        mysqli_stmt_close($stmt);
     }
 }
 ?>
@@ -111,3 +110,5 @@ if (isset($_POST['submit'])) {
 </section>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>

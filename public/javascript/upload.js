@@ -75,9 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
   let selectedSlotIdx = null;
 
+  // Initially disable the video preview slots
+  previewSlots.forEach((img) => {
+    if (img) img.parentElement.classList.add('disabled');
+  });
+
   previewSlots.forEach((img, idx) => {
     if (!img) return;
-    img.parentElement.style.cursor = 'pointer';
     img.parentElement.addEventListener('click', function() {
       // Deselect all
       previewSlots.forEach((im, i) => {
@@ -105,6 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
       selectedSlotIdx = null;
       return;
     }
+
+    // Enable/disable thumb slots based on video presence
+    const hasVideo = file && file.size <= 8 * 1024 * 1024;
+    previewSlots.forEach((img) => {
+      if (img) {
+        if (hasVideo) {
+          img.parentElement.classList.remove('disabled');
+        } else {
+          img.parentElement.classList.add('disabled');
+          img.parentElement.classList.remove('selected-thumb-slot');
+        }
+      }
+    });
 
     // Video frame preview logic
     if (file) {

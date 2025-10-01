@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.classList.add('fade-in');
   }
 
-  const getAiOnlyValue = () => (aiFilterCheckbox?.checked ? '1' : '');
+  const getAiOnlyValue = () => (aiFilterCheckbox?.checked ? '0' : '');
 
   const buildCardsHTML = list => list.map(v => `
       <div class="vid-card">

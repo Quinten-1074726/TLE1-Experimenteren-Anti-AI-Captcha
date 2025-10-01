@@ -35,7 +35,7 @@ $video = mysqli_fetch_assoc($result);
     <?php include "header.php" ?>
     <main id="">
         <div id="flexDezeShitNaarBeneden">
-            <video id="video" width="940" height="560" controls>
+            <video id="video" width="auto" height="560" controls>
                 <?php
                 // Bepaal het juiste pad naar de video
                 $filePath = $video['file_path'];
@@ -56,3 +56,5 @@ $video = mysqli_fetch_assoc($result);
 </body>
 
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>

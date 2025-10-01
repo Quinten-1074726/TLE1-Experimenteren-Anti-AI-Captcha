@@ -366,3 +366,20 @@ button:hover {
 .dashboard-section .video-actions button:hover {
     background: var(--primary-900);
 }
+
+@media (max-width: 768px) {
+    .admin-modal-content {
+        width: 90%;
+        max-width: none;
+        padding: 20px;
+    }
+    .admin-modal-video-grid {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-section {
+        padding: 10px;
+    }
+    .search-user-bar input[type="text"] {
+        width: 100%;
+    }
+}

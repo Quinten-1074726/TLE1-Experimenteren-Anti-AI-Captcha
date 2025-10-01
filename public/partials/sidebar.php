@@ -53,14 +53,9 @@ $isLoggedIn = isset($_SESSION['loggedInUser']);
     </div>
 
     <div class="sidebar__section">
-      <a href="upload.php" class="btn-upload">
+      <a href="captcha1.php?redirect=upload.php" class="btn-upload">
         <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
         <span>Video uploaden</span>
-      </a>
-
-      <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>" class="nav-item">
-        <i class="fa-solid fa-id-card nav-icon" aria-hidden="true"></i>
-        <span>Account</span>
       </a>
 
       <a href="logout.php" class="nav-item">

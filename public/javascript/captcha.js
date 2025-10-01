@@ -390,12 +390,17 @@ function checkDrawing() {
 }
 
 // --- Redirect Support ---
-const allowedRedirects = new Set(['login.php', 'register.php', 'upload.php']);
+const allowedRedirects = new Set(['login.php', 'register.php', 'upload.php', 'editaccount.php']);
 function getRedirectTarget() {
   const p = new URLSearchParams(window.location.search);
-  let target = p.get('redirect') || 'login.php';
-  if (!allowedRedirects.has(target)) target = 'login.php';
-  return target;
+  const r = p.get('redirect');
+  if (r) {
+    const base = r.split('?')[0];
+    if (allowedRedirects.has(base)) {
+      return r;
+    }
+  }
+  return 'index.php';
 }
 
 // UI wiring

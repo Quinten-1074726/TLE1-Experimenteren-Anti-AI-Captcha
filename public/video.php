@@ -17,7 +17,24 @@ if (!$result || mysqli_num_rows($result) === 0) {
 }
 
 $video = mysqli_fetch_assoc($result);
+// Voeg video aan history toe
+$userId = $_SESSION['user_id'] ?? 0;
+$videoTitle = addslashes($video['video_title']);
+$videoDesc  = addslashes($video['video_description']);
+$thumbnail  = addslashes($video['thumbnail'] ?? '');
+$filePath   = addslashes($video['file_path']);
+$channelName = addslashes($video['channel_name'] ?? '');
+$views = intval($video['views']);
+$date = date('Y-m-d H:i:s');
+
+mysqli_query($db, "
+    INSERT INTO history 
+        (video_title, video_description, thumbnail, user_id, date, views, file_path, channel_name, created_at, updated_at)
+    VALUES
+        ('$videoTitle', '$videoDesc', '$thumbnail', $userId, '$date', $views, '$filePath', '$channelName', NOW(), NOW())
+");
 //comments
+
 if (isset($_POST['submit'])) {
     //altijd de variabele erboven zetten, zodat hij geen errors aangeeft.
     $errorName = '';
@@ -78,6 +95,7 @@ mysqli_close($db);
         <?php include "defaultsettings.php" ?>
         <link rel="stylesheet" href="styling/upload.css">
         <link rel="stylesheet" href="styling/video.css"> <!-- added video specific styles -->
+        <script src="javascript/video.js" defer></script>
         <title>Document</title>
     </head>
 
@@ -137,6 +155,9 @@ mysqli_close($db);
                 </form>
 
                 <!-- Comments rechts -->
+
+                <button id="toggleCommentForm" class="toggle-btn">+ Voeg een comment toe</button>
+
                 <div class="comment-list">
                     <?php foreach ($comments as $comment) { ?>
                         <div class="comment-card">
@@ -153,6 +174,33 @@ mysqli_close($db);
 
                 <!-- CSS direct in de section -->
                 <style>
+
+                    .comment-form {
+                        display: none; /* standaard verborgen */
+                        flex: 1;
+                        max-width: 40%;
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+
+                    .comment-form.active {
+                        display: flex; /* zichtbaar zodra class active wordt toegevoegd */
+                    }
+
+                    .toggle-btn {
+                        background: #0077ff;
+                        color: white;
+                        border: none;
+                        padding: 0.6rem 1rem;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        margin-bottom: 1rem;
+                    }
+                    .toggle-btn:hover {
+                        background: #005fcc;
+                    }
+
+
                     .comment-layout {
                         display: flex;
                         justify-content: space-between;
@@ -165,7 +213,7 @@ mysqli_close($db);
                     .comment-form {
                         flex: 1;
                         max-width: 40%;
-                        display: flex;
+                        /*display: flex;*/
                         flex-direction: column;
                         gap: 1rem;
                     }

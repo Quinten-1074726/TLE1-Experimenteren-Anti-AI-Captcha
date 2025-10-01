@@ -83,6 +83,13 @@ mysqli_close($db);
     <title>Account bewerken</title>
 </head>
 <body>
+<script>
+// Apply saved theme on edit account page
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+    document.documentElement.className = `theme-${savedTheme}`;
+});
+</script>
 <section>
     <form action="" method="post">
         <div class="column" style="width: 65vw; margin: 10vh auto">

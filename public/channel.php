@@ -25,24 +25,19 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $query = "SELECT * FROM users WHERE id = $id";
-    $result = mysqli_query($db, $query);
-
-
+    $query = "SELECT * FROM users WHERE id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $users = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
 
-
-    if (mysqli_num_rows($result) === 1) {
-        $query = "DELETE FROM users WHERE id= $id";
-        $result = mysqli_query($db, $query);
-
-
-
+    if (!$users) {
+        // User not found, redirect to index
         header("Location: index.php");
         exit;
-        mysqli_close($db);
     }
-
 }print_r($result); $query;
 //global
 //

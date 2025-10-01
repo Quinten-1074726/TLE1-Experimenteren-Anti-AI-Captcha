@@ -25,6 +25,7 @@ if (isset($_SESSION['loggedInUser'])) {
 <html lang="en">
 
 <head>
+    <?php include "defaultsettings.php" ?>
       <script>
         // json flags om speciale characters niet code te laten breken
         const videos = <?php echo json_encode($videos, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
@@ -35,8 +36,10 @@ if (isset($_SESSION['loggedInUser'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>History</title>
-    <link rel="stylesheet" href="styling/history style.css">
+
     <link rel="stylesheet" href="styling/style.css">
+    <link rel="stylesheet" href="styling/index.css">
+
 
     <script src="javascript/index.js"></script>
 
@@ -53,41 +56,7 @@ if (isset($_SESSION['loggedInUser'])) {
 <?php include "header.php" ?>
 
 <main>
-    <!-- left -->
-    <div class="left_side">
-        <div>
-            <div>
-                <label id="ai_filter_label">
-                    AI Filter
-                    <span class="switch">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                    </span>
-                </label>
-            </div>
-
-            <a href="index.php">Home</a>
-            <a href="trending.php">Trending</a>
-            <a href="history.php">History</a>
-            <a>Subscriptions</a>
-            <a href="channel.php">My channel</a>
-
-            <?php if (isset($_SESSION['loggedInUser'])): ?>
-                <a href="upload.php" class="btn">Video uploaden</a>
-                <a href="account.php?id=<?= $_SESSION['loggedInUser']['id'] ?>">Account</a>
-                <a href="logout.php">Logout</a>
-            <?php else: ?>
-                <a href="login.php">Login</a>
-                <a href="register.php">Register</a>
-            <?php endif; ?>
-        </div>
-        <div>
-            <!-- channels here -->
-            <a>channel 1</a>
-            <a>channel 123</a>
-        </div>
-    </div>
-
+    <?php $active='home'; $showAiFilter=true; include './partials/sidebar.php'; ?>
     <!-- right -->
     <div class="flex_right_side">
         <div class="right_side">
@@ -112,3 +81,5 @@ if (isset($_SESSION['loggedInUser'])) {
 
 </body>
 </html>
+
+<?php $active='history'; include './partials/mobile-footer.php'; ?>

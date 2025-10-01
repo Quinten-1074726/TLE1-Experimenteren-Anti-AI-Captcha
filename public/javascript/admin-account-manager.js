@@ -16,6 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
     item.classList.toggle('selected', checkbox && checkbox.checked);
   });
 });
+
+function updateVideo(videoId, data, checkbox) {
+  console.log('updateVideo called', videoId, data);
+  if (checkbox) checkbox.disabled = true;
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', 'admin-account-manager.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    console.log('updateVideo response status:', xhr.status);
+    if (checkbox) checkbox.disabled = false;
+    if (xhr.status === 200) {
+      console.log('Video updated successfully');
+    } else {
+      console.error('Video update failed', xhr.responseText);
+    }
+  };
+  let params = 'video_id=' + encodeURIComponent(videoId);
+  for (const key in data) {
+    params += '&' + key + '=' + encodeURIComponent(data[key]);
+  }
+  console.log('Sending params:', params);
+  xhr.send(params);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('userSearchInput');
   const userList = document.getElementById('userList');
@@ -109,3 +133,23 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initial load
   fetchUsers('');
 });
+
+// Event listener voor AI checkbox in video modals
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('ai-checkbox')) {
+    console.log('AI checkbox changed');
+    const videoId = e.target.getAttribute('data-video-id');
+    const isAi = e.target.checked ? 1 : 0;
+    console.log('Video ID:', videoId, 'isAi:', isAi);
+    updateVideo(videoId, { ai_generated: isAi }, e.target);
+  }
+});
+
+function confirmAction(message) {
+  const selected = document.querySelectorAll('.admin-modal-video-item input[type="checkbox"]:checked');
+  if (selected.length === 0) {
+    alert('Selecteer eerst video\'s.');
+    return false;
+  }
+  return confirm(message);
+}

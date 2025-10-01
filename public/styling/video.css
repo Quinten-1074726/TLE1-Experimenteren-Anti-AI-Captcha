@@ -16,7 +16,6 @@
 #video {
     display: block;
     margin: 0 auto;
-    padding: 5vh 0;
 }
 
 *{
@@ -27,21 +26,53 @@
 {
     display: flex;
     flex-direction: column;
-    align-items: center; /* center children horizontally */
-    justify-content: flex-start;
-    max-width: 80%;
-    margin: 0 auto; /* center container */
-    text-align: center; /* center heading/title text */
+    margin: 0 auto; 
+    width: 80%;
 }
 
-#flexDezeShitNaarBeneden h2 {
-    margin-top: 12px;
-    width: 100%;
+#flexDezeShitNaarBeneden h2{
+    padding-top: 1vh;
+    text-align: center;
 }
+div{
+    align-items: flex-start;
+}
+
+#viewsAndDescription {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 2vh 0;
+    text-align: start;
+    display: flex;            /* enable ordering */
+    flex-direction: column;   /* stack children vertically */
+}
+
+#viewsAndDescription p{
+    line-height: 24px;
+    order: 0;          /* ensure paragraphs come first */
+    margin-top: 0;     /* remove any default top gap */
+}
+
+/* Any other child elements (like headings) come after paragraphs */
+#viewsAndDescription > *:not(p) {
+    order: 1;
+}
+
 
 @media (max-width: 1000px) {
     #video {
         width: 100%;
         height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    #flexDezeShitNaarBeneden {
+        width: 100%;
+        padding: 0;
+    }
+    #viewsAndDescription {
+        max-width: 100%;
+        padding: 1vh 0;
     }
 }

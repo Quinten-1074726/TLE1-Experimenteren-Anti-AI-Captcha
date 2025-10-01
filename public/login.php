@@ -122,3 +122,7 @@ if (isset($_POST['submit'])) {
 </section>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>
+
+

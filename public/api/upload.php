@@ -1,7 +1,8 @@
 <?php
 // api/upload.php
+session_start();
 require_once __DIR__ . '/../database/connection.php';
-
+/** @var mysqli $db */
 // Zorg dat de uploads map bestaat
 define('VIDEO_UPLOAD_DIR', __DIR__ . '/../uploads/user-videos/');
 define('THUMB_UPLOAD_DIR', __DIR__ . '/../uploads/user-thumbnails/');
@@ -15,6 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $visibility = $_POST['visibility'] ?? 'public';
+    $ai_generated = isset($_POST['ai_generated']) && $_POST['ai_generated'] == '1' ? 1 : 0;
+
+    if ($ai_generated == 1) {
+        header('Location: ../index.php');
+        exit;
+    }
     // Haal user_id uit sessie
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
@@ -22,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_SESSION['loggedInUser']['id'];
     } else {
         $errors[] = 'Je moet ingelogd zijn om te uploaden.';
-        $errors[] = '<pre>SESSION: ' . print_r($_SESSION, true) . '</pre>';
+    // SESSION debug output verwijderd voor gebruikers
         $user_id = null;
     }
     // Haal channel_name uit de database op basis van user_id
@@ -49,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!in_array($video['type'], $allowedTypes)) {
             $errors[] = 'Alleen MP4 of WebM toegestaan.';
         }
-        if ($video['size'] > 200 * 1024 * 1024) {
-            $errors[] = 'Video is te groot (max 200MB).';
+        if ($video['size'] > 8 * 1024 * 1024) {
+            $errors[] = 'Video is te groot (max 8MB).';
         }
     }
 
@@ -81,9 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $thumbPath = THUMB_UPLOAD_DIR . $thumbFileName;
         move_uploaded_file($thumb['tmp_name'], $thumbPath);
 
-        // In database zetten: sla alleen de bestandsnaam op
-        $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssisss', $title, $description, $thumbFileName, $user_id, $date, $videoFileName, $channel_name);
+        // In database zetten: sla het relatieve pad op
+        $filePath = 'user-videos/' . $videoFileName;
+        $stmt = $db->prepare('INSERT INTO videos (video_title, video_description, thumbnail, user_id, date, file_path, channel_name, ai_generated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssisssi', $title, $description, $thumbFileName, $user_id, $date, $filePath, $channel_name, $ai_generated);
         if ($stmt->execute()) {
             header('Location: ../index.php');
             exit;

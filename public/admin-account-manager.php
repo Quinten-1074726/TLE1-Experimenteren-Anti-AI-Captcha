@@ -81,6 +81,22 @@ if (isset($_POST['delete_video'])) {
         $deleted = 0;
         foreach ($videoIds as $vid) {
             $vid = intval($vid);
+            // Haal file_path en thumbnail op voordat verwijderen
+            $stmt = mysqli_prepare($db, "SELECT file_path, thumbnail FROM videos WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $vid);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $file_path, $thumbnail);
+            if (mysqli_stmt_fetch($stmt)) {
+                // Verwijder bestanden
+                if ($file_path && file_exists("./uploads/user-videos/" . $file_path)) {
+                    unlink("./uploads/user-videos/" . $file_path);
+                }
+                if ($thumbnail && file_exists("./uploads/user-thumbnails/" . $thumbnail)) {
+                    unlink("./uploads/user-thumbnails/" . $thumbnail);
+                }
+            }
+            mysqli_stmt_close($stmt);
+            // Verwijder uit database
             $delete_query = "DELETE FROM videos WHERE id = ?";
             $stmt = $db->prepare($delete_query);
             $stmt->bind_param("i", $vid);
@@ -91,6 +107,17 @@ if (isset($_POST['delete_video'])) {
         }
         $success_message = $deleted . " video's succesvol verwijderd.";
     }
+}
+
+// AJAX update voor ai_generated van video
+if (isset($_POST['video_id']) && isset($_POST['ai_generated'])) {
+    $video_id = intval($_POST['video_id']);
+    $ai_generated = intval($_POST['ai_generated']);
+    $stmt = mysqli_prepare($db, "UPDATE videos SET ai_generated = ? WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "ii", $ai_generated, $video_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    // Geen output nodig, AJAX
 }
 
 // Gebruikers zoeken (dynamisch op username of email)
@@ -160,14 +187,13 @@ if ($search !== '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gebruikers</title>
-    <link rel="stylesheet" href="styling/style.css">
+    <?php include "defaultsettings.php" ?>
     <link rel="stylesheet" href="styling/admin-account-dashboard.css">
     <script src="javascript/admin-account-manager.js" defer></script>
 </head>
 <body>
-<?php include('header.php') ?>
 <main>
-    <section class="search-bar">
+    <section class="search-user-bar">
         <form id="userSearchForm" action="" method="post" autocomplete="off">
             <input class="account-searchbar" type="text" id="userSearchInput" name="search" placeholder="Zoek op gebruikersnaam of e-mail..." style="width:320px;">
             <button type="submit">Zoeken</button>
@@ -205,7 +231,7 @@ if ($search !== '') {
                                     $videoResult = $videoStmt->get_result();
                                     if ($videoResult->num_rows > 0) {
                                     ?>
-                                        <form class="modal" action="" method="post" onsubmit="return confirmDeleteVideos(this)">
+                                        <form class="modal" action="" method="post">
                                             <input type="hidden" name="delete_video" value="1">
                                             <div class="admin-modal-video-grid">
                                             <?php while ($video = $videoResult->fetch_assoc()) { ?>
@@ -213,11 +239,12 @@ if ($search !== '') {
                                                     <input type="checkbox" name="video_ids[]" value="<?= htmlspecialchars($video['id']) ?>" style="display:none;">
                                                     <img class="admin-modal-video-thumbnail" src="../public/uploads/user-thumbnails/<?= htmlspecialchars($video['thumbnail']) ?>" alt="thumb">
                                                     <span><?= htmlspecialchars($video['video_title']) ?></span>
+                                                    <label>AI <input type="checkbox" class="ai-checkbox" data-video-id="<?= $video['id'] ?>" <?= $video['ai_generated'] ? 'checked' : '' ?> ></label>
                                                 </div>
                                             <?php } ?>
                                             </div>
                                             <div class="admin-modal-actions">
-                                                <button type="submit" name="delete_selected_videos">Verwijder geselecteerde video's</button>
+                                                <button type="submit" name="delete_selected_videos" onclick="return confirmAction('Weet je zeker dat je de geselecteerde video\'s wilt verwijderen?')">Verwijder geselecteerde video's</button>
                                             </div>
                                         </form>
                                     <?php
@@ -241,6 +268,7 @@ if ($search !== '') {
         </div>
     </section>
 </main>
-<?php include('footer.php') ?>
 </body>
 </html>
+
+<?php include './partials/mobile-footer.php'; ?>

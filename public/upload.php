@@ -1,6 +1,8 @@
 <?php
 /** @var mysqli $db */
 require_once "./database/connection.php";
+
+/** @var mysqli $db */
 $errors = [];
 
 

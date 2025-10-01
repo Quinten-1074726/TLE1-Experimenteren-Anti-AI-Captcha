@@ -38,6 +38,9 @@
     margin-top: 12px;
     width: 100%;
 }
+div{
+    align-items: flex-start;
+}
 
 @media (max-width: 1000px) {
     #video {

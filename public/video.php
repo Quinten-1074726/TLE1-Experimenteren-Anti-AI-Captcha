@@ -1,7 +1,7 @@
 <?php
 
 require_once './database/connection.php';
-
+/** @var mysqli $db */
 // Get video ID from URL
 if (!isset($_GET['id'])) {
     die('No video specified.');
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
         mysqli_query($db, $query)
         or die('Error: ' . mysqli_error($db) . ' with query: ' . $query);
         //geen resfresh
-        header("Location: video.php?id=" . urlencode($videoID));
+        header("Location: video.php?id=" . urlencode($videoId));
         exit;
     }
 

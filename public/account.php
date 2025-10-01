@@ -130,6 +130,10 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true || !isset($_
             themeBtn.addEventListener('click', () => {
                 themeModal.style.display = 'flex';
             });
+            <h1>Account</h1>
+            <h2><?= $users['username'] ?></h2>
+            <h2><?= $users['email'] ?></h2>
+            <a href="editaccount.php?id=<?= $users['id'] ?>">Edit</a>
 
             // Close modal
             closeModal.addEventListener('click', () => {

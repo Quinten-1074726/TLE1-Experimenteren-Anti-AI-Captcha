@@ -1,9 +1,17 @@
 <?php
+/** @var mysqli $db */
 global $query;
 require_once 'database/connection.php';
 
-
 session_start();
+
+$id = $_GET['id'];
+
+$query = "SELECT * FROM users WHERE id = $id";
+$result = mysqli_query($db, $query);
+
+
+$users = mysqli_fetch_assoc($result);
 
 // Redirect if already logged in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === true) {
@@ -20,16 +28,35 @@ if (isset($_GET['id'])) {
     $query = "SELECT * FROM users WHERE id = $id";
     $result = mysqli_query($db, $query);
 
+
+    $users = mysqli_fetch_assoc($result);
+
+
     if (mysqli_num_rows($result) === 1) {
         $query = "DELETE FROM users WHERE id= $id";
         $result = mysqli_query($db, $query);
+
+
 
         header("Location: index.php");
         exit;
         mysqli_close($db);
     }
 
-}
+}print_r($result); $query;
+//global
+//
+//
+//
+//$id = $_SESSION['loggedInUser']['id'];
+//
+//$id = $_GET['id'];
+//
+//$query = "SELECT * FROM users WHERE id= $id";
+//
+//$result = mysqli_query($db, $query);
+//$users = mysqli_fetch_assoc($result);
+
 ?>
 
 <!doctype html>
@@ -51,31 +78,7 @@ if (isset($_GET['id'])) {
 <?php include "header.php" ?>
 
 <div class="divContainer">
-    <div class="left_side">
-        <div>
-            <div>
-                <label id="ai_filter_label">
-                    AI Filter
-                    <span class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </span>
-                </label>
-            </div>
-
-            <a href="index.php">Home</a>
-            <a href="trending.php">Trending</a>
-            <a>Subcriptions</a>
-            <a href="channel.php">My channel</a>
-            <a href="upload.php" class="btn">Video uploaden</a>
-        </div>
-        <div>
-
-            <a>channel 1</a>
-            <a>channel 123</a>
-
-        </div>
-    </div>
+    <?php $active='home'; $showAiFilter=true; include './partials/sidebar.php'; ?>
 
 
     <div class="emptyContainer">
@@ -90,22 +93,22 @@ if (isset($_GET['id'])) {
             <div class="profile">
                 <div style="display: flex; flex-direction: row;">
                     <div class="profilePicture">
-                        <img style="scale: 1.3" src="images/profile.png">
+                        <img style="scale: 1.3" src="images/<?=$users['profile_picture']?>.png">
                     </div>
-                    <div id="channelDetails" class="channelDetails">
+                    <div class="channelDetails">
                         <div class="channelName">
-                            <h2>Channel name</h2>
+                            <h2><?= $users['username'] ?></h2>
                         </div>
 
 
                         <div class="amounts">
                             <p>
-                                subscribers count || a/o video's
+                                <?= $users['email'] ?> subscribers count || a/o video's
                             </p>
 
                             <div class="description">
 
-                                    Welcome to my channel!!!, jkcbahjfbahjdashdjbsahdjasbdskdj
+                                <?= $users['bio'] ?>
 
                             </div>
 

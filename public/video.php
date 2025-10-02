@@ -27,12 +27,17 @@ $channelName = addslashes($video['channel_name'] ?? '');
 $views = intval($video['views']);
 $date = date('Y-m-d H:i:s');
 
+$videoId = intval($video['id']); // de id van de video uit de videos-tabel
+
 mysqli_query($db, "
     INSERT INTO history 
-        (video_title, video_description, thumbnail, user_id, date, views, file_path, channel_name, created_at, updated_at)
+        (id, video_title, video_description, thumbnail, user_id, date, views, file_path, channel_name, created_at, updated_at)
     VALUES
-        ('$videoTitle', '$videoDesc', '$thumbnail', $userId, '$date', $views, '$filePath', '$channelName', NOW(), NOW())
+        ($videoId, '$videoTitle', '$videoDesc', '$thumbnail', $userId, '$date', $views, '$filePath', '$channelName', NOW(), NOW())
+    ON DUPLICATE KEY UPDATE 
+        updated_at = NOW(), date = '$date'
 ");
+
 //comments
 
 if (isset($_POST['submit'])) {

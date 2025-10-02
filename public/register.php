@@ -35,9 +35,11 @@ if (isset($_POST['submit'])) {
     }
     if (empty($errors)) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $query = "INSERT INTO users (username, email, password, profile_picture, is_admin) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($db, $query);
-        mysqli_stmt_bind_param($stmt, 'sss', $userName, $email, $hashedPassword);
+        $defaultProfile = 'profile';
+        $isAdmin = 0;
+        mysqli_stmt_bind_param($stmt, 'ssssi', $userName, $email, $hashedPassword, $defaultProfile, $isAdmin);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             setcookie('captcha_pass', '', time() - 3600, '/');
@@ -63,6 +65,13 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="styling/crud.css">
 </head>
 <body>
+<script>
+// Apply saved theme on register page
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+    document.documentElement.className = `theme-${savedTheme}`;
+});
+</script>
 <section>
     <form action="" method="post">
         <div class="column" style="width: 65vw; margin: 10vh auto">
